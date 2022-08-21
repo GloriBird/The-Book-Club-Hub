@@ -2,7 +2,7 @@
 
 const express = require("express");
 const morgan = require("morgan");
-const { getWeeklyTrendingBook } = require("./handlers.js");
+const { getWeeklyTrendingBook } = require("./Routes/");
 
 const app = express();
 const port = 8000;
