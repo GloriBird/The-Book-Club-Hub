@@ -5,10 +5,13 @@ import { GlobalContext } from "./context/GlobalContext";
 const App = () => {
   const { trendingBooks } = useContext(GlobalContext);
 
-  console.log(`trendingBooks:`, trendingBooks);
   return (
     <div>
-      <p>hello</p>
+      <ol>
+        {trendingBooks?.map((x, idx) => {
+          return <li key={idx}>{x?.title}</li>;
+        })}
+      </ol>
     </div>
   );
 };

@@ -5,12 +5,13 @@ export const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
   const [trendingBooks, setTrendingBooks] = useState();
+  const [, setIsLoading] = useState();
 
   useEffect(() => {
     fetch("/weeklyTrendingBooks")
       .then((res) => res.json())
       .then((weeksTrendingBooks) => {
-        setTrendingBooks(weeksTrendingBooks.data);
+        setTrendingBooks(weeksTrendingBooks?.data);
       });
   }, []);
 
