@@ -24,7 +24,7 @@ const getWeeklyTrendingBook = async (req, res) => {
     });
   }
 };
-//test
+
 module.exports = {
   getWeeklyTrendingBook,
 };
