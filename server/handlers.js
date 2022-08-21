@@ -13,7 +13,6 @@ const getWeeklyTrendingBook = async (req, res) => {
   const bookData = client.db("Book-Club");
 
   const weeklyBooks = await bookData.collection("Weekly-Trending-Books").find().toArray();
-  // console.log(`weeklyBooks:`, weeklyBooks);
 
   if (weeklyBooks.length > 0) {
     res.status(200).json({ status: 200, data: weeklyBooks, message: "Success" });

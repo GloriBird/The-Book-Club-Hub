@@ -11,9 +11,6 @@ app.use(morgan("tiny"));
 app.use(express.json());
 app.use(express.static("public"));
 
-// app.get("/api", sendMessage);
-
-//LandingPage
 app.get("/weeklyTrendingBooks", getWeeklyTrendingBook);
 // // PROFILE:
 // app.post("/create-profile", createProfile);
