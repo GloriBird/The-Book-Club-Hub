@@ -9,12 +9,11 @@ export const GlobalProvider = ({ children }) => {
   useEffect(() => {
     fetch("/weeklyTrendingBooks")
       .then((res) => res.json())
-      .then((itemData) => {
-        setTrendingBooks(itemData.data);
+      .then((weeksTrendingBooks) => {
+        setTrendingBooks(weeksTrendingBooks.data);
       });
   }, []);
 
-  //   console.log(`trendingBooks:`, trendingBooks);
   return (
     <GlobalContext.Provider
       value={{
