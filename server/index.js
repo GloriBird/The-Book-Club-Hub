@@ -15,7 +15,7 @@ app.get("/weeklyTrendingBooks", getWeeklyTrendingBook);
 
 // PROFILE:
 app.post("/create-profile", createProfile);
-// app.get("/profile", getProfile);
+// app.get("/profile:id", getProfile);
 // app.patch("/update-profile", updateProfile);
 // app.delete("/delete-profile/:id", deleteProfile);
 // app.post("/profile/add-favourite-books", addProfileFavouriteBooks);
@@ -26,14 +26,15 @@ app.post("/create-profile", createProfile);
 // // FIND USER:
 // app.get("/user/:id", getSingleUser) - //Each user will have unique id
 //   // BOOKCLUB:
-//   app.get("/bookclubs", getBookClubs); //Bookclub you're currently in
 // app.post("/create-bookclub", createBookClub);
+// app.get("/bookclubs", getBookClubs); //Bookclub you're currently in
 // app.get("/bookclub/:name", getSingleBookClub);
 // app.delete("/delete-bookclub/:name", deleteBookClub);
 
 // // BOOKCLUB MEMBERS:
+// app.post("/bookclub/members", getBookClubMembers);
 // app.get("/bookclub/members", getBookClubMembers);
-// app.patch("/update-bookclub-members", updateBookClubMembers); //(to join or remove member)
+// app.patch("/update-bookclub-members", updateBookClubMembers); //(remove member)
 
 // // BOOKCLUB READING LIST:
 // app.post("/bookClub/reading-list", addBookClubReadingList);
