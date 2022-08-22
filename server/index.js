@@ -3,7 +3,8 @@
 const express = require("express");
 const morgan = require("morgan");
 const { getWeeklyTrendingBook } = require("./routes/books");
-const { createProfile } = require("./routes/profile");
+const { createProfile } = require("./routes/profile/createProfile");
+const { signedInProfile } = require("./routes/profile/signedInProfile");
 const app = express();
 const port = 8000;
 
@@ -15,7 +16,7 @@ app.get("/weeklyTrendingBooks", getWeeklyTrendingBook);
 
 // PROFILE:
 app.post("/create-profile", createProfile);
-// app.get("/profile:id", getProfile);
+app.get("/signedInProfile/:id", signedInProfile);
 // app.patch("/update-profile", updateProfile);
 // app.delete("/delete-profile/:id", deleteProfile);
 // app.post("/profile/add-favourite-books", addProfileFavouriteBooks);
