@@ -3,7 +3,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const { getWeeklyTrendingBook } = require("./routes/books");
-
+const { createProfile } = require("./routes/profile");
 const app = express();
 const port = 8000;
 
@@ -12,15 +12,16 @@ app.use(express.json());
 app.use(express.static("public"));
 
 app.get("/weeklyTrendingBooks", getWeeklyTrendingBook);
-// // PROFILE:
-// app.post("/create-profile", createProfile);
+
+// PROFILE:
+app.post("/create-profile", createProfile);
 // app.get("/profile", getProfile);
 // app.patch("/update-profile", updateProfile);
-// app.delete("/delete-member/:member", deleteMember);
+// app.delete("/delete-profile/:id", deleteProfile);
 // app.post("/profile/add-favourite-books", addProfileFavouriteBooks);
 // app.get("/profile/current-favourite-books", getProfileFavouriteBooks);
 // app.post("/profile/add-reading-list", addProfileReadingList);
-// app.get("/profile/current- reading-list", getProfileFavouriteBooks);
+// app.get("/profile/current-reading-list", getProfileFavouriteBooks);
 
 // // FIND USER:
 // app.get("/user/:id", getSingleUser) - //Each user will have unique id
