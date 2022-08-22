@@ -13,32 +13,39 @@ const createProfile = async (req, res) => {
 
   const bookClubData = client.db("Book-Club");
 
+  const reqBodyArray = [];
   const { username, firstName, lastName, email, favouriteBook, favGenres } = req.body;
+
+  reqBodyArray.push(req.body);
+
   //Include a joined date
   const newID = username;
 
   const isEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
 
   const profileData = await bookClubData.collection("Profiles").find().toArray();
-  console.log(`profileData length:`, profileData.length === 0);
 
   const isProfileNew = profileData.every((user) => {
-    if (user.username !== username && user.email !== email && isEmail === true) {
-      return true;
-    } else if (user.username === username || user.email === email || isEmail === false) {
+    if (user.username === username || user.email === email) {
       return false;
+    } else if (user.username !== username && user.email !== email) {
+      return true;
     }
   });
 
-  if (isProfileNew === true) {
+  const containEmptyValue = reqBodyArray.some((userInfo) =>
+    Object.values(userInfo).some((val) => val.trim().length === 0)
+  );
+
+  if (isProfileNew === true && containEmptyValue === false && isEmail === true) {
     const newProfile = await bookClubData
       .collection("Profiles")
       .insertOne(Object.assign({ _id: newID }, { username, firstName, lastName, email, favouriteBook, favGenres }));
-    console.log(`newProfile:`, newProfile);
+
     return (
       res.status(201).json({ status: 201, profile: newProfile, message: "Success, profile created" }), client.close()
     );
-  } else if (isProfileNew === false) {
+  } else if (isProfileNew === false || containEmptyValue === true || isEmail === false) {
     return (
       res.status(409).json({
         status: 409,
