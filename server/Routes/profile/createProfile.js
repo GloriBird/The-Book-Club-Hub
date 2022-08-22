@@ -1,5 +1,6 @@
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
+const moment = require("moment");
 const { MONGO_URI } = process.env;
 
 const options = {
@@ -18,8 +19,8 @@ const createProfile = async (req, res) => {
 
   reqBodyArray.push(req.body);
 
-  //Include a joined date
   const newID = username;
+  const joinedDate = moment().format("MMMM Do YYYY");
 
   const isEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
 
@@ -40,7 +41,13 @@ const createProfile = async (req, res) => {
   if (isProfileNew === true && containEmptyValue === false && isEmail === true) {
     const newProfile = await bookClubData
       .collection("Profiles")
-      .insertOne(Object.assign({ _id: newID }, { username, firstName, lastName, email, favouriteBook, favGenres }));
+      .insertOne(
+        Object.assign(
+          { _id: newID },
+          { joinedDate: joinedDate },
+          { username, firstName, lastName, email, favouriteBook, favGenres }
+        )
+      );
 
     return (
       res.status(201).json({ status: 201, profile: newProfile, message: "Success, profile created" }), client.close()
