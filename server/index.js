@@ -5,6 +5,8 @@ const morgan = require("morgan");
 const { getWeeklyTrendingBook } = require("./routes/books");
 const { createProfile } = require("./routes/profile/createProfile");
 const { signedInProfile } = require("./routes/profile/signedInProfile");
+const { getSingleUser } = require("./routes/findUsers/getSingleUser");
+const { getAllUsers } = require("./routes/findUsers/getAllUsers");
 const app = express();
 const port = 8000;
 
@@ -25,7 +27,8 @@ app.get("/signedInProfile/:id", signedInProfile);
 // app.get("/profile/current-reading-list", getProfileFavouriteBooks);
 
 // // FIND USER:
-// app.get("/user/:id", getSingleUser) - //Each user will have unique id
+app.get("/users", getAllUsers); //Each user will have unique id
+app.get("/user/:id", getSingleUser);
 //   // BOOKCLUB:
 // app.post("/create-bookclub", createBookClub);
 // app.get("/bookclubs", getBookClubs); //Bookclub you're currently in
