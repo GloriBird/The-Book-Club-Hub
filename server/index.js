@@ -7,6 +7,7 @@ const { createProfile } = require("./routes/profile/createProfile");
 const { signedInProfile } = require("./routes/profile/signedInProfile");
 const { getSingleUser } = require("./routes/findUsers/getSingleUser");
 const { getAllUsers } = require("./routes/findUsers/getAllUsers");
+const { createBookClub } = require("./routes/bookClubEnv/createBookClub");
 const app = express();
 const port = 8000;
 
@@ -30,7 +31,7 @@ app.get("/signedInProfile/:id", signedInProfile);
 app.get("/users", getAllUsers); //Each user will have unique id
 app.get("/user/:id", getSingleUser);
 //   // BOOKCLUB:
-// app.post("/create-bookclub", createBookClub);
+app.post("/create-book-club", createBookClub);
 // app.get("/bookclubs", getBookClubs); //Bookclub you're currently in
 // app.get("/bookclub/:name", getSingleBookClub);
 // app.delete("/delete-bookclub/:name", deleteBookClub);
