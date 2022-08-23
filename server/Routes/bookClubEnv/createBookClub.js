@@ -15,7 +15,7 @@ const createBookClub = async (req, res) => {
 
   const bookClubData = client.db("Book-Club");
 
-  const getBookGroup = await bookClubData.collection("book-club-groups").find().toArray();
+  const getBookGroup = await bookClubData.collection("book-groups").find().toArray();
 
   const { bookClubName } = req.body;
   const groupName = bookClubName.trim();
@@ -26,17 +26,19 @@ const createBookClub = async (req, res) => {
   const dateCreated = moment().format("MMMM Do YYYY");
 
   const bookClubNameAvailable = getBookGroup.every((group) => {
-    if (group.bookClubName !== bookClubName) {
+    if (group.bookClubName.trim() !== groupName) {
       return true;
-    } else if (group.bookClubName === bookClubName) {
+    } else if (group.bookClubName.trim() === groupName) {
       return false;
     }
   });
 
+  //   console.log(`getBookGroup:`, getBookGroup);
+
   if (bookClubNameAvailable === true && groupName.length > 0) {
     const newBookClub = await bookClubData
       .collection("book-groups")
-      .insertOne(Object.assign({ _id: newID }, { dateCreated: dateCreated }, { groupName }));
+      .insertOne(Object.assign({ _id: newID }, { dateCreated: dateCreated }, { bookClubName: groupName }));
     res.status(201).json({ status: 201, bookClub: newBookClub, message: "Success, profile created" }), client.close();
   } else if (bookClubNameAvailable === false || groupName.length < 1) {
     return (
