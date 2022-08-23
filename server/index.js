@@ -2,8 +2,12 @@
 
 const express = require("express");
 const morgan = require("morgan");
-const { getWeeklyTrendingBook } = require("./Routes/");
-
+const { getWeeklyTrendingBook } = require("./routes/books");
+const { createProfile } = require("./routes/profile/createProfile");
+const { signedInProfile } = require("./routes/profile/signedInProfile");
+const { getSingleUser } = require("./routes/findUsers/getSingleUser");
+const { getAllUsers } = require("./routes/findUsers/getAllUsers");
+const { createBookClub } = require("./routes/bookClubEnv/createBookClub");
 const app = express();
 const port = 8000;
 
@@ -12,27 +16,30 @@ app.use(express.json());
 app.use(express.static("public"));
 
 app.get("/weeklyTrendingBooks", getWeeklyTrendingBook);
-// // PROFILE:
-// app.post("/create-profile", createProfile);
-// app.get("/profile", getProfile);
+
+// PROFILE:
+app.post("/create-profile", createProfile);
+app.get("/signedInProfile/:id", signedInProfile);
 // app.patch("/update-profile", updateProfile);
-// app.delete("/delete-member/:member", deleteMember);
+// app.delete("/delete-profile/:id", deleteProfile);
 // app.post("/profile/add-favourite-books", addProfileFavouriteBooks);
 // app.get("/profile/current-favourite-books", getProfileFavouriteBooks);
 // app.post("/profile/add-reading-list", addProfileReadingList);
-// app.get("/profile/current- reading-list", getProfileFavouriteBooks);
+// app.get("/profile/current-reading-list", getProfileFavouriteBooks);
 
 // // FIND USER:
-// app.get("/user/:id", getSingleUser) - //Each user will have unique id
+app.get("/users", getAllUsers); //Each user will have unique id
+app.get("/user/:id", getSingleUser);
 //   // BOOKCLUB:
-//   app.get("/bookclubs", getBookClubs); //Bookclub you're currently in
-// app.post("/create-bookclub", createBookClub);
+app.post("/create-book-club", createBookClub);
+// app.get("/bookclubs", getBookClubs); //Bookclub you're currently in
 // app.get("/bookclub/:name", getSingleBookClub);
 // app.delete("/delete-bookclub/:name", deleteBookClub);
 
 // // BOOKCLUB MEMBERS:
+// app.post("/bookclub/members", getBookClubMembers);
 // app.get("/bookclub/members", getBookClubMembers);
-// app.patch("/update-bookclub-members", updateBookClubMembers); //(to join or remove member)
+// app.patch("/update-bookclub-members", updateBookClubMembers); //(remove member)
 
 // // BOOKCLUB READING LIST:
 // app.post("/bookClub/reading-list", addBookClubReadingList);
