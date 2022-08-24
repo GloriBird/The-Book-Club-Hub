@@ -17,8 +17,9 @@ const createBookClub = async (req, res) => {
 
   const getBookGroup = await bookClubData.collection("book-groups").find().toArray();
 
-  const { bookClubName } = req.body;
-  const groupName = bookClubName.trim();
+  const bookClubArr = [];
+  const { bookClubName, host, members } = req.body;
+  bookClubArr.push(req.body);
 
   req.body["_id"] = uuidv4();
   const newID = req.body["_id"];
@@ -26,26 +27,58 @@ const createBookClub = async (req, res) => {
   const dateCreated = moment().format("MMMM Do YYYY");
 
   const bookClubNameAvailable = getBookGroup.every((group) => {
-    if (group.bookClubName.trim() !== groupName) {
+    if (group.bookClubName !== bookClubName.trim()) {
       return true;
-    } else if (group.bookClubName.trim() === groupName) {
+    } else if (group.bookClubName === bookClubName.trim()) {
       return false;
     }
   });
 
-  //   console.log(`getBookGroup:`, getBookGroup);
+  const isBookClubNamed = bookClubName.trim().length > 0;
+  const isThereHost = host.trim().length > 0;
+  const isEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(members[0].email.trim());
 
-  if (bookClubNameAvailable === true && groupName.length > 0) {
+  const containEmptyValue = members.some((userInfo) => Object.values(userInfo).some((val) => val.trim().length === 0));
+
+  if (bookClubNameAvailable && isThereHost && isBookClubNamed && containEmptyValue === false && isEmail) {
+    const getTrimmedData = (obj) => {
+      if (obj && typeof obj === "object") {
+        Object.keys(obj).map((key) => {
+          if (typeof obj[key] === "object") {
+            getTrimmedData(obj[key]);
+          } else if (typeof obj[key] === "string") {
+            obj[key] = obj[key].trim();
+          }
+        });
+      }
+      return obj;
+    };
+
+    const trimmedMember = getTrimmedData(members);
+
     const newBookClub = await bookClubData
       .collection("book-groups")
-      .insertOne(Object.assign({ _id: newID }, { dateCreated: dateCreated }, { bookClubName: groupName }));
+      .insertOne(
+        Object.assign(
+          { _id: newID },
+          { dateCreated: dateCreated },
+          { bookClubName: bookClubName.trim(), host: host.trim(), members: trimmedMember },
+          { memberCount: 1 }
+        )
+      );
     res.status(201).json({ status: 201, bookClub: newBookClub, message: "Success, profile created" }), client.close();
-  } else if (bookClubNameAvailable === false || groupName.length < 1) {
+  } else if (
+    bookClubNameAvailable === false ||
+    isBookClubNamed === false ||
+    isThereHost === false ||
+    containEmptyValue === true ||
+    isEmail === false
+  ) {
     return (
       res.status(409).json({
         status: 409,
         bookClub: bookClubName,
-        message: `Either this book club name is already taken or the field is empty`,
+        message: `Either this book club name is already taken or there is an empty field`,
       }),
       client.close()
     );

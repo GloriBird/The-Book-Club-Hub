@@ -15,9 +15,10 @@ const createProfile = async (req, res) => {
   const bookClubData = client.db("Book-Club");
 
   const reqBodyArray = [];
-  const { username, firstName, lastName, email, favouriteBook, favGenres } = req.body;
-
+  Object.keys(req.body).forEach((keyValue) => (req.body[keyValue] = req.body[keyValue].trim()));
   reqBodyArray.push(req.body);
+
+  const { username, firstName, lastName, email, favouriteBook, favGenres } = req.body;
 
   const newID = username;
   const joinedDate = moment().format("MMMM Do YYYY");
@@ -43,8 +44,8 @@ const createProfile = async (req, res) => {
       .collection("Profiles")
       .insertOne(
         Object.assign(
-          { _id: newID },
-          { joinedDate: joinedDate },
+          { _id: newID.trim() },
+          { joinedDate: joinedDate.trim() },
           { username, firstName, lastName, email, favouriteBook, favGenres }
         )
       );
@@ -66,4 +67,16 @@ const createProfile = async (req, res) => {
 
 module.exports = {
   createProfile,
+};
+
+const getTrimmedData = (obj) => {
+  Object.keys(obj).some((key) => {
+    if (typeof obj[key] === "object") {
+      getTrimmedData(obj[key]);
+    } else if (typeof obj[key] === "string" && obj[key].trim().length < 1) {
+      console.log(true);
+    } else if (typeof obj[key] === "string" && obj[key].trim().length > 0) {
+      console.log(false);
+    }
+  });
 };
