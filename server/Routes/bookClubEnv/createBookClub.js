@@ -15,7 +15,7 @@ const createBookClub = async (req, res) => {
 
   const bookClubData = client.db("Book-Club");
 
-  const getBookGroup = await bookClubData.collection("book-groups").find().toArray();
+  const getBookGroup = await bookClubData.collection("Book-Group").find().toArray();
 
   const bookClubArr = [];
   const { bookClubName, host, members } = req.body;
@@ -36,7 +36,7 @@ const createBookClub = async (req, res) => {
 
   const isBookClubNamed = bookClubName.trim().length > 0;
   const isThereHost = host.trim().length > 0;
-  const isEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(members[0].email.trim());
+  const isEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(members[0].email.replace(/\s+/g, "").trim());
 
   const containEmptyValue = members.some((userInfo) => Object.values(userInfo).some((val) => val.trim().length === 0));
 
@@ -47,7 +47,7 @@ const createBookClub = async (req, res) => {
           if (typeof hostInfo[key] === "object") {
             getTrimmedData(hostInfo[key]);
           } else if (typeof hostInfo[key] === "string") {
-            hostInfo[key] = hostInfo[key].trim();
+            hostInfo[key] = hostInfo[key].replace(/\s+/g, " ").trim();
           }
         });
       }
@@ -56,16 +56,18 @@ const createBookClub = async (req, res) => {
 
     const trimmedMember = getTrimmedData(members);
 
-    const newBookClub = await bookClubData
-      .collection("book-groups")
-      .insertOne(
-        Object.assign(
-          { _id: newID },
-          { dateCreated: dateCreated },
-          { bookClubName: bookClubName.trim(), host: host.trim(), members: trimmedMember },
-          { memberCount: 1 }
-        )
-      );
+    const newBookClub = await bookClubData.collection("Book-Group").insertOne(
+      Object.assign(
+        { _id: newID },
+        { dateCreated: dateCreated },
+        {
+          bookClubName: bookClubName.replace(/\s+/g, " ").trim(),
+          host: host.replace(/\s+/g, " ").trim(),
+          members: trimmedMember,
+        },
+        { memberCount: members.length }
+      )
+    );
     res.status(201).json({ status: 201, bookClub: newBookClub, message: "Success, profile created" }), client.close();
   } else if (
     bookClubNameAvailable === false ||

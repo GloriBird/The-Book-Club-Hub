@@ -13,7 +13,7 @@ const getAllBookClubs = async (req, res) => {
 
   const bookClubData = client.db("Book-Club");
 
-  const totalBookClubs = await bookClubData.collection("book-groups").find().toArray();
+  const totalBookClubs = await bookClubData.collection("Book-Group").find().toArray();
 
   if (totalBookClubs.length > 0) {
     return (
