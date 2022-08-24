@@ -9,6 +9,8 @@ const { getSingleUser } = require("./routes/findUsers/getSingleUser");
 const { getAllUsers } = require("./routes/findUsers/getAllUsers");
 const { createBookClub } = require("./routes/bookClubEnv/createBookClub");
 const { getAllBookClubs } = require("./routes/bookClubEnv/getAllBookClubs");
+const { getSingleBookClub } = require("./routes/bookClubEnv/getSingleBookClub");
+const { deleteBookClub } = require("./routes/bookClubEnv/deleteBookClub");
 const app = express();
 const port = 8000;
 
@@ -34,9 +36,10 @@ app.get("/user/:id", getSingleUser);
 //   // BOOKCLUB:
 app.post("/create-book-club", createBookClub);
 app.get("/browse-book-clubs", getAllBookClubs);
-// app.get("/my-book-clubs", getMainUserBookClubs) //Bookclub you're currently in
-// app.get("/bookclub/:name", getSingleBookClub);
-// app.delete("/delete-bookclub/:name", deleteBookClub);
+// app.get("/my-book-clubs", getMainUserBookClubs) //Bookclub you're currently in, This can be done in the frontend, later on bookclub members are added on
+
+app.get("/bookclub/:name", getSingleBookClub);
+app.delete("/delete-book-club/:name", deleteBookClub);
 
 // // BOOKCLUB MEMBERS:
 // app.post("/bookclub/members", getBookClubMembers);
