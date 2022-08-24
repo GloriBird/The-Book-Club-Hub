@@ -41,17 +41,17 @@ const createBookClub = async (req, res) => {
   const containEmptyValue = members.some((userInfo) => Object.values(userInfo).some((val) => val.trim().length === 0));
 
   if (bookClubNameAvailable && isThereHost && isBookClubNamed && containEmptyValue === false && isEmail) {
-    const getTrimmedData = (obj) => {
-      if (obj && typeof obj === "object") {
-        Object.keys(obj).map((key) => {
-          if (typeof obj[key] === "object") {
-            getTrimmedData(obj[key]);
-          } else if (typeof obj[key] === "string") {
-            obj[key] = obj[key].trim();
+    const getTrimmedData = (hostInfo) => {
+      if (hostInfo && typeof hostInfo === "object") {
+        Object.keys(hostInfo).map((key) => {
+          if (typeof hostInfo[key] === "object") {
+            getTrimmedData(hostInfo[key]);
+          } else if (typeof hostInfo[key] === "string") {
+            hostInfo[key] = hostInfo[key].trim();
           }
         });
       }
-      return obj;
+      return hostInfo;
     };
 
     const trimmedMember = getTrimmedData(members);

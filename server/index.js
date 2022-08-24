@@ -34,8 +34,7 @@ app.get("/user/:id", getSingleUser);
 //   // BOOKCLUB:
 app.post("/create-book-club", createBookClub);
 app.get("/browse-book-clubs", getAllBookClubs);
-// app.get("/my-book-clubs", getMainUserBookClubs)
-// app.get("/bookclubs", getBookClubs); //Bookclub you're currently in
+// app.get("/my-book-clubs", getMainUserBookClubs) //Bookclub you're currently in
 // app.get("/bookclub/:name", getSingleBookClub);
 // app.delete("/delete-bookclub/:name", deleteBookClub);
 

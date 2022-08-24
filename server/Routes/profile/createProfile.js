@@ -2,6 +2,7 @@ const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const moment = require("moment");
 const { MONGO_URI } = process.env;
+const { v4: uuidv4 } = require("uuid");
 
 const options = {
   useNewUrlParser: true,
@@ -20,7 +21,8 @@ const createProfile = async (req, res) => {
 
   const { username, firstName, lastName, email, favouriteBook, favGenres } = req.body;
 
-  const newID = username;
+  req.body["_id"] = uuidv4();
+  const newID = req.body["_id"];
   const joinedDate = moment().format("MMMM Do YYYY");
 
   const isEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
