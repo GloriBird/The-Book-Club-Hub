@@ -25,7 +25,7 @@ const createProfile = async (req, res) => {
   const newID = req.body["_id"];
   const joinedDate = moment().format("MMMM Do YYYY");
 
-  const isEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+  const isEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.replace(/\s+/g, "").trim());
 
   const profileData = await bookClubData.collection("Profiles").find().toArray();
 
