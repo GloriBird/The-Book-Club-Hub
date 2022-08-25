@@ -19,9 +19,6 @@ const addBookClubMembers = async (req, res) => {
 
   const profile = await bookClubData.collection("Profiles").findOne({ _id: _id });
 
-  console.log(`getBookClub members:`, getBookClub.members);
-  console.log(`profile username:`, profile.username);
-
   let userAlreadyMember = getBookClub.members.some((match) => profile.username.includes(match.username));
 
   if (userAlreadyMember === false) {

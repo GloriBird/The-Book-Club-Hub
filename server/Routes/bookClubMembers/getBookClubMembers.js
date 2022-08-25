@@ -7,7 +7,7 @@ const options = {
   useUnifiedTopology: true,
 };
 
-const getAllBookClubs = async (req, res) => {
+const getBookClubMembers = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   await client.connect();
 
@@ -15,25 +15,31 @@ const getAllBookClubs = async (req, res) => {
 
   const totalBookClubs = await bookClubData.collection("Book-Group").find().toArray();
 
-  // const checkIt = totalBookClubs.filter((x) => {
-  //   if (x.bookClubName === "BookLovers") {
-  //     return true;
-  //   }
-  // });
+  const membersInClub = req.params.members;
 
-  // console.log(`get bookclub members:`, checkIt);
+  const getBookClub = totalBookClubs.filter((bookMembers) => {
+    if (bookMembers.bookClubName === membersInClub) {
+      return true;
+    } else {
+      return false;
+    }
+  });
 
-  if (totalBookClubs.length > 0) {
+  if (getBookClub.length > 0) {
     return (
-      res.status(200).json({ status: 200, BookClubs: totalBookClubs, message: "Success, book clubs retrieved" }),
+      res.status(200).json({
+        status: 200,
+        bookClubMembers: getBookClub[0].members,
+        message: "Success, book clubs retrieved",
+      }),
       client.close()
     );
   } else {
     return (
       res.status(404).json({
         status: 404,
-        BookClubs: totalBookClubs,
-        Message: "No books clubs in data",
+        bookClubMembers: membersInClub,
+        Message: "This book club does not exists",
       }),
       client.close()
     );
@@ -41,5 +47,5 @@ const getAllBookClubs = async (req, res) => {
 };
 
 module.exports = {
-  getAllBookClubs,
+  getBookClubMembers,
 };
