@@ -2,7 +2,7 @@
 
 const express = require("express");
 const morgan = require("morgan");
-const { getWeeklyTrendingBook } = require("./routes/books");
+const { getWeeklyTrendingBook } = require("./routes/getWeeklyTrendingBook");
 const { createProfile } = require("./routes/profile/createProfile");
 const { signedInProfile } = require("./routes/profile/signedInProfile");
 const { getSingleUser } = require("./routes/findUsers/getSingleUser");
@@ -11,6 +11,8 @@ const { createBookClub } = require("./routes/bookClubEnv/createBookClub");
 const { getAllBookClubs } = require("./routes/bookClubEnv/getAllBookClubs");
 const { getSingleBookClub } = require("./routes/bookClubEnv/getSingleBookClub");
 const { deleteBookClub } = require("./routes/bookClubEnv/deleteBookClub");
+const { addBookClubMembers } = require("./routes/bookClubMembers/addBookClubMembers");
+
 const app = express();
 const port = 8000;
 
@@ -23,6 +25,7 @@ app.get("/weeklyTrendingBooks", getWeeklyTrendingBook);
 // PROFILE:
 app.post("/create-profile", createProfile);
 app.get("/signedInProfile/:id", signedInProfile);
+
 // app.patch("/update-profile", updateProfile);
 // app.delete("/delete-profile/:id", deleteProfile);
 // app.post("/profile/add-favourite-books", addProfileFavouriteBooks);
@@ -37,12 +40,11 @@ app.get("/user/:id", getSingleUser);
 app.post("/create-book-club", createBookClub);
 app.get("/browse-book-clubs", getAllBookClubs);
 // app.get("/my-book-clubs", getMainUserBookClubs) //Bookclub you're currently in, This can be done in the frontend, later on bookclub members are added on
-
-app.get("/bookclub/:name", getSingleBookClub);
+app.get("/book-club/:name", getSingleBookClub);
 app.delete("/delete-book-club/:name", deleteBookClub);
 
 // // BOOKCLUB MEMBERS:
-// app.post("/bookclub/members", getBookClubMembers);
+app.patch("/add-member", addBookClubMembers);
 // app.get("/bookclub/members", getBookClubMembers);
 // app.patch("/update-bookclub-members", updateBookClubMembers); //(remove member)
 
