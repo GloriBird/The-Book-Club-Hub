@@ -27,12 +27,14 @@ const createBookClub = async (req, res) => {
   const dateCreated = moment().format("MMMM Do YYYY");
 
   const bookClubNameAvailable = getBookGroup.every((group) => {
-    if (group.bookClubName !== bookClubName.trim()) {
+    if (group.bookClubName.replace(/\s+/g, "").trim() !== bookClubName.replace(/\s+/g, "").trim()) {
       return true;
     } else if (group.bookClubName === bookClubName.trim()) {
       return false;
     }
   });
+
+  console.log(`bookClubNameAvailable:`, bookClubNameAvailable);
 
   const isBookClubNamed = bookClubName.trim().length > 0;
   const isThereHost = host.trim().length > 0;
