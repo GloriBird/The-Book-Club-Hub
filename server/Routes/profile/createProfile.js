@@ -42,15 +42,20 @@ const createProfile = async (req, res) => {
   );
 
   if (isProfileNew === true && containEmptyValue === false && isEmail === true) {
-    const newProfile = await bookClubData
-      .collection("Profiles")
-      .insertOne(
-        Object.assign(
-          { _id: newID.trim() },
-          { joinedDate: joinedDate.trim() },
-          { username, firstName, lastName, email, favouriteBook, favGenres }
-        )
-      );
+    const newProfile = await bookClubData.collection("Profiles").insertOne(
+      Object.assign(
+        { _id: newID.trim() },
+        { joinedDate: joinedDate.trim() },
+        {
+          username: username.replace(/\s+/g, "").trim(),
+          firstName: firstName.replace(/\s+/g, " ").trim(),
+          lastName: lastName.replace(/\s+/g, " ").trim(),
+          email: email.replace(/\s+/g, " ").trim(),
+          favouriteBook: favouriteBook.replace(/\s+/g, " ").trim(),
+          favGenres: favGenres.replace(/\s+/g, " ").trim(),
+        }
+      )
+    );
 
     return (
       res.status(201).json({ status: 201, profile: newProfile, message: "Success, profile created" }), client.close()
