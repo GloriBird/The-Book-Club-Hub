@@ -1,3 +1,4 @@
+const e = require("express");
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const { MONGO_URI } = process.env;
@@ -18,52 +19,74 @@ const updateBookClub = async (req, res) => {
 
   const filterBookClubs = totalBookClubs.filter((group) => group.bookClubName === bookClubName);
 
+  const idxOfMemberToRemove =
+    members[0] !== undefined
+      ? filterBookClubs[0]?.members.findIndex((object) => {
+          if (filterBookClubs[0]?.host !== members[0]?.username) {
+            return object?._id === members[0]?._id;
+          } else {
+            return undefined;
+          }
+        })
+      : undefined;
+
   const bookClubNaming = filterBookClubs.map((obj) => {
-    const updateBookClubName = Object.assign({}, obj);
-    if (obj.bookClubName !== newBookClubName && newBookClubName.trim().length > 0) {
-      updateBookClubName.bookClubName = newBookClubName.replace(/\s+/g, " ").trim();
+    let updateBookClubName;
+    if (obj.bookClubName !== newBookClubName && newBookClubName?.trim().length > 0) {
+      updateBookClubName = newBookClubName?.replace(/\s+/g, " ").trim();
       return updateBookClubName;
-    } else if (obj.bookClubName === newBookClubName || newBookClubName.trim().length < 1) {
-      return filterBookClubs;
+    } else if (obj?.bookClubName === newBookClubName || newBookClubName?.trim().length < 1) {
+      return obj?.bookClubName;
     }
   });
 
-  const newHostIsMember = filterBookClubs[0].members.some((x) => newHost.trim().includes(x.username));
-  console.log(`newHostIsMember:`, newHostIsMember);
+  const newHostIsMember = filterBookClubs[0]?.members.some((x) => newHost.trim().includes(x?.username));
 
-  // const hostOfBookClub = filterBookClubs.map((obj) => {
-  //   const updateHost = Object.assign({}, obj);
-  //   if (obj.host !== newHost) {
-  //     updateHost.host = newHost.replace(/\s+/g, " ").trim();
-  //     return updateHost;
-  //   } else if (obj.host === newHost || newBookClubName.trim().length < 1) {
-  //     return filterBookClubs;
-  //   }
-  // });
+  const hostOfBookClub = filterBookClubs.map((obj) => {
+    if (obj?.host !== newHost && newHostIsMember === true) {
+      return newHost?.replace(/\s+/g, " ").trim();
+    } else if (newHostIsMember === false || obj[0]?.host === newHost) {
+      return obj?.host;
+    }
+  });
 
-  // const hostOfBookClub = filterBookClubs.map((obj) => {
-  //   const updateHost = Object.assign({}, obj);
-  //   if (obj.host !== newHost) {
-  //     obj.members.some((member) => {
-  //       if (newHost.includes(member.username)) {
-  //         updateHost.host = newHost.replace(/\s+/g, " ").trim();
-  //       } else {
-  //         return filterBookClubs;
-  //       }
-  //     });
-  //   } else if (obj.host === newHost || newBookClubName.trim().length < 1) {
-  //     return filterBookClubs;
-  //   }
-  // });
+  if (newBookClubName?.length > 0 || newHost?.length > 0 || members?.length > 0) {
+    const removedMember = await bookClubData.collection("Book-Group").updateOne(
+      { _id: filterBookClubs[0]?._id },
+      {
+        $set: { bookClubName: bookClubNaming?.toString(), host: hostOfBookClub[0]?.toString() },
+        $pull: { members: filterBookClubs[0]?.members[idxOfMemberToRemove] },
+      }
+    );
 
-  // console.log(`filterBookClubs:`, filterBookClubs[0].members.includes(newHost));
-  // console.log(`hostOfBookClub:`, hostOfBookClub);
+    await bookClubData
+      .collection("Book-Group")
+      .updateOne({ _id: filterBookClubs[0]?._id }, { $set: { memberCount: filterBookClubs[0]?.members.length - 1 } });
 
-  // console.log(`New Book Club Name:`, newBookClubName);
-  // console.log(`New Host:`, hostOfBookClub);
-
-  // console.log(`New Book Club Name:`, bookClubNaming);
-  //if it's the main host, then update.
+    return (
+      res.status(201).json({
+        status: 201,
+        memberRemoved: removedMember,
+        Message: `Success, update has been made`,
+      }),
+      client.close()
+    );
+  } else if (
+    filterBookClubs[0]?.bookClubName === bookClubName &&
+    filterBookClubs[0].host === newHost &&
+    members?.length < 1
+  ) {
+    return (
+      res.status(409).json({
+        status: 409,
+        memberRemoved: { newBookClubName, newHost, members },
+        newHost,
+        members,
+        message: `No changes were made`,
+      }),
+      client.close()
+    );
+  }
 };
 
 module.exports = {

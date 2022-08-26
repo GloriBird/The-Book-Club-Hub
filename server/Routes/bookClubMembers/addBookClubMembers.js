@@ -17,10 +17,10 @@ const addBookClubMembers = async (req, res) => {
 
   const getBookClub = await bookClubData.collection("Book-Group").findOne({ bookClubName: bookClubName });
 
-  const profile = await bookClubData.collection("Profiles").findOne({ username: username });
+  const profile = await bookClubData.collection("Profiles").findOne({ _id: _id });
 
   const userAlreadyMember =
-    profile !== null ? getBookClub.members.some((match) => profile.username.includes(match.username)) : null;
+    profile !== null ? getBookClub?.members.some((match) => profile?.username.includes(match?.username)) : null;
 
   if (userAlreadyMember === false) {
     const newMemberAdded = await bookClubData.collection("Book-Group").updateOne(
