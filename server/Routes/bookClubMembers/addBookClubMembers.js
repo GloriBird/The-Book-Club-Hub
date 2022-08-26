@@ -17,12 +17,13 @@ const addBookClubMembers = async (req, res) => {
 
   const getBookClub = await bookClubData.collection("Book-Group").findOne({ bookClubName: bookClubName });
 
+  console.log(`getBookClub:`, getBookClub);
   const profile = await bookClubData.collection("Profiles").findOne({ _id: _id });
 
   const userAlreadyMember =
     profile !== null ? getBookClub?.members.some((match) => profile?.username.includes(match?.username)) : null;
 
-  if (userAlreadyMember === false) {
+  if (userAlreadyMember === false || getBookClub !== null) {
     const newMemberAdded = await bookClubData.collection("Book-Group").updateOne(
       { _id: getBookClub._id },
       {
@@ -42,12 +43,12 @@ const addBookClubMembers = async (req, res) => {
       }),
       client.close()
     );
-  } else if (userAlreadyMember === true) {
+  } else if (userAlreadyMember === true || getBookClub === null) {
     return (
       res.status(409).json({
         status: 409,
         addedMember: username,
-        message: `This member is already in the bookclub`,
+        message: `Either this member is already in the bookclub or book club does not exists`,
       }),
       client.close()
     );
