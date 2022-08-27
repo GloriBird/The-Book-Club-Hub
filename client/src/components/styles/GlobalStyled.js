@@ -2,16 +2,15 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
 
-/* :root {
+:root {
     --color-cadmium-red: #D80026;
     --color-alabama-crimson: #AA001E;
     --color-orange: #F79D00;
     --color-selective-yellow: #FDBB01;
     --color-desert-sand: #E3C4A6;
-    --font-heading: 'Permanent Marker', Arial, Helvetica, sans-serif;
+    --font-family: 'Permanent Marker', Arial, Helvetica, sans-serif;
     --font-body: 'Kosugi', Arial, Helvetica, sans-serif;
-    --padding-page: 24px;
-  } */
+  }
 
 
 *, *::before, *::after {
@@ -55,6 +54,8 @@ input, button, textarea, select {
   8. Avoid text overflows
 */
 p, h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family);
+
   overflow-wrap: break-word;
 }
 /*

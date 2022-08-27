@@ -10,8 +10,6 @@ const options = {
   useUnifiedTopology: true,
 };
 
-//https://covers.openlibrary.org/b/olid/OL36102660M-M.jpg
-
 const batchImport = async () => {
   const client = new MongoClient(MONGO_URI, options);
 

@@ -2,7 +2,7 @@
 
 // import { GlobalContext } from "../../context/GlobalContext";
 
-// const App = () => {
+// const CarouselTrendingBooks = () => {
 //   const { trendingBooks } = useContext(GlobalContext);
 
 //   return (
@@ -16,4 +16,4 @@
 //   );
 // };
 
-// export default App;
+// export default CarouselTrendingBooks;
