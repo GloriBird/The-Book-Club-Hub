@@ -31,10 +31,14 @@ const NavMenu = () => {
           </StyledNavLink>
         </li>
         <li>
-          <h3>Login</h3>
+          <StyledNavLink to="/Login">
+            <h3>Login</h3>
+          </StyledNavLink>
         </li>
         <li>
-          <h3>Sign-Up</h3>
+          <StyledNavLink to="/SignUp">
+            <h3>Sign Up</h3>
+          </StyledNavLink>
         </li>
         {/* {isSignedIn ? (
         <>
