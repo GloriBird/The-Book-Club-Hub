@@ -11,7 +11,7 @@ const updateBookClub = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   await client.connect();
 
-  const { bookClubName, newBookClubName, host, newHost, members } = req.body;
+  const { bookClubName, newBookClubName, newHost, members } = req.body;
 
   const bookClubData = client.db("Book-Club");
   const totalBookClubs = await bookClubData.collection("Book-Group").find().toArray();

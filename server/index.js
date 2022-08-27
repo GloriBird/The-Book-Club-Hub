@@ -16,6 +16,7 @@ const { getBookClubMembers } = require("./routes/bookClubMembers/getBookClubMemb
 const { updateBookClub } = require("./routes/bookClubMembers/updateBookClub");
 const { addBookClubReadingList } = require("./routes/bookClubReadingList/addBookClubReadingList");
 const { getBookClubReadingList } = require("./routes/bookClubReadingList/getBookClubReadingList");
+const { removeBookInReadingList } = require("./routes/bookClubReadingList/removeBookInReadingList");
 
 const app = express();
 const port = 8000;
@@ -55,7 +56,7 @@ app.patch("/update-bookclub", updateBookClub); //(remove member)
 // // BOOKCLUB READING LIST:
 app.post("/bookClub/reading-list", addBookClubReadingList);
 app.get("/bookClub/:groupName/reading-list", getBookClubReadingList);
-// app.patch("/update-bookClub-reading", updateBookClubReadingList);
+app.patch("/remove-book-reading-list", removeBookInReadingList);
 // app.delete("/delete-member/:member", deleteMember);
 
 // // CHAT:
