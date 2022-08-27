@@ -15,14 +15,6 @@ const getAllBookClubs = async (req, res) => {
 
   const totalBookClubs = await bookClubData.collection("Book-Group").find().toArray();
 
-  // const checkIt = totalBookClubs.filter((x) => {
-  //   if (x.bookClubName === "BookLovers") {
-  //     return true;
-  //   }
-  // });
-
-  // console.log(`get bookclub members:`, checkIt);
-
   if (totalBookClubs.length > 0) {
     return (
       res.status(200).json({ status: 200, BookClubs: totalBookClubs, message: "Success, book clubs retrieved" }),
