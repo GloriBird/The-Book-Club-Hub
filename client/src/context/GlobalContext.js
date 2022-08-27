@@ -5,7 +5,7 @@ export const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
   const [trendingBooks, setTrendingBooks] = useState();
-  const [, setIsLoading] = useState();
+  const [setIsLoading] = useState();
 
   useEffect(() => {
     fetch("/weeklyTrendingBooks")
