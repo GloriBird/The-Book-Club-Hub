@@ -17,6 +17,7 @@ const { updateBookClub } = require("./routes/bookClubMembers/updateBookClub");
 const { addBookClubReadingList } = require("./routes/bookClubReadingList/addBookClubReadingList");
 const { getBookClubReadingList } = require("./routes/bookClubReadingList/getBookClubReadingList");
 const { removeBookInReadingList } = require("./routes/bookClubReadingList/removeBookInReadingList");
+const { deleteProfile } = require("./routes/profile/deleteProfile");
 
 const app = express();
 const port = 8000;
@@ -30,6 +31,7 @@ app.get("/weeklyTrendingBooks", getWeeklyTrendingBook);
 // PROFILE:
 app.post("/create-profile", createProfile);
 app.get("/signedInProfile/:id", signedInProfile);
+app.delete("/delete-profile/:id", deleteProfile);
 
 // app.patch("/update-profile", updateProfile);
 // app.delete("/delete-profile/:id", deleteProfile);
