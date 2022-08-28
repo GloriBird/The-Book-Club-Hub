@@ -13,7 +13,7 @@ const getAllUsers = async (req, res) => {
 
   const bookClubData = client.db("Book-Club");
 
-  const getAllAccounts = await bookClubData.collection("Profiles").find().toArray();
+  const getAllAccounts = await bookClubData.collection("Users").find().toArray();
 
   if (getAllAccounts.length > 0) {
     return res.status(200).json({ status: 200, account: getAllAccounts, message: "Success" }), client.close();

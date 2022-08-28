@@ -15,7 +15,7 @@ const signedInProfile = async (req, res) => {
 
   const signedInUser = req.params.id;
 
-  const accountFound = await bookClubData.collection("Profiles").findOne({ _id: signedInUser });
+  const accountFound = await bookClubData.collection("Users").findOne({ _id: signedInUser });
 
   accountFound
     ? (res.status(200).json({ status: 200, account: accountFound, message: "Success, user logged in" }), client.close())

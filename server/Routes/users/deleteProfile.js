@@ -14,12 +14,12 @@ const deleteProfile = async (req, res) => {
   const bookClubData = client.db("Book-Club");
   const profileID = req.params.id;
 
-  const accountToRemove = await bookClubData.collection("Profiles").findOne({ _id: profileID });
+  const accountToRemove = await bookClubData.collection("Users").findOne({ _id: profileID });
 
   if (Object.values(accountToRemove).length > 0) {
     bookClubData.collection("DeletedProfiles").insertOne(accountToRemove);
 
-    const deletedReservation = await bookClubData.collection("Profiles").deleteOne({ _id: profileID });
+    const deletedReservation = await bookClubData.collection("Users").deleteOne({ _id: profileID });
     return (
       res.status(204).json({ status: 204, account: deletedReservation, message: "Success, user logged in" }),
       client.close()
