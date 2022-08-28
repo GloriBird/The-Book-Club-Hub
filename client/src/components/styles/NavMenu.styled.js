@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 export const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: #2a1710;
+
   /* font-size: 2rem; */
 `;
 
@@ -25,7 +26,6 @@ export const Menu = styled.nav`
 
       &:hover {
         background-color: #f9ebc8;
-        /* padding: 3% 5%; */
       }
     }
   }
