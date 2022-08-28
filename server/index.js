@@ -3,8 +3,8 @@
 const express = require("express");
 const morgan = require("morgan");
 const { getWeeklyTrendingBook } = require("./routes/getWeeklyTrendingBook");
-const { createProfile } = require("./routes/profile/createProfile");
-const { signedInProfile } = require("./routes/profile/signedInProfile");
+const { createProfile } = require("./routes/users/createProfile");
+const { signedInProfile } = require("./routes/users/signedInProfile");
 const { getSingleUser } = require("./routes/findUsers/getSingleUser");
 const { getAllUsers } = require("./routes/findUsers/getAllUsers");
 const { createBookClub } = require("./routes/bookClubEnv/createBookClub");
@@ -17,7 +17,7 @@ const { updateBookClub } = require("./routes/bookClubMembers/updateBookClub");
 const { addBookClubReadingList } = require("./routes/bookClubReadingList/addBookClubReadingList");
 const { getBookClubReadingList } = require("./routes/bookClubReadingList/getBookClubReadingList");
 const { removeBookInReadingList } = require("./routes/bookClubReadingList/removeBookInReadingList");
-const { deleteProfile } = require("./routes/profile/deleteProfile");
+const { deleteProfile } = require("./routes/users/deleteProfile");
 
 const app = express();
 const port = 8000;

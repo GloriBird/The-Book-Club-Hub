@@ -27,7 +27,7 @@ const createProfile = async (req, res) => {
 
   const isEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.replace(/\s+/g, "").trim());
 
-  const profileData = await bookClubData.collection("Profiles").find().toArray();
+  const profileData = await bookClubData.collection("Users").find().toArray();
 
   const isProfileNew = profileData.every((user) => {
     if (user.username === username || user.email === email) {
@@ -42,7 +42,7 @@ const createProfile = async (req, res) => {
   );
 
   if (isProfileNew === true && containEmptyValue === false && isEmail === true) {
-    const newProfile = await bookClubData.collection("Profiles").insertOne(
+    const newProfile = await bookClubData.collection("Users").insertOne(
       Object.assign(
         { _id: newID.trim() },
         { joinedDate: joinedDate.trim() },
