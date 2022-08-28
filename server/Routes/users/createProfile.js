@@ -19,7 +19,7 @@ const createProfile = async (req, res) => {
   Object.keys(req.body).forEach((keyValue) => (req.body[keyValue] = req.body[keyValue].trim()));
   reqBodyArray.push(req.body);
 
-  const { username, firstName, lastName, email, favouriteBook, favGenres } = req.body;
+  const { username, email } = req.body;
 
   req.body["_id"] = uuidv4();
   const newID = req.body["_id"];
@@ -48,11 +48,7 @@ const createProfile = async (req, res) => {
         { joinedDate: joinedDate.trim() },
         {
           username: username.replace(/\s+/g, "").trim(),
-          firstName: firstName.replace(/\s+/g, " ").trim(),
-          lastName: lastName.replace(/\s+/g, " ").trim(),
-          email: email.replace(/\s+/g, " ").trim(),
-          favouriteBook: favouriteBook.replace(/\s+/g, " ").trim(),
-          favGenres: favGenres.replace(/\s+/g, " ").trim(),
+          email,
         }
       )
     );
