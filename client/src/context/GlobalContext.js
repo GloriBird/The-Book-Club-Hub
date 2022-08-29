@@ -1,11 +1,12 @@
 import React from "react";
 import { createContext, useState, useEffect } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
   const [trendingBooks, setTrendingBooks] = useState();
-  const [setIsLoading] = useState();
+  const [allUsers, setAllUsers] = useState();
 
   useEffect(() => {
     fetch("/weeklyTrendingBooks")
@@ -15,10 +16,19 @@ export const GlobalProvider = ({ children }) => {
       });
   }, []);
 
+  useEffect(() => {
+    fetch(`/users`)
+      .then((res) => res.json())
+      .then((listOfUser) => {
+        setAllUsers(listOfUser.account);
+      });
+  }, []);
+
   return (
     <GlobalContext.Provider
       value={{
         trendingBooks,
+        allUsers,
       }}
     >
       {children}

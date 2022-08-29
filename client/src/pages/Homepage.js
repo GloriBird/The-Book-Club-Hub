@@ -3,9 +3,28 @@ import { Container } from "./pageStyles/Homepage.styled";
 import { GlobalContext } from "../context/GlobalContext";
 import Carousel from "react-elastic-carousel";
 import styled from "styled-components";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const App = () => {
-  const { trendingBooks } = useContext(GlobalContext);
+  const { trendingBooks, allUsers } = useContext(GlobalContext);
+  const { user } = useAuth0();
+
+  console.log(`allUsers:`, allUsers);
+
+  const userInData = allUsers?.some((existingUser) => existingUser?.email.includes(user?.email));
+
+  useEffect(() => {
+    if (user !== undefined && userInData === false) {
+      const { email, nickname } = user;
+      let username = nickname;
+      const newData = { username, email };
+      fetch("/create-profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newData),
+      });
+    }
+  }, [user]);
 
   const breakPoints = [
     { width: 1, itemsToShow: 1 },
