@@ -5,32 +5,9 @@ const moment = require("moment");
 
 const Profile = () => {
   const { user, isAuthenticated } = useAuth0();
-  const { isNewUser, setIsNewUser } = useState("");
-  // const [isLoading, setIsLoading] = useState(false);
 
   console.log(`user`, user);
   const joinedDate = moment().format("MMMM Do YYYY");
-
-  const { email, nickname } = user;
-
-  // useEffect(() => {
-  //   const userData = { email, nickname };
-  //   fetch("/create-profile", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify(userData),
-  //   })
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw Error(`It's broken`);
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((result) => {
-  //       console.log(`result:`, result);
-  //       setIsNewUser(result);
-  //     });
-  // }, []);
 
   return (
     <Container>
@@ -40,12 +17,6 @@ const Profile = () => {
         <p>{user.nickname}</p>
         <p>{user.email}</p>
         <p>Joined on: {joinedDate}</p>
-
-        {/* {Object.keys(user).map((objKey, idx) => (
-          <li key={idx}>
-            {objKey}: {user[objKey]}
-          </li>
-        ))} */}
       </ul>
     </Container>
   );
