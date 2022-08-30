@@ -9,12 +9,10 @@ const App = () => {
   const { trendingBooks, allUsers } = useContext(GlobalContext);
   const { user } = useAuth0();
 
-  console.log(`allUsers:`, allUsers);
-
-  const userInData = allUsers?.some((existingUser) => existingUser?.email.includes(user?.email));
+  // const userInData = allUsers?.some((existingUser) => existingUser?.email.includes(user?.email));
 
   useEffect(() => {
-    if (user !== undefined && userInData === false) {
+    if (user !== undefined) {
       const { email, nickname } = user;
       let username = nickname;
       const newData = { username, email };
