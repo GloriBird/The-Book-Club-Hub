@@ -24,6 +24,14 @@ export const GlobalProvider = ({ children }) => {
       });
   }, []);
 
+  useEffect(() => {
+    fetch(`/users`)
+      .then((res) => res.json())
+      .then((listOfUser) => {
+        setAllUsers(listOfUser.account);
+      });
+  }, []);
+
   return (
     <GlobalContext.Provider
       value={{
