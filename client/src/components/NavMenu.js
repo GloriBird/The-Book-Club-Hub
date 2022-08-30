@@ -2,12 +2,14 @@ import { StyledNavLink } from "./styles/NavMenu.styled";
 import { Menu } from "./styles/NavMenu.styled";
 import LoginButton from "./LoginButton";
 import SignOutButton from "./SignOutButton";
+import SignUpButton from "./SignUpButton";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const NavMenu = () => {
   const { user, isAuthenticated } = useAuth0();
   const { isLoading, error } = useAuth0();
 
+  console.log(`user:`, user);
   return (
     <Menu>
       <ol>
@@ -46,6 +48,7 @@ const NavMenu = () => {
         {!error && isLoading && <p>Loading...</p>}
         {!error && !isLoading && (
           <>
+            <SignUpButton />
             <LoginButton />
             <SignOutButton />
           </>
