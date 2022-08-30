@@ -26,11 +26,14 @@ const Modal = ({ modalStatus, setmodalStatus }) => {
     }
   }, [modalStatus]);
 
+  console.log(`user:`, user);
   const createBookClub = (e) => {
     e.preventDefault();
     setIsLoading(true);
     const userInData = allUsers?.filter((existingUser) => existingUser?.email.includes(user?.email));
-    let host = userInData[0]?.username;
+    let host = user.nickname;
+
+    // let host = userInData[0]?.username;
     let members = userInData;
     const bookClubCreated = { bookClubName, host, members };
     fetch("/create-book-club", {

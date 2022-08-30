@@ -38,13 +38,12 @@ const createBookClub = async (req, res) => {
 
   const isBookClubNamed = bookClubName.trim().length > 0;
   const isThereHost = host.trim().length > 0;
-  const isEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(members[0].email.replace(/\s+/g, "").trim());
 
   const containEmptyValue = members.some((userInfo) => Object.values(userInfo).some((val) => val.trim().length === 0));
 
   const ReadingList = [];
 
-  if (bookClubNameAvailable && isThereHost && isBookClubNamed && containEmptyValue === false && isEmail) {
+  if (bookClubNameAvailable && isThereHost && isBookClubNamed && containEmptyValue === false) {
     const getTrimmedData = (hostInfo) => {
       if (hostInfo && typeof hostInfo === "object") {
         Object.keys(hostInfo).map((key) => {
