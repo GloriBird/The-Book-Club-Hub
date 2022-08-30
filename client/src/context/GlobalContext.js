@@ -6,6 +6,7 @@ export const GlobalContext = createContext();
 export const GlobalProvider = ({ children }) => {
   const [trendingBooks, setTrendingBooks] = useState();
   const [allUsers, setAllUsers] = useState();
+  const [allBookClub, setAllBookClubs] = useState();
 
   useEffect(() => {
     fetch("/weeklyTrendingBooks")
@@ -23,11 +24,20 @@ export const GlobalProvider = ({ children }) => {
       });
   }, []);
 
+  useEffect(() => {
+    fetch(`/browse-book-clubs`)
+      .then((res) => res.json())
+      .then((data) => {
+        setAllBookClubs(data.BookClubs);
+      });
+  }, []);
+
   return (
     <GlobalContext.Provider
       value={{
         trendingBooks,
         allUsers,
+        allBookClub,
       }}
     >
       {children}

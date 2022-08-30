@@ -108,7 +108,6 @@ const Wrapper = styled.div`
   padding: 25px;
   display: inline-block;
   justify-content: space-evenly;
-  border: 5px solid green;
   text-align: center;
   margin-top: 10px;
   z-index: 10;
@@ -120,6 +119,7 @@ const ModalContent = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+
   height: 100%;
 `;
 
@@ -136,10 +136,13 @@ const CloseModal = styled(IoClose)`
 
 const BookForm = styled.form`
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   width: 100%;
+
   input[type="text"] {
-    margin-top: 10px;
+    margin: 10px 0;
     width: 300px;
     text-align: center;
   }
@@ -147,10 +150,14 @@ const BookForm = styled.form`
 
 const CreateButton = styled.button`
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   background-color: green;
   border: none;
   padding: 2% 7%;
+  margin-top: 40px;
+  width: 100px;
   background-color: var(--color-pale-forest-green);
   opacity: ${(props) => (props.changeOpacity ? 1 : 0.3)};
   cursor: ${(props) => (props.changeOpacity ? "pointer" : "default")};
