@@ -9,7 +9,22 @@ const App = () => {
   const { trendingBooks, allUsers } = useContext(GlobalContext);
   const { user } = useAuth0();
 
-  // const userInData = allUsers?.some((existingUser) => existingUser?.email.includes(user?.email));
+  // useEffect(() => {
+  //   const getUsers = async () => {
+  //     const userInData = await allUsers?.some((existingUser) => existingUser?.email.includes(user?.email));
+  //     if (userInData === false && user !== undefined) {
+  //       const { email, nickname } = user;
+  //       let username = nickname;
+  //       const newData = { username, email };
+  //       fetch("/create-profile", {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify(newData),
+  //       });
+  //     }
+  //   };
+  //   getUsers().catch(console.error);
+  // }, [user]);
 
   useEffect(() => {
     if (user !== undefined) {

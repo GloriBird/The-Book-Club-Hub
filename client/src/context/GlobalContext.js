@@ -1,6 +1,5 @@
 import React from "react";
 import { createContext, useState, useEffect } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
 
 export const GlobalContext = createContext();
 
@@ -13,14 +12,6 @@ export const GlobalProvider = ({ children }) => {
       .then((res) => res.json())
       .then((weeksTrendingBooks) => {
         setTrendingBooks(weeksTrendingBooks?.data);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch(`/users`)
-      .then((res) => res.json())
-      .then((listOfUser) => {
-        setAllUsers(listOfUser.account);
       });
   }, []);
 

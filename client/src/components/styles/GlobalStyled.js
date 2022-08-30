@@ -3,11 +3,10 @@ import { createGlobalStyle } from "styled-components";
 const GlobalStyles = createGlobalStyle`
 
 :root {
-    --color-cadmium-red: #D80026;
-    --color-alabama-crimson: #AA001E;
-    --color-orange: #F79D00;
-    --color-selective-yellow: #FDBB01;
-    --color-desert-sand: #E3C4A6;
+    --color-pale-gold: #F9EBC8;
+    --color-pale-cream: #FEFBE7;
+    --color-pale-green: #DAE5D0;
+    --color-pale-forest-green: #A0BCC2;
     --font-family: 'Permanent Marker', Arial, Helvetica, sans-serif;
     --font-body: 'Kosugi', Arial, Helvetica, sans-serif;
   }
