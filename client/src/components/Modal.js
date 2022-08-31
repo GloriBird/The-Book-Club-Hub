@@ -7,7 +7,7 @@ import { GlobalContext } from "../context/GlobalContext";
 const Modal = ({ modalStatus, setmodalStatus }) => {
   const [bookClubName, setBookClubName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  const [currentUser, setCurrentUser] = useState();
   const { allUsers } = useContext(GlobalContext);
 
   const modalRef = useRef();
@@ -26,20 +26,18 @@ const Modal = ({ modalStatus, setmodalStatus }) => {
     }
   }, [modalStatus]);
 
-  console.log(`user:`, user);
-  const createBookClub = (e) => {
+  const userInData = allUsers?.filter((existingUser) => existingUser?.email.includes(user?.email));
+
+  const createBookClub = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    const userInData = allUsers?.filter((existingUser) => existingUser?.email.includes(user?.email));
-    let host = user.nickname;
-
-    // let host = userInData[0]?.username;
-    let members = userInData;
-    const bookClubCreated = { bookClubName, host, members };
-    fetch("/create-book-club", {
+    let host = await userInData[0]?.username;
+    const members = await userInData;
+    // const bookClubCreated = { bookClubName, host, members };
+    await fetch("/create-book-club", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(bookClubCreated),
+      body: JSON.stringify({ bookClubName, host, members }),
     }).then(() => {
       setIsLoading(false);
     });

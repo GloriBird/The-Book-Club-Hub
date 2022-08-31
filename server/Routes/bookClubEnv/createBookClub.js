@@ -37,7 +37,7 @@ const createBookClub = async (req, res) => {
   console.log(`bookClubNameAvailable:`, bookClubNameAvailable);
 
   const isBookClubNamed = bookClubName.trim().length > 0;
-  const isThereHost = host.trim().length > 0;
+  const isThereHost = host?.trim().length > 0;
 
   const containEmptyValue = members.some((userInfo) => Object.values(userInfo).some((val) => val.trim().length === 0));
 

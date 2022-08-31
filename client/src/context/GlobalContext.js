@@ -1,6 +1,4 @@
-import React from "react";
-import { createContext, useState, useEffect } from "react";
-
+import React, { createContext, useState, useEffect, useContext } from "react";
 export const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
@@ -28,7 +26,8 @@ export const GlobalProvider = ({ children }) => {
     fetch(`/browse-book-clubs`)
       .then((res) => res.json())
       .then((data) => {
-        setAllBookClubs(data.BookClubs);
+        console.log(`browse-book-clubs:`, data);
+        return setAllBookClubs(data.BookClubs);
       });
   }, []);
 

@@ -1,5 +1,5 @@
 import GlobalStyles from "./styles/GlobalStyled";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import NavMenu from "./NavMenu";
 import Homepage from "../pages/Homepage";
 import MyBookClubs from "../pages/MyBookClubs";
@@ -17,7 +17,8 @@ const App = () => {
       <BrowserRouter>
         <NavMenu />
         <Routes>
-          <Route exact path="/" element={<Homepage />}></Route>
+          <Route reloadDocument path="/" element={<Homepage />}></Route>
+
           <Route exact path="/BrowseBooks" element={<BrowseBooks />}></Route>
           <Route exact path="/BrowseBookClubs" element={<BrowseBookClubs />}></Route>
           <Route exact path="/MyBookClubs" element={<MyBookClubs />}></Route>

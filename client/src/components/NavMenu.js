@@ -6,8 +6,7 @@ import SignUpButton from "./SignUpButton";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const NavMenu = () => {
-  const { user, isAuthenticated } = useAuth0();
-  const { isLoading, error } = useAuth0();
+  const { user, isAuthenticated, isLoading, error } = useAuth0();
 
   console.log(`user:`, user);
   return (
@@ -33,7 +32,7 @@ const NavMenu = () => {
         {isAuthenticated && (
           <>
             <li>
-              <StyledNavLink to="/MyBookClubs">
+              <StyledNavLink reloadDocument to="/MyBookClubs">
                 <h3>My Book Club(s)</h3>
               </StyledNavLink>
             </li>
