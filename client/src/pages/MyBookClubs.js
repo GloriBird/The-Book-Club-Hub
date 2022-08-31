@@ -1,18 +1,13 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Container, CreateClubButton } from "./pageStyles/MyBookClubs.styled";
-import { useAuth0 } from "@auth0/auth0-react";
 import Modal from "../components/Modal";
-import { GlobalContext } from "../context/GlobalContext";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const MyBookClubs = () => {
-  const { user } = useAuth0();
-  const { allUsers, allBookClub } = useContext(GlobalContext);
-
   const [toggleModal, setToggleModal] = useState(false);
+  // const { user, allUsers } = useAuth0();
 
-  console.log(`user:`, user);
-  console.log(`allBookClub:`, allBookClub);
-  const userInData = allUsers?.filter((existingUser) => existingUser?.email.includes(user?.username));
+  // console.log(`userData from My Book Club:`, data);
 
   return (
     <Container>

@@ -7,24 +7,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const App = () => {
   const { trendingBooks, allUsers } = useContext(GlobalContext);
-  const { user } = useAuth0();
+  const [currentUser, setCurrentUser] = useState();
 
-  // useEffect(() => {
-  //   const getUsers = async () => {
-  //     const userInData = await allUsers?.some((existingUser) => existingUser?.email.includes(user?.email));
-  //     if (userInData === false && user !== undefined) {
-  //       const { email, nickname } = user;
-  //       let username = nickname;
-  //       const newData = { username, email };
-  //       fetch("/create-profile", {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify(newData),
-  //       });
-  //     }
-  //   };
-  //   getUsers().catch(console.error);
-  // }, [user]);
+  const { user } = useAuth0();
 
   useEffect(() => {
     if (user !== undefined) {
@@ -35,6 +20,8 @@ const App = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newData),
+      }).then(() => {
+        setCurrentUser(newData);
       });
     }
   }, [user]);
