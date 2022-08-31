@@ -3,12 +3,17 @@ import styled from "styled-components";
 import { IoClose } from "react-icons/io5";
 import { useAuth0 } from "@auth0/auth0-react";
 import { GlobalContext } from "../context/GlobalContext";
+import { CurrentUserContext } from "../context/CurrentUserContext";
 
 const Modal = ({ modalStatus, setmodalStatus }) => {
   const [bookClubName, setBookClubName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [currentUser, setCurrentUser] = useState();
+  const userData = useContext(CurrentUserContext);
   const { allUsers } = useContext(GlobalContext);
+
+  const {
+    actions: { receiveCurrentUser },
+  } = userData;
 
   const modalRef = useRef();
   const { user } = useAuth0();
@@ -33,7 +38,7 @@ const Modal = ({ modalStatus, setmodalStatus }) => {
     setIsLoading(true);
     let host = await userInData[0]?.username;
     const members = await userInData;
-    // const bookClubCreated = { bookClubName, host, members };
+    receiveCurrentUser(members[0]);
     await fetch("/create-book-club", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

@@ -8,7 +8,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 const NavMenu = () => {
   const { user, isAuthenticated, isLoading, error } = useAuth0();
 
-  console.log(`user:`, user);
   return (
     <Menu>
       <ol>

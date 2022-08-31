@@ -26,7 +26,7 @@ export const GlobalProvider = ({ children }) => {
     fetch(`/browse-book-clubs`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(`browse-book-clubs:`, data);
+        // console.log(`browse-book-clubs:`, data);
         return setAllBookClubs(data.BookClubs);
       });
   }, []);
