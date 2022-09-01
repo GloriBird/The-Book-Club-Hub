@@ -5,6 +5,7 @@ export const GlobalProvider = ({ children }) => {
   const [trendingBooks, setTrendingBooks] = useState();
   const [allUsers, setAllUsers] = useState();
   const [allBookClub, setAllBookClubs] = useState();
+  const [isAllUsersLoading, setIsAllUsersLoading] = useState(true);
 
   useEffect(() => {
     fetch("/weeklyTrendingBooks")
@@ -15,10 +16,12 @@ export const GlobalProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    setIsAllUsersLoading(true);
     fetch(`/users`)
       .then((res) => res.json())
       .then((listOfUser) => {
         setAllUsers(listOfUser.account);
+        setIsAllUsersLoading(false);
       });
   }, []);
 
@@ -37,6 +40,7 @@ export const GlobalProvider = ({ children }) => {
         trendingBooks,
         allUsers,
         allBookClub,
+        isAllUsersLoading,
       }}
     >
       {children}

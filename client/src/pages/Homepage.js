@@ -1,24 +1,32 @@
 import React, { useEffect, useState, useContext } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 import { Container } from "./pageStyles/Homepage.styled";
 import { GlobalContext } from "../context/GlobalContext";
+import { useLocation } from "react-router-dom";
+import { CurrentUserContext } from "../context/CurrentUserContext";
+
 import Carousel from "react-elastic-carousel";
 import styled from "styled-components";
-import { useAuth0 } from "@auth0/auth0-react";
 import PopUpModal from "../components/PopUpModal";
 
-const App = () => {
-  const { trendingBooks, allUsers } = useContext(GlobalContext);
+const Homepage = () => {
+  const { trendingBooks, allUsers, isAllUsersLoading } = useContext(GlobalContext);
+  const { user, isAuthenticated } = useAuth0();
+  const location = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
+  const userData = useContext(CurrentUserContext);
+
   const [currentUser, setCurrentUser] = useState();
   const [toggleModal, setToggleModal] = useState(false);
+  const [newUsername, setNewUsername] = useState("");
+
   const [timedModalPopUp, setTimedModalPopUp] = useState(false);
 
-  const { user } = useAuth0();
-  useEffect(() => {
-    setTimeout(() => {
-      setTimedModalPopUp(true);
-    }, 3000);
-  }, []);
+  const {
+    actions: { receiveCurrentUser },
+  } = userData;
 
+  // const userInData = allUsers?.filter((existingUser) => existingUser?.email.includes(user?.email));
   useEffect(() => {
     if (user !== undefined) {
       const { email, nickname } = user;
@@ -29,7 +37,20 @@ const App = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newData),
       }).then(() => {
-        setCurrentUser(newData);
+        fetch(`/user/${nickname}`)
+          .then((res) => {
+            if (!res.ok) {
+              throw Error(`It's broken`);
+            }
+            return res.json();
+          })
+          .then((data) => {
+            // console.log(`data.account.username === nickname:`, data.account.username === nickname);
+            setTimeout(() => {
+              data.account.username === nickname && setTimedModalPopUp(true);
+            }, 300);
+            receiveCurrentUser(data.account);
+          });
       });
     }
   }, [user]);
@@ -42,6 +63,11 @@ const App = () => {
     { width: 500, itemsToShow: 5 },
   ];
 
+  const handleUsername = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+  };
+
   return (
     <Wrapper>
       <main>
@@ -53,13 +79,34 @@ const App = () => {
           Open PopUp
         </button>
       </main>
-      <PopUpModal trigger={toggleModal} setTrigger={setToggleModal}>
+      {/* <PopUpModal trigger={toggleModal} setTrigger={setToggleModal}>
         <h1>My pop up</h1>
         <p>This is triggered popup</p>
-      </PopUpModal>
+      </PopUpModal> */}
+
       <PopUpModal trigger={timedModalPopUp} setTrigger={setTimedModalPopUp}>
-        <h1>My timed pop up</h1>
-        <p>This is time triggered popup</p>
+        <h1>Assign Username</h1>
+        <NewUserForm onSubmit={handleUsername}>
+          <label>
+            <p>Let us know your username, if you decide to skip we'll assign you one</p>
+            <input
+              type="text"
+              name="ClubName"
+              placeholder="Enter at least 2 characters"
+              value={newUsername}
+              onChange={(e) => setNewUsername(e.target.value)}
+              required
+            />
+          </label>
+          <ConfirmButton
+            type="submit"
+            value="Create"
+            // changeOpacity={newUsername.replace(/\s+/g, "").trim().length > 1}
+            // disabled={newUsername.replace(/\s+/g, "").trim().length < 2}
+          >
+            {isLoading ? "Loading..." : "Submit Username"}
+          </ConfirmButton>
+        </NewUserForm>
       </PopUpModal>
       <CarouselStyle breakPoints={breakPoints}>
         {trendingBooks?.map((x, idx) => (
@@ -75,7 +122,8 @@ const App = () => {
   );
 };
 
-export default App;
+export default Homepage;
+
 const CarouselStyle = styled(Carousel)`
   display: flex;
   flex-direction: column;
@@ -97,4 +145,33 @@ const List = styled.li`
   margin-bottom: 2000;
   list-style: none;
   z-index: -1000;
+`;
+
+const NewUserForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  input[type="text"] {
+    margin: 10px 0;
+    width: 300px;
+    text-align: center;
+  }
+`;
+
+const ConfirmButton = styled.button`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: green;
+  border: none;
+  padding: 2% 7%;
+  margin-top: 40px;
+  width: 100px;
+  background-color: var(--color-pale-forest-green);
+  /* opacity: ${(props) => (props.changeOpacity ? 1 : 0.3)};
+  cursor: ${(props) => (props.changeOpacity ? "pointer" : "default")}; */
 `;
