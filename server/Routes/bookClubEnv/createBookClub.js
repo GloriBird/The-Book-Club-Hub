@@ -27,7 +27,10 @@ const createBookClub = async (req, res) => {
   const dateCreated = moment().format("MMMM Do YYYY");
 
   const bookClubNameAvailable = getBookGroup.every((group) => {
-    if (group.bookClubName.replace(/\s+/g, "").trim() !== bookClubName.replace(/\s+/g, "").trim()) {
+    if (
+      group.bookClubName.replace(/\s+/g, "").trim().toLowerCase() !==
+      bookClubName.replace(/\s+/g, "").trim().toLowerCase()
+    ) {
       return true;
     } else if (group.bookClubName === bookClubName.trim()) {
       return false;
