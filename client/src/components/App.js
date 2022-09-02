@@ -7,7 +7,7 @@ import BrowseBooks from "../pages/BrowseBooks";
 import Login from "../pages/Login";
 import BrowseBookClubs from "../pages/BrowseBookClubs";
 import SignUp from "../pages/SignUp";
-import Profile from "./Profile";
+import Profile from "../pages/Profile";
 import Footer from "../components/Footer";
 
 const App = () => {
