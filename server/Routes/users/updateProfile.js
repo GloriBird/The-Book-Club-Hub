@@ -7,13 +7,13 @@ const options = {
   useUnifiedTopology: true,
 };
 
-const signedInProfile = async (req, res) => {
+const updateProfile = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   await client.connect();
 
-  const bookClubData = client.db("Book-Club");
+  const bookClubData = client.db("Users");
 
-  const signedInUser = req.params.username;
+  const { bookClubName, newBookClubName, newHost } = req.body;
 
   const accountFound = await bookClubData.collection("Users").findOne({ username: signedInUser });
 
@@ -28,5 +28,5 @@ const signedInProfile = async (req, res) => {
 };
 
 module.exports = {
-  signedInProfile,
+  updateProfile,
 };

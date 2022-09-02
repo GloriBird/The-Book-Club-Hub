@@ -29,11 +29,7 @@ const addBookClubMembers = async (req, res) => {
         $push: {
           members: {
             username,
-            firstName,
-            lastName,
             email: email.replace(/\s+/g, " ").trim(),
-            favouriteBook,
-            favGenres,
             _id,
             joinedDate,
           },
