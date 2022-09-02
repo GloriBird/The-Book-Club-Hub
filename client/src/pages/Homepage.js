@@ -47,7 +47,7 @@ const Homepage = () => {
             // console.log(`data.account.username === nickname:`, data.account.username === nickname);
             setTimeout(() => {
               data.account.username === nickname && setTimedModalPopUp(true);
-            }, 300);
+            }, 200);
             receiveCurrentUser(data.account);
           });
       });
@@ -88,7 +88,7 @@ const Homepage = () => {
       }).then((response) => {
         console.log(response);
         setIsLoading(false);
-        receiveNewUserName(newUsername);
+        receiveNewUserName(newUsername.trim());
 
         return response.json();
       });
@@ -96,6 +96,9 @@ const Homepage = () => {
   };
 
   console.log(`username:`, username);
+  const maxCharacters = 30;
+
+  const containsSpace = /\s/.test(newUsername.trim());
 
   return (
     <Wrapper>
@@ -112,21 +115,24 @@ const Homepage = () => {
         <h1>Assign Username</h1>
         <NewUserForm onSubmit={handleUsername}>
           <label>
-            <p>Let us know your username, if you decide to skip we'll assign you one</p>
+            <p>Let us know your username, if you decide to skip we'll assign you one.</p>
+            <em>Make sure there are no space in between the characters</em>
             <input
               type="text"
               name="ClubName"
+              maxlength="30"
               placeholder="Enter at least 2 characters"
               value={newUsername}
               onChange={(e) => setNewUsername(e.target.value)}
               required
             />
+            <p>Characters left: {maxCharacters - newUsername.length}</p>
           </label>
           <ConfirmButton
             type="submit"
             value="Create"
-            changeOpacity={newUsername.replace(/\s+/g, "").trim().length > 1}
-            disabled={newUsername.replace(/\s+/g, "").trim().length < 2}
+            changeOpacity={newUsername.trim().length > 1 || newUsername.trim().length <= 30 || containsSpace === true}
+            disabled={newUsername.trim().length < 2 || newUsername.trim().length > 30 || containsSpace === true}
             onClick={() =>
               setTimeout(() => {
                 setTimedModalPopUp(false);
@@ -203,5 +209,5 @@ const ConfirmButton = styled.button`
   width: 100px;
   background-color: var(--color-pale-forest-green);
   opacity: ${(props) => (props.changeOpacity ? 1 : 0.3)};
-  cursor: ${(props) => (props.changeOpacity ? "pointer" : "default")};
+  cursor: ${(props) => (props.disabled ? "default" : "pointer")};
 `;
