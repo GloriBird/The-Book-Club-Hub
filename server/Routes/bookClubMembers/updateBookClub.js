@@ -18,6 +18,7 @@ const updateBookClub = async (req, res) => {
 
   const filterBookClubs = totalBookClubs.filter((group) => group.bookClubName === bookClubName);
 
+  //prevent host from deleting herself/himself
   const idxOfMemberToRemove =
     members[0] !== undefined
       ? filterBookClubs[0]?.members.findIndex((object) => {
@@ -29,6 +30,7 @@ const updateBookClub = async (req, res) => {
         })
       : undefined;
 
+  //Update book club name
   const bookClubNaming = filterBookClubs.map((obj) => {
     let updateBookClubName;
     if (obj.bookClubName !== newBookClubName && newBookClubName?.trim().length > 0) {
@@ -41,6 +43,7 @@ const updateBookClub = async (req, res) => {
 
   const newHostIsMember = filterBookClubs[0]?.members.some((x) => newHost.trim().includes(x?.username));
 
+  //assign new host string isn't empty and is a member
   const hostOfBookClub = filterBookClubs.map((obj) => {
     if (obj?.host !== newHost && newHostIsMember === true) {
       return newHost?.replace(/\s+/g, " ").trim();
@@ -48,6 +51,8 @@ const updateBookClub = async (req, res) => {
       return obj?.host;
     }
   });
+
+  console.log(`hostOfBookClub:`, hostOfBookClub);
 
   if (newBookClubName?.length > 0 || newHost?.length > 0 || members?.length > 0) {
     const removedMember = await bookClubData.collection("Book-Group").updateOne(
