@@ -18,8 +18,14 @@ const currentUserReducer = (state, action) => {
         ...state,
         _id: action._id,
         joinedDate: action.joinedDate,
-        username: action.null,
+        username: action.username,
         email: action.email,
+      };
+    }
+    case "receive-new-username": {
+      return {
+        ...state,
+        username: action.username,
       };
     }
     case "catch-error": {
@@ -38,8 +44,6 @@ export const CurrentUserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(currentUserReducer, initialState);
 
   const receiveCurrentUser = (data) => {
-    console.log(`data from Current User Context:`, data);
-
     dispatch({
       type: "receive-current-user",
       ...data,
@@ -50,6 +54,13 @@ export const CurrentUserProvider = ({ children }) => {
     });
   };
 
+  const receiveNewUserName = (newUsername) => {
+    dispatch({
+      type: "receive-new-username",
+      username: newUsername,
+    });
+  };
+
   const catchError = (error) => {
     dispatch({
       type: "catch-error",
@@ -57,7 +68,7 @@ export const CurrentUserProvider = ({ children }) => {
     });
   };
   return (
-    <CurrentUserContext.Provider value={{ state, actions: { receiveCurrentUser, catchError } }}>
+    <CurrentUserContext.Provider value={{ state, actions: { receiveCurrentUser, receiveNewUserName, catchError } }}>
       {children}
     </CurrentUserContext.Provider>
   );

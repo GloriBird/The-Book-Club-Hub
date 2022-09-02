@@ -22,7 +22,7 @@ const updateProfile = async (req, res) => {
   const newUsername = username.replace(/\s+/g, "").trim().length < 1 ? getUser[0]?.username : username;
 
   const usernameMaxCharacterCount = 30;
-
+  console.log(`isEmail:`, isEmail);
   const checkEmailInput = () => {
     if (isEmail === false) {
       if (email.replace(/\s+/g, "").trim().length < 1) {

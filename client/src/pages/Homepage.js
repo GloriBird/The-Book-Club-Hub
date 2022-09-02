@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Container } from "./pageStyles/Homepage.styled";
 import { GlobalContext } from "../context/GlobalContext";
@@ -16,15 +16,16 @@ const Homepage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const userData = useContext(CurrentUserContext);
 
-  const [currentUser, setCurrentUser] = useState();
   const [toggleModal, setToggleModal] = useState(false);
   const [newUsername, setNewUsername] = useState("");
 
   const [timedModalPopUp, setTimedModalPopUp] = useState(false);
 
+  const modalRef = useRef();
+
   const {
     state: { _id, username, email },
-    actions: { receiveCurrentUser },
+    actions: { receiveCurrentUser, receiveNewUserName },
   } = userData;
 
   useEffect(() => {
@@ -37,7 +38,7 @@ const Homepage = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newData),
       }).then(() => {
-        fetch(`/user/${nickname}`)
+        fetch(`/user/${username}`)
           .then((res) => {
             if (!res.ok) {
               throw Error(`Not a new user`);
@@ -64,58 +65,75 @@ const Homepage = () => {
     { width: 500, itemsToShow: 5 },
   ];
 
-  // useEffect(() => {
-  //   if (user !== undefined) {
-  //     if (user?.nickname === user?.email.split(`@`)[0]) {
-  //       const randomUsername = Math.random().toString(36).substring(2, 13);
-  //       console.log(`randomUsername:`, randomUsername);
-  //       fetch("/update-profile", {
-  //         method: "PATCH",
-  //         headers: { "Content-type": "application/json" },
-  //         body: JSON.stringify({ _id: _id, username: randomUsername, email: email }),
-  //       }).then((response) => {
-  //         console.log(response);
-  //         receiveCurrentUser({ username: randomUsername });
-  //         return response.json();
-  //       });
-  //     }
+  // const handleRandomUsername = async (e) => {
+  //   e.preventDefault();
+  //   const randomUsername = Math.random().toString(36).substring(2, 13);
+  //   console.log(`randomUsername:`, randomUsername);
+  //   fetch("/update-profile", {
+  //     method: "PATCH",
+  //     headers: { "Content-type": "application/json" },
+  //     body: JSON.stringify({ _id: _id, username: randomUsername, email: email }),
+  //   }).then((response) => {
+  //     receiveCurrentUser({ username: randomUsername });
+  //     return response.json();
+  //   });
+  // };
+  // const handleRandomUsername = async (e) => {
+  //   console.log(`modalRef.current === e.target:`, modalRef.current === e.target);
+  //   if (modalRef.current !== e.target && newUsername.length < 2) {
+  //     e.preventDefault();
+  //     const randomUsername = Math.random().toString(36).substring(2, 13);
+  //     console.log(`randomUsername:`, randomUsername);
+  //     fetch("/update-profile", {
+  //       method: "PATCH",
+  //       headers: { "Content-type": "application/json" },
+  //       body: JSON.stringify({ _id: _id, username: randomUsername, email: email }),
+  //     }).then((response) => {
+  //       receiveCurrentUser({ username: randomUsername });
+  //       return response.json();
+  //     });
   //   }
-  // }, []);
-
-  const handleRandomUsername = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    const randomUsername = Math.random().toString(36).substring(2, 13);
-    console.log(`randomUsername:`, randomUsername);
-    fetch("/update-profile", {
-      method: "PATCH",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ _id: _id, username: randomUsername, email: email }),
-    }).then((response) => {
-      console.log(response);
-      receiveCurrentUser({ username: randomUsername });
-      return response.json();
-    });
-  };
+  // };
+  // const handleRandomUsername = async (e) => {
+  //   console.log(`modalRef.current === e.target:`, modalRef.current === e.target);
+  //   if (modalRef.current !== e.target && newUsername.length < 2) {
+  //     e.preventDefault();
+  //     const randomUsername = Math.random().toString(36).substring(2, 13);
+  //     console.log(`randomUsername:`, randomUsername);
+  //     fetch("/update-profile", {
+  //       method: "PATCH",
+  //       headers: { "Content-type": "application/json" },
+  //       body: JSON.stringify({ _id: _id, username: randomUsername, email: email }),
+  //     }).then((response) => {
+  //       receiveCurrentUser({ username: randomUsername });
+  //       return response.json();
+  //     });
+  //   }
+  // };
 
   const handleUsername = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    fetch("/update-profile", {
-      method: "PATCH",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ _id: _id, username: newUsername, email: email }),
-    }).then((response) => {
-      console.log(response);
-      setIsLoading(false);
-      receiveCurrentUser({ username: newUsername });
+    if (newUsername.length >= 2) {
+      fetch("/update-profile", {
+        method: "PATCH",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ _id: _id, username: newUsername, email: email }),
+      }).then((response) => {
+        console.log(response);
+        setIsLoading(false);
+        receiveNewUserName(newUsername);
 
-      return response.json();
-    });
+        return response.json();
+      });
+    }
   };
 
   return (
-    <Wrapper onClick={handleRandomUsername}>
+    <Wrapper
+      ref={modalRef}
+      // onClick={handleRandomUsername}
+    >
       <main>
         <button
           onClick={() => {
