@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Container } from "./pageStyles/Homepage.styled";
 import { GlobalContext } from "../context/GlobalContext";
@@ -20,8 +20,6 @@ const Homepage = () => {
   const [newUsername, setNewUsername] = useState("");
 
   const [timedModalPopUp, setTimedModalPopUp] = useState(false);
-
-  const modalRef = useRef();
 
   const {
     state: { _id, username, email },
@@ -50,7 +48,6 @@ const Homepage = () => {
             setTimeout(() => {
               data.account.username === nickname && setTimedModalPopUp(true);
             }, 300);
-
             receiveCurrentUser(data.account);
           });
       });
@@ -65,51 +62,20 @@ const Homepage = () => {
     { width: 500, itemsToShow: 5 },
   ];
 
-  // const handleRandomUsername = async (e) => {
-  //   e.preventDefault();
-  //   const randomUsername = Math.random().toString(36).substring(2, 13);
-  //   console.log(`randomUsername:`, randomUsername);
-  //   fetch("/update-profile", {
-  //     method: "PATCH",
-  //     headers: { "Content-type": "application/json" },
-  //     body: JSON.stringify({ _id: _id, username: randomUsername, email: email }),
-  //   }).then((response) => {
-  //     receiveCurrentUser({ username: randomUsername });
-  //     return response.json();
-  //   });
-  // };
-  // const handleRandomUsername = async (e) => {
-  //   console.log(`modalRef.current === e.target:`, modalRef.current === e.target);
-  //   if (modalRef.current !== e.target && newUsername.length < 2) {
-  //     e.preventDefault();
-  //     const randomUsername = Math.random().toString(36).substring(2, 13);
-  //     console.log(`randomUsername:`, randomUsername);
-  //     fetch("/update-profile", {
-  //       method: "PATCH",
-  //       headers: { "Content-type": "application/json" },
-  //       body: JSON.stringify({ _id: _id, username: randomUsername, email: email }),
-  //     }).then((response) => {
-  //       receiveCurrentUser({ username: randomUsername });
-  //       return response.json();
-  //     });
-  //   }
-  // };
-  // const handleRandomUsername = async (e) => {
-  //   console.log(`modalRef.current === e.target:`, modalRef.current === e.target);
-  //   if (modalRef.current !== e.target && newUsername.length < 2) {
-  //     e.preventDefault();
-  //     const randomUsername = Math.random().toString(36).substring(2, 13);
-  //     console.log(`randomUsername:`, randomUsername);
-  //     fetch("/update-profile", {
-  //       method: "PATCH",
-  //       headers: { "Content-type": "application/json" },
-  //       body: JSON.stringify({ _id: _id, username: randomUsername, email: email }),
-  //     }).then((response) => {
-  //       receiveCurrentUser({ username: randomUsername });
-  //       return response.json();
-  //     });
-  //   }
-  // };
+  console.log(`user:`, user);
+
+  if (user !== undefined && username === user.nickname) {
+    const randomUsername = Math.random().toString(36).substring(2, 13);
+    fetch("/update-profile", {
+      method: "PATCH",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({ _id: _id, username: randomUsername, email: email }),
+    }).then((response) => {
+      console.log(response);
+      receiveNewUserName(randomUsername);
+      return response.json();
+    });
+  }
 
   const handleUsername = async (e) => {
     e.preventDefault();
@@ -129,11 +95,10 @@ const Homepage = () => {
     }
   };
 
+  console.log(`username:`, username);
+
   return (
-    <Wrapper
-      ref={modalRef}
-      // onClick={handleRandomUsername}
-    >
+    <Wrapper>
       <main>
         <button
           onClick={() => {

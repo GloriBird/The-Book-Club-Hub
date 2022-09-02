@@ -47,7 +47,7 @@ const createProfile = async (req, res) => {
         { _id: newID.trim() },
         { joinedDate: joinedDate.trim() },
         {
-          username: username.replace(/\s+/g, "").trim(),
+          username: username?.replace(/\s+/g, "").trim(),
           email,
         }
       )
