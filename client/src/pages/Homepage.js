@@ -23,10 +23,10 @@ const Homepage = () => {
   const [timedModalPopUp, setTimedModalPopUp] = useState(false);
 
   const {
+    state: { _id, username, email },
     actions: { receiveCurrentUser },
   } = userData;
 
-  // const userInData = allUsers?.filter((existingUser) => existingUser?.email.includes(user?.email));
   useEffect(() => {
     if (user !== undefined) {
       const { email, nickname } = user;
@@ -40,7 +40,7 @@ const Homepage = () => {
         fetch(`/user/${nickname}`)
           .then((res) => {
             if (!res.ok) {
-              throw Error(`It's broken`);
+              throw Error(`Not a new user`);
             }
             return res.json();
           })
@@ -49,6 +49,7 @@ const Homepage = () => {
             setTimeout(() => {
               data.account.username === nickname && setTimedModalPopUp(true);
             }, 300);
+
             receiveCurrentUser(data.account);
           });
       });
@@ -63,13 +64,58 @@ const Homepage = () => {
     { width: 500, itemsToShow: 5 },
   ];
 
-  const handleUsername = (e) => {
+  // useEffect(() => {
+  //   if (user !== undefined) {
+  //     if (user?.nickname === user?.email.split(`@`)[0]) {
+  //       const randomUsername = Math.random().toString(36).substring(2, 13);
+  //       console.log(`randomUsername:`, randomUsername);
+  //       fetch("/update-profile", {
+  //         method: "PATCH",
+  //         headers: { "Content-type": "application/json" },
+  //         body: JSON.stringify({ _id: _id, username: randomUsername, email: email }),
+  //       }).then((response) => {
+  //         console.log(response);
+  //         receiveCurrentUser({ username: randomUsername });
+  //         return response.json();
+  //       });
+  //     }
+  //   }
+  // }, []);
+
+  const handleRandomUsername = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    const randomUsername = Math.random().toString(36).substring(2, 13);
+    console.log(`randomUsername:`, randomUsername);
+    fetch("/update-profile", {
+      method: "PATCH",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({ _id: _id, username: randomUsername, email: email }),
+    }).then((response) => {
+      console.log(response);
+      receiveCurrentUser({ username: randomUsername });
+      return response.json();
+    });
+  };
+
+  const handleUsername = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    fetch("/update-profile", {
+      method: "PATCH",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({ _id: _id, username: newUsername, email: email }),
+    }).then((response) => {
+      console.log(response);
+      setIsLoading(false);
+      receiveCurrentUser({ username: newUsername });
+
+      return response.json();
+    });
   };
 
   return (
-    <Wrapper>
+    <Wrapper onClick={handleRandomUsername}>
       <main>
         <button
           onClick={() => {
@@ -79,11 +125,6 @@ const Homepage = () => {
           Open PopUp
         </button>
       </main>
-      {/* <PopUpModal trigger={toggleModal} setTrigger={setToggleModal}>
-        <h1>My pop up</h1>
-        <p>This is triggered popup</p>
-      </PopUpModal> */}
-
       <PopUpModal trigger={timedModalPopUp} setTrigger={setTimedModalPopUp}>
         <h1>Assign Username</h1>
         <NewUserForm onSubmit={handleUsername}>
@@ -101,8 +142,13 @@ const Homepage = () => {
           <ConfirmButton
             type="submit"
             value="Create"
-            // changeOpacity={newUsername.replace(/\s+/g, "").trim().length > 1}
-            // disabled={newUsername.replace(/\s+/g, "").trim().length < 2}
+            changeOpacity={newUsername.replace(/\s+/g, "").trim().length > 1}
+            disabled={newUsername.replace(/\s+/g, "").trim().length < 2}
+            onClick={() =>
+              setTimeout(() => {
+                setTimedModalPopUp(false);
+              }, 1000)
+            }
           >
             {isLoading ? "Loading..." : "Submit Username"}
           </ConfirmButton>
@@ -131,6 +177,7 @@ const CarouselStyle = styled(Carousel)`
 
 const Wrapper = styled.div`
   border: 10px solid green;
+
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -172,6 +219,6 @@ const ConfirmButton = styled.button`
   margin-top: 40px;
   width: 100px;
   background-color: var(--color-pale-forest-green);
-  /* opacity: ${(props) => (props.changeOpacity ? 1 : 0.3)};
-  cursor: ${(props) => (props.changeOpacity ? "pointer" : "default")}; */
+  opacity: ${(props) => (props.changeOpacity ? 1 : 0.3)};
+  cursor: ${(props) => (props.changeOpacity ? "pointer" : "default")};
 `;

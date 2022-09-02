@@ -39,13 +39,14 @@ export const CurrentUserProvider = ({ children }) => {
 
   const receiveCurrentUser = (data) => {
     console.log(`data from Current User Context:`, data);
+
     dispatch({
       type: "receive-current-user",
       ...data,
-      //   _id: data._id,
-      //   joinedDate: data.joinedDate,
-      //   username: data.username,
-      //   email: data.email,
+      _id: data._id,
+      joinedDate: data.joinedDate,
+      username: data.username,
+      email: data.email,
     });
   };
 
