@@ -4,39 +4,52 @@ import { useAuth0 } from "@auth0/auth0-react";
 import PopUpModal from "../components/PopUpModal";
 import { GlobalContext } from "../context/GlobalContext";
 import styled from "styled-components";
-
 import { CurrentUserContext } from "../context/CurrentUserContext";
 
 const MyBookClubs = () => {
   const userData = useContext(CurrentUserContext);
-  const { allUsers } = useContext(GlobalContext);
-  const { user } = useAuth0();
+  const { allUsers, allBookClubNames } = useContext(GlobalContext);
   const [isLoading, setIsLoading] = useState(false);
   const [bookClubName, setBookClubName] = useState("");
 
-  const {
-    state: { _id, username, email },
-    actions: { receiveCurrentUser },
-  } = userData;
   const [toggleModal, setToggleModal] = useState(false);
 
-  const userInData = allUsers?.filter((existingUser) => existingUser?.email.includes(user?.email));
+  const { state } = userData;
 
-  console.log(`_id:`, _id, `username:`, username, `email:`, email);
+  const host = state.username;
 
-  const createBookClub = async (e) => {
+  const members = [
+    {
+      _id: state._id,
+      joinedDate: state.joinedDate,
+      username: state.username,
+      email: state.email,
+      sub: state.sub,
+    },
+  ];
+
+  const allBookClubNamesLowerCased = allBookClubNames?.map((BC_Name) => BC_Name?.replace(/\s+/g, "").toLowerCase());
+  const typedBookClubNamesLowerCased = bookClubName?.replace(/\s+/g, "").toLowerCase();
+
+  const maxCharacters = 50;
+
+  const createBookClub = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    let host = await userInData[0]?.username;
-    const members = await userInData;
-    receiveCurrentUser(members[0]);
-    await fetch("/create-book-club", {
+    fetch("/create-book-club", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ bookClubName, host, members }),
-    }).then(() => {
-      setIsLoading(false);
-    });
+      body: JSON.stringify({ bookClubName: bookClubName, host: host, members: members }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw Error(`It's broken`);
+        }
+        return response.json();
+      })
+      .then(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
@@ -57,12 +70,17 @@ const MyBookClubs = () => {
             <input
               type="text"
               name="ClubName"
+              maxLength="50"
               placeholder="Enter at least 2 characters"
               value={bookClubName}
               onChange={(e) => setBookClubName(e.target.value)}
               required
             />
+            {allBookClubNamesLowerCased?.includes(typedBookClubNamesLowerCased) && (
+              <p>This username has already been taken.</p>
+            )}
           </label>
+          <p>Characters left: {maxCharacters - bookClubName.length}</p>
           <CreateButton
             type="submit"
             value="Create"
@@ -72,7 +90,10 @@ const MyBookClubs = () => {
                 setToggleModal(false);
               }, 1000)
             }
-            disabled={bookClubName.replace(/\s+/g, "").trim().length < 2}
+            disabled={
+              bookClubName.replace(/\s+/g, "").trim().length < 2 ||
+              allBookClubNamesLowerCased?.includes(typedBookClubNamesLowerCased)
+            }
           >
             {isLoading ? "Loading..." : "Create"}
           </CreateButton>
@@ -110,5 +131,5 @@ const CreateButton = styled.button`
   width: 100px;
   background-color: var(--color-pale-forest-green);
   opacity: ${(props) => (props.changeOpacity ? 1 : 0.3)};
-  cursor: ${(props) => (props.changeOpacity ? "pointer" : "default")};
+  cursor: ${(props) => (props.disabled ? "default" : "pointer")};
 `;
