@@ -56,6 +56,8 @@ export const GlobalProvider = ({ children }) => {
       });
   }, []);
 
+  const userInData = allUsers?.some((existingUser) => existingUser?.sub.includes(user?.sub));
+
   return (
     <GlobalContext.Provider
       value={{
@@ -64,6 +66,7 @@ export const GlobalProvider = ({ children }) => {
         allBookClub,
         isAllUsersLoading,
         allUsernames,
+        userInData,
       }}
     >
       {children}

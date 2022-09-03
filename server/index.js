@@ -42,7 +42,7 @@ app.patch("/update-profile", updateProfile);
 
 // // FIND USER:
 app.get("/users", getAllUsers); //Each user will have unique id
-app.get("/user/:id", getSingleUser);
+app.get("/user/:sub", getSingleUser);
 //   // BOOKCLUB:
 app.post("/create-book-club", createBookClub);
 app.get("/browse-book-clubs", getAllBookClubs);
