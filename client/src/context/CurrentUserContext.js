@@ -1,5 +1,6 @@
-import React, { createContext, useReducer } from "react";
-
+import React, { createContext, useReducer, useEffect } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import usePersistedState from "../components/usePersistedState";
 export const CurrentUserContext = createContext();
 
 const initialState = {
@@ -43,6 +44,9 @@ const currentUserReducer = (state, action) => {
 };
 
 export const CurrentUserProvider = ({ children }) => {
+  const { user, isAuthenticated, isLoading } = useAuth0();
+  const [signedInUser, setSignedInUser] = usePersistedState("Signed In User", []);
+
   const [state, dispatch] = useReducer(currentUserReducer, initialState);
 
   const receiveCurrentUser = (data) => {
@@ -57,6 +61,21 @@ export const CurrentUserProvider = ({ children }) => {
       sub: data?.sub,
     });
   };
+
+  useEffect(() => {
+    const test = async () => {
+      if (user !== undefined) {
+        const getData = await fetch(`/signedInProfile/${user?.sub}`);
+        const listOfUser = await getData.json();
+        const signedInProfile = await listOfUser.account;
+        // await setSignedInUser(signedInProfile);
+        return receiveCurrentUser(signedInProfile);
+      } else {
+        <></>;
+      }
+    };
+    test();
+  }, [user]);
 
   const receiveNewUserName = (newUsername) => {
     console.log(`newUsername from user Context:`, newUsername);
@@ -73,7 +92,9 @@ export const CurrentUserProvider = ({ children }) => {
     });
   };
   return (
-    <CurrentUserContext.Provider value={{ state, actions: { receiveCurrentUser, receiveNewUserName, catchError } }}>
+    <CurrentUserContext.Provider
+      value={{ state, signedInUser, setSignedInUser, actions: { receiveCurrentUser, receiveNewUserName, catchError } }}
+    >
       {children}
     </CurrentUserContext.Provider>
   );

@@ -14,7 +14,8 @@ const Profile = () => {
     state: { _id, username, email },
   } = userData;
 
-  console.log(`username`, username);
+  console.log(`_id:`, _id, `username:`, username, `email:`, email);
+
   const joinedDate = moment().format("MMMM Do YYYY");
 
   return (
