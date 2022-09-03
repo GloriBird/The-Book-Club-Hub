@@ -8,6 +8,8 @@ export const GlobalProvider = ({ children }) => {
   const [allUsers, setAllUsers] = useState();
   const [allUsernames, setAllUsernames] = useState();
   const [allBookClub, setAllBookClubs] = useState();
+  const [allBookClubNames, setAllBookClubNames] = useState();
+
   const [isAllUsersLoading, setIsAllUsersLoading] = useState(true);
   const { user, isAuthenticated } = useAuth0();
 
@@ -51,8 +53,11 @@ export const GlobalProvider = ({ children }) => {
     fetch(`/browse-book-clubs`)
       .then((res) => res.json())
       .then((data) => {
-        // console.log(`browse-book-clubs:`, data);
-        return setAllBookClubs(data.BookClubs);
+        const getAllBookClubNames = data.BookClubs.map(({ bookClubName }) => bookClubName);
+        // console.log(`getAllBookClubNames:`, getAllBookClubNames);
+        setAllBookClubNames(getAllBookClubNames);
+        // console.log(`browse-book-clubs:`, data.BookClubs);
+        setAllBookClubs(data.BookClubs);
       });
   }, []);
 
@@ -67,6 +72,7 @@ export const GlobalProvider = ({ children }) => {
         isAllUsersLoading,
         allUsernames,
         userInData,
+        allBookClubNames,
       }}
     >
       {children}

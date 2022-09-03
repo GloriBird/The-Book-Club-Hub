@@ -23,6 +23,7 @@ const currentUserReducer = (state, action) => {
         username: action.username,
         email: action.email,
         sub: action.sub,
+        hasLoaded: true,
       };
     }
     case "receive-new-username": {
@@ -78,7 +79,6 @@ export const CurrentUserProvider = ({ children }) => {
   }, [user]);
 
   const receiveNewUserName = (newUsername) => {
-    console.log(`newUsername from user Context:`, newUsername);
     dispatch({
       type: "receive-new-username",
       username: newUsername,
