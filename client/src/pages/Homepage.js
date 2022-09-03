@@ -23,17 +23,21 @@ const Homepage = () => {
     actions: { receiveCurrentUser, receiveNewUserName },
   } = userData;
 
-  useEffect(() => {
-    const test = async () => {
-      const getData = await fetch(`/signedInProfile/${user?.sub}`);
-      const listOfUser = await getData.json();
-      const signedInProfile = await listOfUser.account;
-      console.log(`signedInProfile:`, signedInProfile);
-      return await receiveCurrentUser(signedInProfile);
-    };
-    test();
-  }, [user]);
+  // console.log(`_id:`, _id, `username:`, username, `email:`, email);
 
+  // useEffect(() => {
+  //   const test = async () => {
+  //     const getData = await fetch(`/signedInProfile/${user?.sub}`);
+  //     const listOfUser = await getData.json();
+  //     const signedInProfile = await listOfUser.account;
+  //     // console.log(`signedInProfile:`, signedInProfile);
+  //     await setSignedInUser(signedInProfile);
+  //     await receiveCurrentUser(signedInProfile);
+  //   };
+  //   test();
+  // }, [user]);
+
+  //Assign random username is input isn't submitted
   if (user !== undefined && username === user.nickname) {
     const randomUsername = Math.random().toString(36).substring(2, 13);
     fetch("/update-profile", {
@@ -45,9 +49,10 @@ const Homepage = () => {
       return response.json();
     });
   }
-
+  const userInData = allUsers?.filter((existingUser) => existingUser?.email.includes(user?.email));
+  //Add to data if use is new user
   useEffect(() => {
-    if (user !== undefined) {
+    if (user !== undefined && userInData?.[0].length < 1) {
       const { email, nickname, sub } = user;
       let username = nickname;
       const newData = { username, email, sub };
@@ -65,11 +70,17 @@ const Homepage = () => {
           })
           .then((data) => {
             setTimeout(() => {
-              data.account.username === nickname && setTimedModalPopUp(true);
+              if (data.account.username === nickname) {
+                setTimedModalPopUp(true);
+              } else {
+                setTimedModalPopUp(false);
+              }
             }, 200);
             receiveCurrentUser(data.account);
           });
       });
+    } else {
+      <></>;
     }
   }, [user]);
 
@@ -81,6 +92,7 @@ const Homepage = () => {
     { width: 500, itemsToShow: 5 },
   ];
 
+  //submit newUsername from input
   const handleUsername = async (e) => {
     e.preventDefault();
     setHasLoaded(true);

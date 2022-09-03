@@ -6,10 +6,11 @@ const BrowseBookClubs = () => {
   const userData = useContext(CurrentUserContext);
 
   const {
-    state: { username },
+    state: { _id, username, email },
   } = userData;
 
-  console.log(`username:`, username);
+  console.log(`_id:`, _id, `username:`, username, `email:`, email);
+
   return (
     <Container>
       <p>Browse Book Clubs</p>

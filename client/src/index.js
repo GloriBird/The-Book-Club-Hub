@@ -10,11 +10,11 @@ const domain = process.env.REACT_APP_AUTH0_DOMAIN;
 const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
 
 root.render(
-  <GlobalProvider>
-    <CurrentUserProvider>
-      <Auth0Provider domain={domain} clientId={clientId} redirectUri={"http://localhost:3000/"}>
+  <Auth0Provider domain={domain} clientId={clientId} redirectUri={"http://localhost:3000/"}>
+    <GlobalProvider>
+      <CurrentUserProvider>
         <App />
-      </Auth0Provider>
-    </CurrentUserProvider>
-  </GlobalProvider>
+      </CurrentUserProvider>
+    </GlobalProvider>
+  </Auth0Provider>
 );

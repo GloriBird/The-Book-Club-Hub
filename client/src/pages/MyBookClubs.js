@@ -15,14 +15,14 @@ const MyBookClubs = () => {
   const [bookClubName, setBookClubName] = useState("");
 
   const {
-    state: { username },
+    state: { _id, username, email },
     actions: { receiveCurrentUser },
   } = userData;
   const [toggleModal, setToggleModal] = useState(false);
 
   const userInData = allUsers?.filter((existingUser) => existingUser?.email.includes(user?.email));
 
-  console.log(`username:`, username);
+  console.log(`_id:`, _id, `username:`, username, `email:`, email);
 
   const createBookClub = async (e) => {
     e.preventDefault();
