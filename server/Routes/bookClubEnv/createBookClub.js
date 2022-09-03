@@ -45,7 +45,7 @@ const createBookClub = async (req, res) => {
   const containEmptyValue = members.some((userInfo) => Object.values(userInfo).some((val) => val.trim().length === 0));
 
   const readingList = [];
-  const addedMembersPending = [];
+  const pendingMembers = [];
 
   if (bookClubNameAvailable && isThereHost && isBookClubNamed && containEmptyValue === false) {
     const getTrimmedData = (hostInfo) => {
@@ -74,8 +74,8 @@ const createBookClub = async (req, res) => {
           memberCount: members.length,
           readingList,
           bookCount: readingList.length,
-          addedMembersPending,
-          pendingMembersCount: addedMembersPending.length,
+          pendingMembers: pendingMembers,
+          pendingMembersCount: pendingMembers.length,
         }
       )
     );
