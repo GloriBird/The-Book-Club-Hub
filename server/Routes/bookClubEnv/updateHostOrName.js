@@ -7,7 +7,7 @@ const options = {
   useUnifiedTopology: true,
 };
 
-const updateBookClub = async (req, res) => {
+const updateHostOrName = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   await client.connect();
 
@@ -71,5 +71,5 @@ const updateBookClub = async (req, res) => {
 };
 
 module.exports = {
-  updateBookClub,
+  updateHostOrName,
 };

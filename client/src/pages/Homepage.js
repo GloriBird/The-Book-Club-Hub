@@ -10,7 +10,7 @@ import styled from "styled-components";
 import PopUpModal from "../components/PopUpModal";
 
 const Homepage = () => {
-  const { trendingBooks, allUsers, isAllUsersLoading } = useContext(GlobalContext);
+  const { trendingBooks, allUsers, isAllUsersLoading, allUsernames } = useContext(GlobalContext);
   const { user, isAuthenticated } = useAuth0();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +25,11 @@ const Homepage = () => {
     state: { _id, username, email },
     actions: { receiveCurrentUser, receiveNewUserName },
   } = userData;
+
+  console.log(`allUsernames:`, allUsernames);
+
+  // const userInData = allUsers?.filter((existingUser) => existingUser?.email.includes(user?.email));
+  // console.log(`userInData:`, userInData);
 
   useEffect(() => {
     if (user !== undefined) {
@@ -95,10 +100,13 @@ const Homepage = () => {
     }
   };
 
-  console.log(`username:`, username);
   const maxCharacters = 30;
 
   const containsSpace = /\s/.test(newUsername.trim());
+  console.log(`newUsername:`, newUsername);
+
+  const allUsernamesLowerCased = allUsernames?.map((accountUsername) => accountUsername?.toLowerCase());
+  const typedUsernameLowerCased = newUsername?.toLowerCase();
 
   return (
     <Wrapper>
@@ -126,13 +134,19 @@ const Homepage = () => {
               onChange={(e) => setNewUsername(e.target.value)}
               required
             />
+            {allUsernamesLowerCased?.includes(typedUsernameLowerCased) && <p>This username has already been taken.</p>}
             <p>Characters left: {maxCharacters - newUsername.length}</p>
           </label>
           <ConfirmButton
             type="submit"
             value="Create"
             changeOpacity={newUsername.trim().length > 1 || newUsername.trim().length <= 30 || containsSpace === true}
-            disabled={newUsername.trim().length < 2 || newUsername.trim().length > 30 || containsSpace === true}
+            disabled={
+              newUsername.trim().length < 2 ||
+              newUsername.trim().length > 30 ||
+              containsSpace === true ||
+              allUsernamesLowerCased?.includes(typedUsernameLowerCased)
+            }
             onClick={() =>
               setTimeout(() => {
                 setTimedModalPopUp(false);
