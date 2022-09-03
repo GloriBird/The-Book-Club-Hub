@@ -44,7 +44,8 @@ const createBookClub = async (req, res) => {
 
   const containEmptyValue = members.some((userInfo) => Object.values(userInfo).some((val) => val.trim().length === 0));
 
-  const ReadingList = [];
+  const readingList = [];
+  const addedMembersPending = [];
 
   if (bookClubNameAvailable && isThereHost && isBookClubNamed && containEmptyValue === false) {
     const getTrimmedData = (hostInfo) => {
@@ -70,10 +71,12 @@ const createBookClub = async (req, res) => {
           bookClubName: bookClubName.replace(/\s+/g, " ").trim(),
           host: host.replace(/\s+/g, " ").trim(),
           members: trimmedMember,
-          ReadingList,
-        },
-        { memberCount: members.length },
-        { bookCount: ReadingList.length }
+          memberCount: members.length,
+          readingList,
+          bookCount: readingList.length,
+          addedMembersPending,
+          pendingMembersCount: addedMembersPending.length,
+        }
       )
     );
     res.status(201).json({ status: 201, bookClub: newBookClub, message: "Success, profile created" }), client.close();
