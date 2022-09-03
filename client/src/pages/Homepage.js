@@ -146,7 +146,7 @@ const Homepage = () => {
             <input
               type="text"
               name="ClubName"
-              maxlength="30"
+              maxLength="30"
               placeholder="Enter at least 2 characters"
               value={newUsername}
               onChange={(e) => setNewUsername(e.target.value)}
