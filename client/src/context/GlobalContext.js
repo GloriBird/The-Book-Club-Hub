@@ -4,6 +4,7 @@ export const GlobalContext = createContext();
 export const GlobalProvider = ({ children }) => {
   const [trendingBooks, setTrendingBooks] = useState();
   const [allUsers, setAllUsers] = useState();
+  const [allUsernames, setAllUsernames] = useState();
   const [allBookClub, setAllBookClubs] = useState();
   const [isAllUsersLoading, setIsAllUsersLoading] = useState(true);
 
@@ -21,9 +22,13 @@ export const GlobalProvider = ({ children }) => {
       .then((res) => res.json())
       .then((listOfUser) => {
         setAllUsers(listOfUser.account);
+        const getAllUsernames = listOfUser?.account.map(({ username }) => username);
+        setAllUsernames(getAllUsernames);
         setIsAllUsersLoading(false);
       });
   }, []);
+
+  console.log(`allUsernames:`, allUsernames);
 
   useEffect(() => {
     fetch(`/browse-book-clubs`)
@@ -41,6 +46,7 @@ export const GlobalProvider = ({ children }) => {
         allUsers,
         allBookClub,
         isAllUsersLoading,
+        allUsernames,
       }}
     >
       {children}
