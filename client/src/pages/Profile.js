@@ -12,10 +12,9 @@ const Profile = () => {
 
   const {
     state: { _id, username, email },
-    actions: { receiveCurrentUser },
   } = userData;
 
-  console.log(`user`, username);
+  console.log(`username`, username);
   const joinedDate = moment().format("MMMM Do YYYY");
 
   return (

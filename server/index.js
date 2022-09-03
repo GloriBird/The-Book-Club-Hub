@@ -14,7 +14,7 @@ const { getSingleBookClub } = require("./routes/bookClubEnv/getSingleBookClub");
 const { deleteBookClub } = require("./routes/bookClubEnv/deleteBookClub");
 const { addBookClubMembers } = require("./routes/bookClubMembers/addBookClubMembers");
 const { getBookClubMembers } = require("./routes/bookClubMembers/getBookClubMembers");
-const { updateHostOrName } = require("./routes/bookClubEnv/updateHostOrName");
+const { updateHostOrName } = require("./routes/bookClubMembers/updateHostOrName");
 const { removeMember } = require("./routes/bookClubMembers/removeMember");
 const { addBookClubReadingList } = require("./routes/bookClubReadingList/addBookClubReadingList");
 const { getBookClubReadingList } = require("./routes/bookClubReadingList/getBookClubReadingList");
@@ -31,7 +31,7 @@ app.get("/weeklyTrendingBooks", getWeeklyTrendingBook);
 
 // PROFILE:
 app.post("/create-profile", createProfile);
-app.get("/signedInProfile/:username", signedInProfile);
+app.get("/signedInProfile/:sub", signedInProfile);
 app.delete("/delete-profile/:id", deleteProfile);
 app.patch("/update-profile", updateProfile);
 // app.delete("/delete-profile/:id", deleteProfile);

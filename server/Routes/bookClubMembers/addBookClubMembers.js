@@ -13,7 +13,7 @@ const addBookClubMembers = async (req, res) => {
 
   const bookClubData = client.db("Book-Club");
 
-  const { username, firstName, lastName, email, favouriteBook, favGenres, _id, joinedDate, bookClubName } = req.body;
+  const { username, email, _id, joinedDate, bookClubName } = req.body;
 
   const getBookClub = await bookClubData.collection("Book-Group").findOne({ bookClubName: bookClubName });
 
@@ -39,7 +39,7 @@ const addBookClubMembers = async (req, res) => {
 
     await bookClubData
       .collection("Book-Group")
-      .updateOne({ _id: getBookClub._id }, { $set: { memberCount: getBookClub.members.length + 1 } });
+      .updateOne({ _id: getBookClub._id }, { $set: { pendingCount: getBookClub.members.length + 1 } });
 
     return (
       res.status(201).json({

@@ -7,6 +7,7 @@ const initialState = {
   _id: null,
   joinedDate: null,
   username: null,
+  sub: null,
   email: null,
   error: null,
 };
@@ -20,6 +21,7 @@ const currentUserReducer = (state, action) => {
         joinedDate: action.joinedDate,
         username: action.username,
         email: action.email,
+        sub: action.sub,
       };
     }
     case "receive-new-username": {
@@ -44,17 +46,20 @@ export const CurrentUserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(currentUserReducer, initialState);
 
   const receiveCurrentUser = (data) => {
+    console.log(`data from user Context:`, data);
     dispatch({
       type: "receive-current-user",
       ...data,
-      _id: data._id,
-      joinedDate: data.joinedDate,
-      username: data.username,
-      email: data.email,
+      _id: data?._id,
+      joinedDate: data?.joinedDate,
+      username: data?.username,
+      email: data?.email,
+      sub: data?.sub,
     });
   };
 
   const receiveNewUserName = (newUsername) => {
+    console.log(`newUsername from user Context:`, newUsername);
     dispatch({
       type: "receive-new-username",
       username: newUsername,

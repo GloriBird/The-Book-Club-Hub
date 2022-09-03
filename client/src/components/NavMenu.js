@@ -31,7 +31,7 @@ const NavMenu = () => {
         {isAuthenticated && (
           <>
             <li>
-              <StyledNavLink reloadDocument to="/MyBookClubs">
+              <StyledNavLink to="/MyBookClubs">
                 <h3>My Book Club(s)</h3>
               </StyledNavLink>
             </li>

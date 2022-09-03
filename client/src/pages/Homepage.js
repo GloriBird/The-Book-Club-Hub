@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Container } from "./pageStyles/Homepage.styled";
 import { GlobalContext } from "../context/GlobalContext";
-import { useLocation } from "react-router-dom";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 
 import Carousel from "react-elastic-carousel";
@@ -11,9 +9,8 @@ import PopUpModal from "../components/PopUpModal";
 
 const Homepage = () => {
   const { trendingBooks, allUsers, isAllUsersLoading, allUsernames } = useContext(GlobalContext);
-  const { user, isAuthenticated } = useAuth0();
-  const location = useLocation();
-  const [isLoading, setIsLoading] = useState(false);
+  const { user, isAuthenticated, isLoading } = useAuth0();
+  const [hasLoaded, setHasLoaded] = useState(false);
   const userData = useContext(CurrentUserContext);
 
   const [toggleModal, setToggleModal] = useState(false);
@@ -26,16 +23,34 @@ const Homepage = () => {
     actions: { receiveCurrentUser, receiveNewUserName },
   } = userData;
 
-  console.log(`allUsernames:`, allUsernames);
+  useEffect(() => {
+    const test = async () => {
+      const getData = await fetch(`/signedInProfile/${user?.sub}`);
+      const listOfUser = await getData.json();
+      const signedInProfile = await listOfUser.account;
+      console.log(`signedInProfile:`, signedInProfile);
+      return await receiveCurrentUser(signedInProfile);
+    };
+    test();
+  }, [user]);
 
-  // const userInData = allUsers?.filter((existingUser) => existingUser?.email.includes(user?.email));
-  // console.log(`userInData:`, userInData);
+  if (user !== undefined && username === user.nickname) {
+    const randomUsername = Math.random().toString(36).substring(2, 13);
+    fetch("/update-profile", {
+      method: "PATCH",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({ _id: _id, username: randomUsername, email: email }),
+    }).then((response) => {
+      receiveNewUserName(randomUsername);
+      return response.json();
+    });
+  }
 
   useEffect(() => {
     if (user !== undefined) {
-      const { email, nickname } = user;
+      const { email, nickname, sub } = user;
       let username = nickname;
-      const newData = { username, email };
+      const newData = { username, email, sub };
       fetch("/create-profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -49,7 +64,6 @@ const Homepage = () => {
             return res.json();
           })
           .then((data) => {
-            // console.log(`data.account.username === nickname:`, data.account.username === nickname);
             setTimeout(() => {
               data.account.username === nickname && setTimedModalPopUp(true);
             }, 200);
@@ -67,34 +81,17 @@ const Homepage = () => {
     { width: 500, itemsToShow: 5 },
   ];
 
-  console.log(`user:`, user);
-
-  if (user !== undefined && username === user.nickname) {
-    const randomUsername = Math.random().toString(36).substring(2, 13);
-    fetch("/update-profile", {
-      method: "PATCH",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ _id: _id, username: randomUsername, email: email }),
-    }).then((response) => {
-      console.log(response);
-      receiveNewUserName(randomUsername);
-      return response.json();
-    });
-  }
-
   const handleUsername = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    setHasLoaded(true);
     if (newUsername.length >= 2) {
       fetch("/update-profile", {
         method: "PATCH",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({ _id: _id, username: newUsername, email: email }),
       }).then((response) => {
-        console.log(response);
-        setIsLoading(false);
+        setHasLoaded(false);
         receiveNewUserName(newUsername.trim());
-
         return response.json();
       });
     }
@@ -103,7 +100,6 @@ const Homepage = () => {
   const maxCharacters = 30;
 
   const containsSpace = /\s/.test(newUsername.trim());
-  console.log(`newUsername:`, newUsername);
 
   const allUsernamesLowerCased = allUsernames?.map((accountUsername) => accountUsername?.toLowerCase());
   const typedUsernameLowerCased = newUsername?.toLowerCase();
@@ -153,7 +149,7 @@ const Homepage = () => {
               }, 1000)
             }
           >
-            {isLoading ? "Loading..." : "Submit Username"}
+            {hasLoaded ? "Loading..." : "Submit Username"}
           </ConfirmButton>
         </NewUserForm>
       </PopUpModal>
