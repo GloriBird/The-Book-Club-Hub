@@ -34,8 +34,9 @@ const MyBookClubs = () => {
   const maxCharacters = 50;
 
   const createBookClub = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     setIsLoading(true);
+    setBookClubName("");
     fetch("/create-book-club", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

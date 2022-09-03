@@ -41,6 +41,9 @@ const createProfile = async (req, res) => {
     Object.values(userInfo).some((val) => val.trim().length === 0)
   );
 
+  const bookClubInvites = [];
+  const numberOfClubInvites = [];
+
   if (isProfileNew === true && containEmptyValue === false && isEmail === true) {
     const newProfile = await bookClubData.collection("Users").insertOne(
       Object.assign(
@@ -50,6 +53,8 @@ const createProfile = async (req, res) => {
           username: username?.replace(/\s+/g, "").trim(),
           email,
           sub,
+          bookClubInvites,
+          numberOfClubInvites: bookClubInvites.length,
         }
       )
     );
@@ -73,14 +78,14 @@ module.exports = {
   createProfile,
 };
 
-const getTrimmedData = (obj) => {
-  Object.keys(obj).some((key) => {
-    if (typeof obj[key] === "object") {
-      getTrimmedData(obj[key]);
-    } else if (typeof obj[key] === "string" && obj[key].trim().length < 1) {
-      console.log(true);
-    } else if (typeof obj[key] === "string" && obj[key].trim().length > 0) {
-      console.log(false);
-    }
-  });
-};
+// const getTrimmedData = (obj) => {
+//   Object.keys(obj).some((key) => {
+//     if (typeof obj[key] === "object") {
+//       getTrimmedData(obj[key]);
+//     } else if (typeof obj[key] === "string" && obj[key].trim().length < 1) {
+//       console.log(true);
+//     } else if (typeof obj[key] === "string" && obj[key].trim().length > 0) {
+//       console.log(false);
+//     }
+//   });
+// };
