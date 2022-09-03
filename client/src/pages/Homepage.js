@@ -8,7 +8,7 @@ import styled from "styled-components";
 import PopUpModal from "../components/PopUpModal";
 
 const Homepage = () => {
-  const { trendingBooks, allUsers, isAllUsersLoading, allUsernames } = useContext(GlobalContext);
+  const { trendingBooks, allUsers, isAllUsersLoading, allUsernames, userInData } = useContext(GlobalContext);
   const { user, isAuthenticated, isLoading } = useAuth0();
   const [hasLoaded, setHasLoaded] = useState(false);
   const userData = useContext(CurrentUserContext);
@@ -23,20 +23,6 @@ const Homepage = () => {
     actions: { receiveCurrentUser, receiveNewUserName },
   } = userData;
 
-  // console.log(`_id:`, _id, `username:`, username, `email:`, email);
-
-  // useEffect(() => {
-  //   const test = async () => {
-  //     const getData = await fetch(`/signedInProfile/${user?.sub}`);
-  //     const listOfUser = await getData.json();
-  //     const signedInProfile = await listOfUser.account;
-  //     // console.log(`signedInProfile:`, signedInProfile);
-  //     await setSignedInUser(signedInProfile);
-  //     await receiveCurrentUser(signedInProfile);
-  //   };
-  //   test();
-  // }, [user]);
-
   //Assign random username is input isn't submitted
   if (user !== undefined && username === user.nickname) {
     const randomUsername = Math.random().toString(36).substring(2, 13);
@@ -49,10 +35,11 @@ const Homepage = () => {
       return response.json();
     });
   }
-  const userInData = allUsers?.filter((existingUser) => existingUser?.email.includes(user?.email));
-  //Add to data if use is new user
+  // console.log(`userInData:`, userInData);
+
+  // Add to data if use is new user
   useEffect(() => {
-    if (user !== undefined && userInData?.[0].length < 1) {
+    if (user !== undefined) {
       const { email, nickname, sub } = user;
       let username = nickname;
       const newData = { username, email, sub };
@@ -61,7 +48,7 @@ const Homepage = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newData),
       }).then(() => {
-        fetch(`/user/${username}`)
+        fetch(`/user/${sub}`)
           .then((res) => {
             if (!res.ok) {
               throw Error(`Not a new user`);
@@ -83,6 +70,29 @@ const Homepage = () => {
       <></>;
     }
   }, [user]);
+
+  // useEffect(() => {
+  //   const addNewUser = async () => {
+  //     if (userInData !== undefined) {
+  //       if (userInData === false) {
+  //         const randomUsername = Math.random().toString(36).substring(2, 13);
+  //         const { email, sub } = user;
+  //         await fetch("/create-profile", {
+  //           method: "POST",
+  //           headers: { "Content-Type": "application/json" },
+  //           body: JSON.stringify({ email, randomUsername, sub }),
+  //         });
+  //         const getUser = await fetch(`/user/${sub}`);
+  //         const loadedUser = await getUser.json();
+  //         console.log(`loadedUser:`, loadedUser.account);
+  //         return loadedUser.account;
+  //       } else if (userInData === true) {
+  //         <></>;
+  //       }
+  //     }
+  //   };
+  //   addNewUser();
+  // }, [user]);
 
   const breakPoints = [
     { width: 1, itemsToShow: 1 },

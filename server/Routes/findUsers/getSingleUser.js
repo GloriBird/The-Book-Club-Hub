@@ -13,9 +13,9 @@ const getSingleUser = async (req, res) => {
 
   const bookClubData = client.db("Book-Club");
 
-  const otherProfiles = req.params.id;
+  const otherProfiles = req.params.sub;
 
-  const singleUserProfile = await bookClubData.collection("Users").findOne({ username: otherProfiles });
+  const singleUserProfile = await bookClubData.collection("Users").findOne({ sub: otherProfiles });
 
   singleUserProfile
     ? (res.status(200).json({ status: 200, account: singleUserProfile, message: "Success, user logged in" }),
