@@ -20,10 +20,20 @@ const addBookClubMembers = async (req, res) => {
 
   const userAlreadyMember = getBookClub?.members.some((match) => profile?.sub.includes(match?.sub));
   const userAlreadyPending = getBookClub?.pendingMembers?.some((match) => profile?._id.includes(match?._id));
+  const userAlreadyRequestedToJoin = getBookClub?.joinRequestFromUsers?.some((match) =>
+    profile?._id.includes(match?._id)
+  );
 
-  if (userAlreadyMember === false && userAlreadyPending === false && getBookClub !== null) {
+  console.log(`userAlreadyRequestedToJoin:`, userAlreadyRequestedToJoin);
+
+  if (
+    userAlreadyMember === false &&
+    userAlreadyPending === false &&
+    userAlreadyRequestedToJoin === false &&
+    getBookClub !== null
+  ) {
     const newPendingMember = await bookClubData.collection("Book-Group").updateOne(
-      { _id: getBookClub._id },
+      { _id: getBookClub?._id },
       {
         $push: {
           pendingMembers: {
@@ -70,12 +80,17 @@ const addBookClubMembers = async (req, res) => {
       }),
       client.close()
     );
-  } else if (userAlreadyMember === true || userAlreadyPending === true || getBookClub === null) {
+  } else if (
+    userAlreadyMember === true ||
+    userAlreadyPending === true ||
+    userAlreadyRequestedToJoin === true ||
+    getBookClub === null
+  ) {
     return (
       res.status(409).json({
         status: 409,
         addedMember: username,
-        message: `Either this member is already in the bookclub, the book club does not exists, or member is already pending`,
+        message: `Either this member is already in the bookclub, has sent a join request, the book club does not exists, or you've already added member to pending`,
       }),
       client.close()
     );
