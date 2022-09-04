@@ -80,7 +80,7 @@ const acceptRejectUserRequest = async (req, res) => {
       { _id: getBookClub?._id },
       {
         $pull: { joinRequestFromUsers: getBookClub?.joinRequestFromUsers?.[idxOfJoinRequestFromUsers] },
-        $inc: { numberOfRequests: -1 },
+        $inc: { numberOfRequestsToJoin: -1 },
       }
     );
 
