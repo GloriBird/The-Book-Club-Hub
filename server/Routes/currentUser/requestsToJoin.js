@@ -18,13 +18,17 @@ const requestsToJoin = async (req, res) => {
   const getBookClub = await bookClubData?.collection("Book-Group").findOne({ bookClubName: bookClubName });
   const profile = await bookClubData?.collection("Users").findOne({ _id: _id });
 
-  const userAlreadyMember = getBookClub?.joinRequestFromUsers.some((match) => _id.includes(match?._id));
-  const userAlreadyPending = getBookClub?.joinRequestFromUsers.some((match) => _id.includes(match?._id));
+  const userAlreadyMember = getBookClub?.members.some((match) => profile?._id.includes(match?._id));
+  const userAlreadyPending = getBookClub?.pendingMembers.some((match) => profile?._id.includes(match?._id));
+  const userAlreadyRequestedToJoin = getBookClub?.joinRequestFromUsers?.some((match) =>
+    profile?._id.includes(match?._id)
+  );
 
   console.log(`userAlreadyMember:`, userAlreadyMember);
   console.log(`userAlreadyPending:`, userAlreadyPending);
+  console.log(`userAlreadyRequestedToJoin:`, userAlreadyRequestedToJoin);
 
-  if (userAlreadyMember === false && userAlreadyPending === false && getBookClub !== null) {
+  if (userAlreadyMember === false && userAlreadyPending === false && userAlreadyRequestedToJoin === false) {
     const requestFromUser = await bookClubData
       ?.collection("Users")
       .updateOne({ _id: _id }, { $push: { bookClubsToJoinPending: getBookClub } });
@@ -59,7 +63,7 @@ const requestsToJoin = async (req, res) => {
       }),
       client.close()
     );
-  } else if (userAlreadyMember === true || userAlreadyPending === true || getBookClub === null) {
+  } else if (userAlreadyMember === true || userAlreadyPending === true || userAlreadyRequestedToJoin === true) {
     return (
       res.status(409).json({
         status: 409,
