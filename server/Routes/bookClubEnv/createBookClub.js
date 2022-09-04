@@ -19,8 +19,8 @@ const createBookClub = async (req, res) => {
 
   // const bookClubArr = [];
   const { bookClubName, host, members } = req.body;
-  // const profile = await bookClubData.collection("Users").findOne({ username: host });
-  // console.log(`profile:`, profile);
+  const profile = await bookClubData.collection("Users").findOne({ _id: members?.[0]._id });
+  console.log(`profile:`, profile);
   // bookClubArr.push(req.body);
   console.log(`members ID:`, members?.[0]._id);
   req.body["_id"] = uuidv4();
@@ -49,6 +49,7 @@ const createBookClub = async (req, res) => {
   const readingList = [];
   const pendingMembers = [];
   const joinRequestFromUsers = [];
+  const hostingBookClubsCount = 0;
 
   if (bookClubNameAvailable && isThereHost && isBookClubNamed && containEmptyValue === false) {
     const getTrimmedData = (hostInfo) => {
@@ -89,6 +90,9 @@ const createBookClub = async (req, res) => {
         $push: { hostingBookClubs: BookClubCreated },
       }
     );
+
+    await bookClubData.collection("Users").updateOne({ _id: members?.[0]._id }, { $inc: { hostingBookClubsCount: 1 } });
+
     res
       .status(201)
       .json({ status: 201, bookClub: newBookClub, user: updateToHost, message: "Success, profile created" }),
