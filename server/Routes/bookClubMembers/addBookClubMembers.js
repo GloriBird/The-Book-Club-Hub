@@ -16,14 +16,15 @@ const addBookClubMembers = async (req, res) => {
   const { username, email, _id, joinedDate, bookClubName, sub } = req.body;
 
   const getBookClub = await bookClubData.collection("Book-Group").findOne({ bookClubName: bookClubName });
-
+  console.log(`getBookClub:`, getBookClub);
   const profile = await bookClubData.collection("Users").findOne({ _id: _id });
 
-  const userAlreadyMember =
-    profile !== undefined ? getBookClub?.members.some((match) => profile?.sub.includes(match?.sub)) : undefined;
+  const userAlreadyMember = getBookClub?.members.some((match) => profile?.sub.includes(match?.sub));
 
-  const userAlreadyPending =
-    profile !== undefined ? getBookClub?.pendingMembers?.some((match) => profile?.sub.includes(match?.sub)) : undefined;
+  console.log(`userAlreadyMember:`, userAlreadyMember);
+
+  const userAlreadyPending = getBookClub?.pendingMembers?.some((match) => profile?._id.includes(match?._id));
+  console.log(`userAlreadyPending:`, userAlreadyPending);
 
   if (userAlreadyMember === false && userAlreadyPending === false && getBookClub !== null) {
     const newPendingMember = await bookClubData.collection("Book-Group").updateOne(
@@ -61,11 +62,9 @@ const addBookClubMembers = async (req, res) => {
 
     await bookClubData
       .collection("Book-Group")
-      .updateOne({ _id: getBookClub._id }, { $set: { pendingMembersCount: getBookClub.pendingMembers.length + 1 } });
+      .updateOne({ _id: getBookClub._id }, { $inc: { pendingMembersCount: 1 } });
 
-    await bookClubData
-      .collection("Users")
-      .updateOne({ _id: _id }, { $set: { numberOfClubInvites: profile.bookClubInvites.length + 1 } });
+    await bookClubData.collection("Users").updateOne({ _id: _id }, { $inc: { numberOfClubInvites: 1 } });
 
     return (
       res.status(201).json({

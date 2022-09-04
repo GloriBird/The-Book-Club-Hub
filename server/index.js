@@ -35,7 +35,7 @@ app.post("/create-profile", createProfile);
 app.get("/signedInProfile/:sub", signedInProfile);
 app.delete("/delete-profile/:id", deleteProfile);
 app.patch("/update-profile", updateProfile);
-app.patch("/accept-invite", acceptRejectInvite);
+app.patch("/accept-reject-invite", acceptRejectInvite);
 // app.delete("/delete-profile/:id", deleteProfile);
 // app.post("/profile/add-favourite-books", addProfileFavouriteBooks);
 // app.get("/profile/current-favourite-books", getProfileFavouriteBooks);
