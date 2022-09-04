@@ -17,7 +17,7 @@ const removeMember = async (req, res) => {
   const findBookClub = await bookClubData.collection("Book-Group").find().toArray();
 
   const filterBookClubs = findBookClub.filter((group) => group.bookClubName === bookClubName);
-
+  console.log(`filterBookClubs:`, filterBookClubs?.[0]);
   //prevent host from deleting herself/himself
   const idxOfMemberToRemove =
     member[0] !== undefined
@@ -40,9 +40,22 @@ const removeMember = async (req, res) => {
       }
     );
 
+    if (member?.length > 0) {
+      const currentMember = await bookClubData.collection("Users").updateOne(
+        { _id: member?.[0]._id },
+        {
+          $pull: { bookClubs: filterBookClubs?.[0] },
+        }
+      );
+    }
+
     await bookClubData
       .collection("Book-Group")
-      .updateOne({ _id: filterBookClubs[0]?._id }, { $set: { memberCount: filterBookClubs[0]?.members.length - 1 } });
+      .updateOne({ _id: filterBookClubs[0]?._id }, { $inc: { memberCount: -1 } });
+
+    // await bookClubData
+    //   .collection("Book-Group")
+    //   .updateOne({ _id: filterBookClubs[0]?._id }, { $set: { memberCount: filterBookClubs[0]?.members.length - 1 } });
 
     return (
       res.status(201).json({
