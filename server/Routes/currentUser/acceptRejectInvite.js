@@ -23,21 +23,24 @@ const acceptRejectInvite = async (req, res) => {
 
   //For User
   const idxOfPendingBookClubToRemove = profile?.bookClubInvites.findIndex(
-    (object) => profile?.bookClubInvites?.bookClubName === bookClubName
+    (object) => object?.bookClubName === bookClubName
   );
 
   const userAlreadyMember = getBookClub?.members.some((match) => profile?._id.includes(match?._id));
   const userAlreadyPending = getBookClub?.pendingMembers?.some((match) => profile?._id.includes(match?._id));
 
-  console.log(`userAlreadyMember:`, userAlreadyMember);
-  console.log(`userAlreadyPending:`, userAlreadyPending);
+  // console.log(`accept:`, accept);
+  // console.log(`reject:`, reject);
+  // console.log(`userAlreadyMember:`, userAlreadyMember);
+  // console.log(`userAlreadyPending:`, userAlreadyPending);
+  console.log(`profile`, profile);
 
   if (accept === true && reject === false && userAlreadyMember === false && userAlreadyPending === true) {
     const currentMemberAccepted = await bookClubData.collection("Users").updateOne(
       { _id: _id },
       {
         $push: { bookClubs: getBookClub },
-        $pull: { bookClubInvites: profile?.bookClubInvites[idxOfPendingBookClubToRemove] },
+        $pull: { bookClubInvites: profile?.bookClubInvites?.[idxOfPendingBookClubToRemove] },
         $inc: { numberOfBookClubs: 1, numberOfClubInvites: -1 },
       }
     );
@@ -46,17 +49,19 @@ const acceptRejectInvite = async (req, res) => {
       { _id: getBookClub?._id },
       {
         $push: { members: profile },
-        $pull: { pendingMembers: getBookClub?.pendingMembers[idxOfPendingMemberToRemove] },
+        $pull: { pendingMembers: getBookClub?.pendingMembers?.[idxOfPendingMemberToRemove] },
         $inc: { memberCount: 1, pendingMembersCount: -1 },
       }
     );
 
-    res.status(201).json({
-      status: 201,
-      acceptOrReject: currentMemberAccepted,
-      message: "Success, user accepted the request to join",
-    }),
-      client.close();
+    return (
+      res.status(201).json({
+        status: 201,
+        acceptOrReject: currentMemberAccepted,
+        message: "Success, user accepted the request to join",
+      }),
+      client.close()
+    );
   } else if (accept === false && reject === true && userAlreadyMember === false && userAlreadyPending === true) {
     await bookClubData.collection("Users").updateOne(
       { _id: _id },
@@ -69,7 +74,7 @@ const acceptRejectInvite = async (req, res) => {
     await bookClubData.collection("Book-Group").updateOne(
       { _id: getBookClub?._id },
       {
-        $pull: { pendingMembers: getBookClub?.pendingMembers[idxOfPendingMemberToRemove] },
+        $pull: { pendingMembers: getBookClub?.pendingMembers?.[idxOfPendingMemberToRemove] },
         $inc: { pendingMembersCount: -1 },
       }
     );
@@ -82,7 +87,7 @@ const acceptRejectInvite = async (req, res) => {
       }),
       client.close()
     );
-  } else if (userAlreadyMember === true && userAlreadyPending === false) {
+  } else if ((accept || !accept || reject || !reject) && userAlreadyMember === true && userAlreadyPending === false) {
     return (
       res.status(409).json({
         status: 409,
@@ -91,7 +96,7 @@ const acceptRejectInvite = async (req, res) => {
       }),
       client.close()
     );
-  } else if (userAlreadyMember === false && userAlreadyPending === false) {
+  } else if ((accept || !accept || reject || !reject) && userAlreadyMember === false && userAlreadyPending === false) {
     return (
       res.status(409).json({
         status: 409,
