@@ -7,6 +7,7 @@ const { createProfile } = require("./routes/currentUser/createProfile");
 const { signedInProfile } = require("./routes/currentUser/signedInProfile");
 const { updateProfile } = require("./routes/currentUser/updateProfile");
 const { acceptRejectInvite } = require("./routes/currentUser/acceptRejectInvite");
+const { requestsToJoin } = require("./routes/currentUser/requestsToJoin");
 const { getSingleUser } = require("./routes/findUsers/getSingleUser");
 const { getAllUsers } = require("./routes/findUsers/getAllUsers");
 const { createBookClub } = require("./routes/bookClubEnv/createBookClub");
@@ -36,6 +37,8 @@ app.get("/signedInProfile/:sub", signedInProfile);
 app.delete("/delete-profile/:id", deleteProfile);
 app.patch("/update-profile", updateProfile);
 app.patch("/accept-reject-invite", acceptRejectInvite);
+app.patch("/request-to-join-book-club", requestsToJoin);
+
 // app.delete("/delete-profile/:id", deleteProfile);
 // app.post("/profile/add-favourite-books", addProfileFavouriteBooks);
 // app.get("/profile/current-favourite-books", getProfileFavouriteBooks);
