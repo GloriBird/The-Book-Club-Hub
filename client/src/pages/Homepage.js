@@ -62,7 +62,7 @@ const Homepage = () => {
               } else {
                 setTimedModalPopUp(false);
               }
-            }, 200);
+            }, 100);
             receiveCurrentUser(data.account);
           });
       });
