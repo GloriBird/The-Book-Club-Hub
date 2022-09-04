@@ -59,7 +59,7 @@ const createProfile = async (req, res) => {
           bookClubs,
           numberOfBookClubs: bookClubs.length,
           bookClubsToJoinPending,
-          numberOfRequestToJoin: bookClubsToJoinPending.length,
+          numberOfRequests: bookClubsToJoinPending.length,
         }
       )
     );
