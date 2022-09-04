@@ -42,7 +42,8 @@ const createProfile = async (req, res) => {
   );
 
   const bookClubInvites = [];
-  const numberOfClubInvites = [];
+  const bookClubs = [];
+  const bookClubsToJoinPending = [];
 
   if (isProfileNew === true && containEmptyValue === false && isEmail === true) {
     const newProfile = await bookClubData.collection("Users").insertOne(
@@ -55,6 +56,10 @@ const createProfile = async (req, res) => {
           sub,
           bookClubInvites,
           numberOfClubInvites: bookClubInvites.length,
+          bookClubs,
+          numberOfBookClubs: bookClubs.length,
+          bookClubsToJoinPending,
+          numberOfRequestToJoin: bookClubsToJoinPending.length,
         }
       )
     );

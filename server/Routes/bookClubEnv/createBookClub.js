@@ -17,10 +17,12 @@ const createBookClub = async (req, res) => {
 
   const getBookGroup = await bookClubData.collection("Book-Group").find().toArray();
 
-  const bookClubArr = [];
+  // const bookClubArr = [];
   const { bookClubName, host, members } = req.body;
-  bookClubArr.push(req.body);
-
+  // const profile = await bookClubData.collection("Users").findOne({ username: host });
+  // console.log(`profile:`, profile);
+  // bookClubArr.push(req.body);
+  console.log(`members ID:`, members?.[0]._id);
   req.body["_id"] = uuidv4();
   const newID = req.body["_id"];
 
@@ -37,7 +39,7 @@ const createBookClub = async (req, res) => {
     }
   });
 
-  console.log(`bookClubNameAvailable:`, bookClubNameAvailable);
+  // console.log(`bookClubNameAvailable:`, bookClubNameAvailable);
 
   const isBookClubNamed = bookClubName.trim().length > 0;
   const isThereHost = host?.trim().length > 0;
@@ -46,6 +48,7 @@ const createBookClub = async (req, res) => {
 
   const readingList = [];
   const pendingMembers = [];
+  const joinRequestFromUsers = [];
 
   if (bookClubNameAvailable && isThereHost && isBookClubNamed && containEmptyValue === false) {
     const getTrimmedData = (hostInfo) => {
@@ -63,23 +66,33 @@ const createBookClub = async (req, res) => {
 
     const trimmedMember = getTrimmedData(members);
 
-    const newBookClub = await bookClubData.collection("Book-Group").insertOne(
-      Object.assign(
-        { _id: newID },
-        { dateCreated: dateCreated },
-        {
-          bookClubName: bookClubName.replace(/\s+/g, " ").trim(),
-          host: host.replace(/\s+/g, " ").trim(),
-          members: trimmedMember,
-          memberCount: members.length,
-          readingList,
-          bookCount: readingList.length,
-          pendingMembers: pendingMembers,
-          pendingMembersCount: pendingMembers.length,
-        }
-      )
+    const BookClubCreated = {
+      bookClubName: bookClubName.replace(/\s+/g, " ").trim(),
+      host: host.replace(/\s+/g, " ").trim(),
+      members: trimmedMember,
+      memberCount: members.length,
+      readingList,
+      bookCount: readingList.length,
+      pendingMembers: pendingMembers,
+      pendingMembersCount: pendingMembers.length,
+      joinRequestFromUsers,
+      numberOfRequestsToJoin: joinRequestFromUsers.length,
+    };
+
+    const newBookClub = await bookClubData
+      .collection("Book-Group")
+      .insertOne(Object.assign({ _id: newID }, { dateCreated: dateCreated }, BookClubCreated));
+
+    const updateToHost = await bookClubData.collection("Users").updateOne(
+      { _id: members?.[0]._id },
+      {
+        $push: { hostingBookClubs: BookClubCreated },
+      }
     );
-    res.status(201).json({ status: 201, bookClub: newBookClub, message: "Success, profile created" }), client.close();
+    res
+      .status(201)
+      .json({ status: 201, bookClub: newBookClub, user: updateToHost, message: "Success, profile created" }),
+      client.close();
   } else if (
     bookClubNameAvailable === false ||
     isBookClubNamed === false ||
