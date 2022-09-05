@@ -108,7 +108,7 @@ const acceptRejectUserRequest = async (req, res) => {
       res.status(409).json({
         status: 409,
         profile: username,
-        message: `User is already member`,
+        message: `Either user is already a member, is pending or is did not request another join`,
       }),
       client.close()
     );

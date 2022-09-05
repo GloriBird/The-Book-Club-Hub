@@ -14,15 +14,14 @@ const removeMember = async (req, res) => {
   const { member, bookClubName } = req.body;
 
   const bookClubData = client.db("Book-Club");
-  const findBookClub = await bookClubData.collection("Book-Group").find().toArray();
+  const getBookClub = await bookClubData.collection("Book-Group").findOne({ bookClubName: bookClubName });
+  const profile = await bookClubData.collection("Users").findOne({ _id: member[0]?._id });
 
-  const filterBookClubs = findBookClub.filter((group) => group.bookClubName === bookClubName);
-  console.log(`filterBookClubs:`, filterBookClubs?.[0]);
-  //prevent host from deleting herself/himself
+  //For BookClub
   const idxOfMemberToRemove =
     member[0] !== undefined
-      ? filterBookClubs[0]?.members.findIndex((object) => {
-          if (filterBookClubs[0]?.host !== member[0]?.username) {
+      ? getBookClub?.members.findIndex((object) => {
+          if (getBookClub?.host !== member[0]?.username) {
             return object?._id === member[0]?._id;
           } else {
             return undefined;
@@ -30,47 +29,46 @@ const removeMember = async (req, res) => {
         })
       : undefined;
 
-  console.log(`idxOfMemberToRemove:`, idxOfMemberToRemove);
+  //For User
+  const idxOfBookClubToRemove = profile?.bookClubs.findIndex((object) => object?.bookClubName === bookClubName);
 
-  if (member?.length > 0) {
-    const removedMember = await bookClubData.collection("Book-Group").updateOne(
-      { _id: filterBookClubs[0]?._id },
+  const userAlreadyMember = getBookClub?.members.some((match) => member[0]?._id.includes(match?._id));
+
+  if (getBookClub?.host !== member[0]?.username && userAlreadyMember) {
+    const removedMemberFromBookClub = await bookClubData.collection("Book-Group").updateOne(
+      { _id: getBookClub?._id },
       {
-        $pull: { members: filterBookClubs[0]?.members[idxOfMemberToRemove] },
+        $pull: { members: getBookClub?.members[idxOfMemberToRemove] },
+        $inc: { memberCount: -1 },
       }
     );
 
-    if (member?.length > 0) {
-      const currentMember = await bookClubData.collection("Users").updateOne(
-        { _id: member?.[0]._id },
-        {
-          $pull: { bookClubs: filterBookClubs?.[0] },
-        }
-      );
-    }
-
-    await bookClubData
-      .collection("Book-Group")
-      .updateOne({ _id: filterBookClubs[0]?._id }, { $inc: { memberCount: -1 } });
-
-    // await bookClubData
-    //   .collection("Book-Group")
-    //   .updateOne({ _id: filterBookClubs[0]?._id }, { $set: { memberCount: filterBookClubs[0]?.members.length - 1 } });
+    await bookClubData.collection("Users").updateOne(
+      { _id: member[0]?._id },
+      {
+        $pull: { bookClubs: profile?.bookClubs[idxOfBookClubToRemove] },
+        $inc: { numberOfBookClubs: -1 },
+      }
+    );
 
     return (
       res.status(201).json({
         status: 201,
-        memberRemoved: removedMember,
-        Message: `Success, update has been made`,
+        removedFromBookClub: removedMemberFromBookClub,
+        Message: `Success, member has been removed`,
       }),
       client.close()
     );
-  } else if (member?.length < 1) {
+  } else if (
+    (getBookClub?.host === member[0]?.username && userAlreadyMember) ||
+    getBookClub?.host === member[0]?.username ||
+    userAlreadyMember === false
+  ) {
     return (
       res.status(409).json({
         status: 409,
         memberToRemove: member,
-        message: `No member was removed`,
+        message: `Either member was already removed or host is trying to remove themselve`,
       }),
       client.close()
     );
