@@ -29,6 +29,11 @@ const acceptRejectInvite = async (req, res) => {
   //   getBookClub?.bookClubName.includes(match?.bookClubName)
   // );
 
+  console.log(`accept`, accept);
+  console.log(`reject`, reject);
+  console.log(`userAlreadyMember`, userAlreadyMember);
+  console.log(`userAlreadyPending`, userAlreadyPending);
+
   if (accept === true && reject === false && userAlreadyMember === false && userAlreadyPending === true) {
     const currentMemberAccepted = await bookClubData.collection("Users").updateOne(
       { _id: _id },
@@ -81,7 +86,7 @@ const acceptRejectInvite = async (req, res) => {
       }),
       client.close()
     );
-  } else if ((accept || !accept || reject || !reject) && userAlreadyMember === true && userAlreadyPending) {
+  } else if ((accept || !accept || reject || !reject) && userAlreadyMember === true && userAlreadyPending === false) {
     return (
       res.status(409).json({
         status: 409,
