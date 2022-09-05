@@ -24,6 +24,8 @@ const { addBookClubReadingList } = require("./routes/bookClubReadingList/addBook
 const { getBookClubReadingList } = require("./routes/bookClubReadingList/getBookClubReadingList");
 const { removeBookInReadingList } = require("./routes/bookClubReadingList/removeBookInReadingList");
 const { deleteProfile } = require("./routes/currentUser/deleteProfile");
+const { addBooks } = require("./routes/bookListEnv/addBooks");
+
 const app = express();
 const port = 8000;
 
@@ -56,6 +58,8 @@ app.get("/browse-book-clubs", getAllBookClubs);
 // app.get("/my-book-clubs", getMainUserBookClubs) //Bookclub you're currently in, This can be done in the frontend, later on bookclub members are added on
 app.get("/book-club/:name", getSingleBookClub);
 app.delete("/delete-book-club/:name", deleteBookClub);
+app.post("/add-books", addBooks);
+// app.post("/book-list", getBookList);
 
 // // BOOKCLUB MEMBERS:
 app.patch("/add-member", addBookClubMembers);
