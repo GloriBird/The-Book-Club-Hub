@@ -68,7 +68,7 @@ const removeMember = async (req, res) => {
       res.status(409).json({
         status: 409,
         memberToRemove: member,
-        message: `Either member was already removed or host is trying to remove themself`,
+        message: `Either member was already removed or host is trying to remove themselve`,
       }),
       client.close()
     );
