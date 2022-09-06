@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { GlobalContext } from "../context/GlobalContext";
 import ChatConvo from "../components/Chat/conversation";
-
+import MessageChat from "../components/messages/MessageChat";
 import {
   Messenger,
   ChatMenu,
@@ -47,8 +47,20 @@ const Chat = () => {
           </ChatMenu>
           <ChatBox>
             <ChatBoxWrapper>
-              <ChatBoxTop></ChatBoxTop>
-              <ChatBoxBottom></ChatBoxBottom>
+              <ChatBoxTop>
+                <MessageChat message={true} />
+                <MessageChat own={true} />
+                <MessageChat message={true} />
+                <MessageChat message={true} />
+
+                <MessageChat message={true} />
+
+                <MessageChat message={true} />
+              </ChatBoxTop>
+              <ChatBoxBottom>
+                <textarea placeholder="write something"></textarea>
+                <ChatSubmitButton>Send</ChatSubmitButton>
+              </ChatBoxBottom>
             </ChatBoxWrapper>
           </ChatBox>
           <ChatOnline></ChatOnline>

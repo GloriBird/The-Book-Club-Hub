@@ -29,7 +29,7 @@ export const ChatMenuInput = styled.input`
   margin-top: 150%;
   padding: 10px 0;
   border: none;
-  border-bottom: 1px solid green;
+  border-bottom: 1px solid lightgray;
   /* display: none; */
 `;
 

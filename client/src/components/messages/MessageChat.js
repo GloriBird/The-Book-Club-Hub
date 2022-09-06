@@ -1,43 +1,47 @@
 import React from "react";
-import { format } from "timeago.js";
+// import { format } from "timeago.js";
 import {
   MessageWrapper,
   MessageTop,
   MessageImg,
   MessageText,
   MessageBottom,
-  currentUser,
-  otherText,
+  Wrapper,
+  CurrentUser,
+  OtherText,
 } from "./message.styled";
 
-const Message = ({ message, own }) => {
+const MessageChat = ({ message, own }) => {
   return (
     <>
       {own ? (
-        <currentUser>
+        <CurrentUser>
           <MessageTop>
-            <img
+            <MessageImg
               src="https://images.pexels.com/photos/3686769/pexels-photo-3686769.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
               alt=""
             />
-            <messageText>{message.text}</messageText>
+            <MessageText>
+              <p>Message text</p>
+              {/* {message.text} */}
+            </MessageText>
           </MessageTop>
-          <messageBottom></messageBottom>
-        </currentUser>
+          <messageBottom>1 hour ago</messageBottom>
+        </CurrentUser>
       ) : (
-        <otherText>
+        <OtherText>
           <MessageTop>
-            <img
+            <MessageImg
               src="https://images.pexels.com/photos/3686769/pexels-photo-3686769.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
               alt=""
             />
-            <messageText>{message.text}</messageText>
+            <messageText>hello</messageText>
           </MessageTop>
-          <messageBottom></messageBottom>
-        </otherText>
+          <MessageBottom></MessageBottom>
+        </OtherText>
       )}
     </>
   );
 };
 
-export default Message;
+export default MessageChat;

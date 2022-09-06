@@ -1,9 +1,13 @@
 import styled from "styled-components";
 
+export const Wrapper = styled.div`
+  display: flex;
+  border: 2px solid green;
+`;
+
 export const MessageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
 `;
 
 export const MessageTop = styled.div`
@@ -27,22 +31,27 @@ export const MessageText = styled.p`
 export const MessageBottom = styled.div`
   font-size: 12px;
   margin-top: 10px;
+  background-color: blue;
 `;
 
-export const currentUser = styled.div`
+export const CurrentUser = styled.div`
+  // .message.own
   display: flex;
   flex-direction: column;
   margin-top: 20px;
   align-items: flex-end;
+  padding-top: 1200px;
+  /* background-color: blue; */
 `;
 
-export const otherText = styled.div`
-  padding: 10px;
+export const OtherText = styled.div`
+  // .message.own .messageText
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
   border-radius: 20px;
-  background-color: #1877f2;
-  color: white;
   max-width: 300px;
-  align-items: flex-end;
+
   background-color: rgb(245, 241, 241);
-  color: black;
+  align-items: flex-start;
 `;
