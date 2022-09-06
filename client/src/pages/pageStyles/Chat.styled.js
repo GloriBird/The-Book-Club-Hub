@@ -25,7 +25,7 @@ export const ChatMenu = styled.div`
 `;
 
 export const ChatMenuInput = styled.input`
-  width: 90%;
+  width: 100%;
   margin-top: 150%;
   padding: 10px 0;
   border: none;
@@ -39,10 +39,12 @@ export const ChatBoxWrapper = styled.div`
   justify-content: space-between;
   position: relative;
   padding: 10px;
-  height: 100%;
+  height: 80%;
+  border: 2px solid green;
 `;
 
 export const ChatBoxTop = styled.div`
+  /* margin-top: 90%; */
   height: 100%;
   overflow-y: scroll;
   padding-right: 10px;
@@ -55,13 +57,13 @@ export const ChatBoxBottom = styled.div`
   justify-content: space-between;
 `;
 
-export const ChatMessageInput = styled.div`
-  width: 80%;
+export const ChatMessageInput = styled.textarea`
+  width: 90%;
   height: 90px;
   padding: 10px;
 `;
 
-export const ChatSubmitButton = styled.div`
+export const ChatSubmitButton = styled.button`
   width: 70px;
   height: 40px;
   border: none;

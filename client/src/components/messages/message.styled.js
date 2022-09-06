@@ -31,27 +31,28 @@ export const MessageText = styled.p`
 export const MessageBottom = styled.div`
   font-size: 12px;
   margin-top: 10px;
-  background-color: blue;
+  /* background-color: blue; */
 `;
 
 export const CurrentUser = styled.div`
-  // .message.own
   display: flex;
   flex-direction: column;
   margin-top: 20px;
   align-items: flex-end;
-  padding-top: 1200px;
+  padding-top: 1100px;
   /* background-color: blue; */
+`;
+export const MessageFromFriend = styled.p`
+  padding: 10px;
+  border-radius: 20px;
+  background-color: lightcoral;
+  color: white;
+  max-width: 300px;
 `;
 
 export const OtherText = styled.div`
-  // .message.own .messageText
   display: flex;
   flex-direction: column;
   margin-top: 20px;
-  border-radius: 20px;
-  max-width: 300px;
-
-  background-color: rgb(245, 241, 241);
   align-items: flex-start;
 `;
