@@ -11,6 +11,7 @@ import SignUp from "../pages/SignUp";
 import Profile from "../pages/Profile";
 import Chat from "../pages/chat";
 import BookClubConversation from "../pages/BookClubConversation";
+// import { UsersBookClubs } from "./UsersBookClubs";
 import Footer from "../components/Footer";
 // import { CurrentUserContext } from "../context/CurrentUserContext";
 
@@ -38,6 +39,7 @@ const App = () => {
           {/* <Route exact path="/Chat" element={hasLoaded ? <Chat /> : <Navigate to="/" />}></Route> */}
 
           <Route exact path="/BookClubConversation" element={<BookClubConversation />}></Route>
+          {/* <Route exact path="/BookClubConversation/:bookClubName" element={<UsersBookClubs />}></Route> */}
 
           <Route exact path="/Login" element={<Login />}></Route>
           <Route exact path="/SignUp" element={<SignUp />}></Route>

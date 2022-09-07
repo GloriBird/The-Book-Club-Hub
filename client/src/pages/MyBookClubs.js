@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 
 import { Container, CreateClubButton, ChatButton } from "./pageStyles/MyBookClubs.styled";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -7,6 +7,7 @@ import PopUpModal from "../components/PopUpModal";
 import { GlobalContext } from "../context/GlobalContext";
 import styled from "styled-components";
 import { CurrentUserContext } from "../context/CurrentUserContext";
+import { UsersBookClubs } from "../components/UsersBookClubs";
 
 const MyBookClubs = () => {
   const userData = useContext(CurrentUserContext);
@@ -14,7 +15,9 @@ const MyBookClubs = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [bookClubName, setBookClubName] = useState("");
   const [toggleModal, setToggleModal] = useState(false);
-  const navigate = useNavigate();
+  // const { bookClubID } = useParams();
+
+  // const navigate = useNavigate();
 
   const { state } = userData;
 
@@ -55,9 +58,9 @@ const MyBookClubs = () => {
       });
   };
 
-  const navigateToChat = () => {
-    navigate("/BookClubConversation");
-  };
+  // const navigateToChat = () => {
+  //   navigate("/BookClubConversation");
+  // };
 
   return (
     <Container>
@@ -106,7 +109,8 @@ const MyBookClubs = () => {
           </CreateButton>
         </BookForm>
       </PopUpModal>
-      <ChatButton onClick={navigateToChat}>Go to Chat</ChatButton>
+      {/* <ChatButton onClick={navigateToChat}>Go to Chat</ChatButton> */}
+      <UsersBookClubs />
     </Container>
   );
 };

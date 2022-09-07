@@ -1,4 +1,4 @@
-import { Container } from "./pageStyles/BrowseBooks.styled";
+// import { Container } from "./pageStyles/BrowseBooks.styled";
 import React, { useEffect, useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { GlobalContext } from "../context/GlobalContext";
@@ -14,9 +14,9 @@ const BrowseBooks = () => {
   console.log(`_id:`, _id, `username:`, username, `email:`, email);
 
   return (
-    <Container>
+    <div>
       <p>Browse Books</p>
-    </Container>
+    </div>
   );
 };
 

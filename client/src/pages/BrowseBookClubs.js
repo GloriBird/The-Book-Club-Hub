@@ -1,4 +1,4 @@
-import { Container } from "./pageStyles/BrowseBookClubs.styled";
+import { Container } from "./pageStyles/BrowseBooks.styled";
 import React, { useEffect, useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 
@@ -12,9 +12,9 @@ const BrowseBookClubs = () => {
   console.log(`_id:`, _id, `username:`, username, `email:`, email);
 
   return (
-    <Container>
+    <div>
       <p>Browse Book Clubs</p>
-    </Container>
+    </div>
   );
 };
 

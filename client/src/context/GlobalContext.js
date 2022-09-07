@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { CurrentUserContext } from "./CurrentUserContext";
 
 export const GlobalContext = createContext();
 
@@ -9,11 +10,16 @@ export const GlobalProvider = ({ children }) => {
   const [allUsernames, setAllUsernames] = useState();
   const [allBookClub, setAllBookClubs] = useState();
   const [allBookClubNames, setAllBookClubNames] = useState();
+  const userData = useContext(CurrentUserContext);
 
   const [isAllUsersLoading, setIsAllUsersLoading] = useState(true);
   const { user, isAuthenticated } = useAuth0();
 
-  // console.log(`user`, user);
+  const {
+    state: { _id, username, email },
+  } = userData;
+
+  console.log(`username`, username);
   useEffect(() => {
     fetch("/weeklyTrendingBooks")
       .then((res) => res.json())
@@ -54,7 +60,8 @@ export const GlobalProvider = ({ children }) => {
       .then((res) => res.json())
       .then((data) => {
         const getAllBookClubNames = data.BookClubs.map(({ bookClubName }) => bookClubName);
-        // console.log(`getAllBookClubNames:`, getAllBookClubNames);
+
+        // setHostingBC(getHostingBC);
         setAllBookClubNames(getAllBookClubNames);
         // console.log(`browse-book-clubs:`, data.BookClubs);
         setAllBookClubs(data.BookClubs);
