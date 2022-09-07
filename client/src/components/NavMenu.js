@@ -32,6 +32,11 @@ const NavMenu = () => {
         {isAuthenticated && (
           <>
             <li>
+              <StyledNavLink to="/SearchForMembers">
+                <h3>Search New Members</h3>
+              </StyledNavLink>
+            </li>
+            <li>
               <StyledNavLink to="/MyBookClubs">
                 <h3>My Book Club(s)</h3>
               </StyledNavLink>
@@ -41,11 +46,6 @@ const NavMenu = () => {
                 <h3>Profile</h3>
               </StyledNavLink>
             </li>
-            {/* <li>
-              <StyledNavLink to="/BookClubConversation">
-                <h3>Book Club Convo</h3>
-              </StyledNavLink>
-            </li> */}
           </>
         )}
         {error && <p>Login Error</p>}

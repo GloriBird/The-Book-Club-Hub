@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+
 import { SideBar } from "../components/SideBar";
 import {
   CardGrid,
@@ -12,25 +14,29 @@ import {
 const BookClubConversation = () => {
   const userData = useContext(CurrentUserContext);
   const [userMessage, setUserMessage] = useState();
+  const { bookClubID } = useParams();
   const messageRef = useRef();
 
-  // const {
-  //   state: { _id, username, email },
-  // } = userData;
+  const {
+    state: { _id, username, email, bookClubs, hostingBookClubs },
+  } = userData;
 
-  // console.log(`_id:`, _id, `username:`, username, `email:`, email);
+  console.log(`hostingBookClubs:`, hostingBookClubs);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(`messageRef.current.value:`, messageRef.current.value);
     setUserMessage(messageRef.current.value);
   };
 
-  console.log(`userMessage:`, userMessage);
+  const bookGroup = hostingBookClubs !== null && hostingBookClubs?.filter((x) => x?._id === bookClubID);
+
+  console.log(`bookGroup:`, bookGroup);
+
   return (
     <>
       <CardGrid>
-        <p>Book Club Conversation</p>
-
+        <p>{bookGroup[0]?.bookClubName}</p>
         <ChatForm onSubmit={handleSubmit}>
           <p>{userMessage}</p>
           <InputAndButtonWrapper>

@@ -39,7 +39,6 @@ const MyBookClubs = () => {
   const maxCharacters = 50;
 
   const createBookClub = (e) => {
-    // e.preventDefault();
     setIsLoading(true);
     setBookClubName("");
     fetch("/create-book-club", {
@@ -109,7 +108,6 @@ const MyBookClubs = () => {
           </CreateButton>
         </BookForm>
       </PopUpModal>
-      {/* <ChatButton onClick={navigateToChat}>Go to Chat</ChatButton> */}
       <UsersBookClubs />
     </Container>
   );

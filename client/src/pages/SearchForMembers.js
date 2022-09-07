@@ -3,8 +3,8 @@ import React, { useEffect, useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { GlobalContext } from "../context/GlobalContext";
 
-const BrowseBookClubs = () => {
-  const { allBookClub } = useContext(GlobalContext);
+const SearchForMembers = () => {
+  const { allUsers } = useContext(GlobalContext);
 
   const userData = useContext(CurrentUserContext);
 
@@ -12,19 +12,16 @@ const BrowseBookClubs = () => {
     state: { _id, username, email },
   } = userData;
 
-  console.log(`allBookClub`, allBookClub);
-
   return (
     <Container>
-      {allBookClub?.map((x, idx) => (
+      {allUsers?.map((x, idx) => (
         <List key={idx}>
-          <img src={`https://robohash.org/${x?.bookClubName}`} alt="" />
-          <p>{x?.bookClubName}</p>
-          <p>Hosted by {x?.host}</p>
+          <img src={`https://robohash.org/${x?.username}`} alt="" />
+          <p>{x?.username}</p>
         </List>
       ))}
     </Container>
   );
 };
 
-export default BrowseBookClubs;
+export default SearchForMembers;
