@@ -1,5 +1,7 @@
 import React, { useState, useContext } from "react";
-import { Container, CreateClubButton } from "./pageStyles/MyBookClubs.styled";
+import { Navigate, useNavigate } from "react-router-dom";
+
+import { Container, CreateClubButton, ChatButton } from "./pageStyles/MyBookClubs.styled";
 import { useAuth0 } from "@auth0/auth0-react";
 import PopUpModal from "../components/PopUpModal";
 import { GlobalContext } from "../context/GlobalContext";
@@ -11,8 +13,8 @@ const MyBookClubs = () => {
   const { allUsers, allBookClubNames } = useContext(GlobalContext);
   const [isLoading, setIsLoading] = useState(false);
   const [bookClubName, setBookClubName] = useState("");
-
   const [toggleModal, setToggleModal] = useState(false);
+  const navigate = useNavigate();
 
   const { state } = userData;
 
@@ -51,6 +53,10 @@ const MyBookClubs = () => {
       .then(() => {
         setIsLoading(false);
       });
+  };
+
+  const navigateToChat = () => {
+    navigate("/BookClubConversation");
   };
 
   return (
@@ -100,7 +106,7 @@ const MyBookClubs = () => {
           </CreateButton>
         </BookForm>
       </PopUpModal>
-      {}
+      <ChatButton onClick={navigateToChat}>Go to Chat</ChatButton>
     </Container>
   );
 };

@@ -3,6 +3,7 @@ import { Menu } from "./styles/NavMenu.styled";
 import LoginButton from "./LoginButton";
 import SignOutButton from "./SignOutButton";
 import SignUpButton from "./SignUpButton";
+import BookClubConversation from "../pages/BookClubConversation";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const NavMenu = () => {
@@ -40,6 +41,11 @@ const NavMenu = () => {
                 <h3>Profile</h3>
               </StyledNavLink>
             </li>
+            {/* <li>
+              <StyledNavLink to="/BookClubConversation">
+                <h3>Book Club Convo</h3>
+              </StyledNavLink>
+            </li> */}
           </>
         )}
         {error && <p>Login Error</p>}

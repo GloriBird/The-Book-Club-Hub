@@ -10,9 +10,18 @@ import BrowseBookClubs from "../pages/BrowseBookClubs";
 import SignUp from "../pages/SignUp";
 import Profile from "../pages/Profile";
 import Chat from "../pages/chat";
+import BookClubConversation from "../pages/BookClubConversation";
 import Footer from "../components/Footer";
+// import { CurrentUserContext } from "../context/CurrentUserContext";
 
 const App = () => {
+  // const userData = useContext(CurrentUserContext);
+
+  // const {
+  //   state: { _id, username, email },
+  // } = userData;
+
+  // console.log(`_id:`, _id, `username:`, username, `email:`, email);
   return (
     <>
       <GlobalStyles />
@@ -27,6 +36,8 @@ const App = () => {
           <Route exact path="/Chat" element={<Chat />}></Route>
 
           {/* <Route exact path="/Chat" element={hasLoaded ? <Chat /> : <Navigate to="/" />}></Route> */}
+
+          <Route exact path="/BookClubConversation" element={<BookClubConversation />}></Route>
 
           <Route exact path="/Login" element={<Login />}></Route>
           <Route exact path="/SignUp" element={<SignUp />}></Route>
