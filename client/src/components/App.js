@@ -10,7 +10,7 @@ import BrowseBookClubs from "../pages/BrowseBookClubs";
 import SignUp from "../pages/SignUp";
 import Profile from "../pages/Profile";
 import Chat from "../pages/chat";
-import BookClubPage from "../components/BookClubEnv/BookClubPage";
+import BookClub from "../pages/BookClub";
 import BookClubConversation from "../pages/BookClubConversation";
 import Footer from "../components/Footer";
 import SearchForMembers from "../pages/SearchForMembers";
@@ -39,7 +39,7 @@ const App = () => {
           <Route exact path="/Chat" element={<Chat />}></Route>
 
           {/* <Route exact path="/Chat" element={hasLoaded ? <Chat /> : <Navigate to="/" />}></Route> */}
-          <Route exact path="/BookClubPage/:bookClubID" element={<BookClubPage />}></Route>
+          <Route exact path="/BookClub/:bookClubID" element={<BookClub />}></Route>
 
           <Route exact path="/BookClubConversation/:bookClubID" element={<BookClubConversation />}></Route>
 

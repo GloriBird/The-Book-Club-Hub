@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import styled from "styled-components";
 import { Navigate, useNavigate, useParams, Link } from "react-router-dom";
-import BookClubPage from "../components/BookClubEnv/BookClubPage";
+import BookClub from "../pages/BookClub";
 
 export const UsersBookClubs = () => {
   const userData = useContext(CurrentUserContext);
@@ -21,7 +21,7 @@ export const UsersBookClubs = () => {
       <Wrapper>
         {hostingBookClubs?.map((group, idx) => (
           <List key={idx}>
-            <Link to={`/BookClubPage/${group?._id}`}>
+            <Link to={`/BookClub/${group?._id}`}>
               <p> {group?.bookClubName}</p>
             </Link>
           </List>
