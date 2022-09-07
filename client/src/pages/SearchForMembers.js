@@ -9,7 +9,7 @@ const SearchForMembers = () => {
   const userData = useContext(CurrentUserContext);
   const [selectedUser, setSelectedUser] = useState();
   const [toggleModal, setToggleModal] = useState(false);
-
+  const [isAdded, setIsAdded] = useState(false);
   const {
     state: { _id, username, email, hostingBookClubs },
   } = userData;
@@ -34,6 +34,7 @@ const SearchForMembers = () => {
     e.preventDefault();
     setToggleModal(true);
     const bookGroup = allUsers !== undefined && allUsers?.filter((x) => x?.username.includes(e.target.id));
+    setIsAdded(true);
     setSelectedUser({
       username: bookGroup[0]?.username,
       email: bookGroup[0]?.email,
@@ -43,27 +44,48 @@ const SearchForMembers = () => {
     });
   };
 
-  console.log(`selectedUser:`, selectedUser);
+  // console.log(`selectedUser:`, selectedUser);
+  console.log(`isAdded:`, isAdded);
 
   const handleRemoveRequest = (e) => {
     e.preventDefault();
     setToggleModal(true);
-
-    console.log(`e:`, e.target.id);
+    const bookGroup = allUsers !== undefined && allUsers?.filter((x) => x?.username.includes(e.target.id));
+    setIsAdded(false);
+    setSelectedUser({
+      username: bookGroup[0]?.username,
+      email: bookGroup[0]?.email,
+      _id: bookGroup[0]?._id,
+      joinedDate: bookGroup[0]?.joinedDate,
+      sub: bookGroup[0]?.sub,
+    });
   };
 
   const handleSelection = (e) => {
-    console.log(`all:`, { ...selectedUser, bookClubName: e.target.innerHTML });
-    // e.preventDefault();
-    fetch("/add-member", {
-      method: "PATCH",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ ...selectedUser, bookClubName: e.target.innerHTML }),
-    }).then((response) => {
-      return response.json();
-    });
+    if (isAdded === true) {
+      fetch("/add-member", {
+        method: "PATCH",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ ...selectedUser, bookClubName: e.target.innerHTML }),
+      }).then((response) => {
+        setTimeout(() => {
+          setToggleModal(false);
+        }, 200);
+        return response.json();
+      });
+    } else if (isAdded === false) {
+      fetch("/remove-request", {
+        method: "PATCH",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ ...selectedUser, bookClubName: e.target.innerHTML }),
+      }).then((response) => {
+        setTimeout(() => {
+          setToggleModal(false);
+        }, 200);
+        return response.json();
+      });
+    }
   };
-  // console.log(`hostingBookClubs:`, hostingBookClubs[0]?.bookClubName);
 
   return (
     <Container>
@@ -85,7 +107,7 @@ const SearchForMembers = () => {
       ))}
 
       <PopUpModal trigger={toggleModal} setTrigger={setToggleModal}>
-        {hostingBookClubs.map((x) => (
+        {hostingBookClubs?.map((x) => (
           <button onClick={handleSelection}>{x?.bookClubName}</button>
         ))}
       </PopUpModal>
