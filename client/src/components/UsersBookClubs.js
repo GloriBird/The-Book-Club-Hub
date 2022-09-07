@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import styled from "styled-components";
 import { Navigate, useNavigate, useParams, Link } from "react-router-dom";
+import BookClubPage from "../components/BookClubEnv/BookClubPage";
 
 export const UsersBookClubs = () => {
   const userData = useContext(CurrentUserContext);
@@ -13,40 +14,52 @@ export const UsersBookClubs = () => {
 
   // console.log(`hostingBookClubs`);
 
-  const navigateToChat = (e) => {
-    // console.log(e.target);
-    // const test = hostingBookClubs.filter((x) => x.bookClubName.includes(bookClubName));
-    console.log(`test:`, hostingBookClubs);
-    // navigate(`/BookClubConversation:${bookClubID}`);
-  };
-
-  // console.log(`hostingBookClubs:`, hostingBookClubs);
-
   return (
-    <div>
-      {hostingBookClubs?.map((group, idx) => (
-        <List key={idx}>
-          <Link to={`/BookClubConversation/${group?._id}`}>
-            <p>{group?.bookClubName}</p>
-            {/* <p>{bookClubID}</p> */}
-            {/* <p>{group?._id}</p> */}
-          </Link>
-        </List>
-      ))}
-    </div>
-    // <div>
-    //   {hostingBookClubs?.map((group, idx) => (
-    //     <List key={idx}>
-    //       <button onClick={navigateToChat}>{group?.bookClubName}</button>
-    //       <button onClick={navigateToChat}>{group?._id}</button>
-    //     </List>
-    //   ))}
-    // </div>
+    <>
+      <HostingCategory>Hosting</HostingCategory>
+
+      <Wrapper>
+        {hostingBookClubs?.map((group, idx) => (
+          <List key={idx}>
+            <Link to={`/BookClubPage/${group?._id}`}>
+              <p> {group?.bookClubName}</p>
+            </Link>
+          </List>
+        ))}
+        {/* {hostingBookClubs?.map((group, idx) => (
+          <List key={idx}>
+            <Link to={`/BookClubConversation/${group?._id}`}>
+              <p> {group?.bookClubName}</p>
+            </Link>
+          </List>
+        ))} */}
+      </Wrapper>
+    </>
   );
 };
 
+const HostingCategory = styled.h3`
+  padding-top: 5%;
+`;
+
+const Wrapper = styled.ol`
+  display: flex;
+  flex-direction: column;
+  border: 2px solid red;
+  width: 100vw;
+  height: 20vh;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+`;
+
 const List = styled.li`
-  margin-bottom: 2000;
   list-style: none;
-  z-index: -1000;
+  /* border: 2px solid green; */
+  padding: 0 2%;
 `;

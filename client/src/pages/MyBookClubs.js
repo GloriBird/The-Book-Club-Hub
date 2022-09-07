@@ -8,16 +8,12 @@ import { GlobalContext } from "../context/GlobalContext";
 import styled from "styled-components";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { UsersBookClubs } from "../components/UsersBookClubs";
-
 const MyBookClubs = () => {
   const userData = useContext(CurrentUserContext);
   const { allUsers, allBookClubNames } = useContext(GlobalContext);
   const [isLoading, setIsLoading] = useState(false);
   const [bookClubName, setBookClubName] = useState("");
   const [toggleModal, setToggleModal] = useState(false);
-  // const { bookClubID } = useParams();
-
-  // const navigate = useNavigate();
 
   const { state } = userData;
 
@@ -56,10 +52,6 @@ const MyBookClubs = () => {
         setIsLoading(false);
       });
   };
-
-  // const navigateToChat = () => {
-  //   navigate("/BookClubConversation");
-  // };
 
   return (
     <Container>
@@ -109,6 +101,7 @@ const MyBookClubs = () => {
         </BookForm>
       </PopUpModal>
       <UsersBookClubs />
+      {/* <BookClubPage /> */}
     </Container>
   );
 };

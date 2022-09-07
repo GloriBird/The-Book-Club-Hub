@@ -1,4 +1,4 @@
-import { Container, List } from "./pageStyles/BrowseBookClubs.styled";
+import { Container, List, Add, Minus, Wrapper } from "./pageStyles/BrowseBookClubs.styled";
 import React, { useEffect, useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { GlobalContext } from "../context/GlobalContext";
@@ -17,7 +17,11 @@ const SearchForMembers = () => {
       {allUsers?.map((x, idx) => (
         <List key={idx}>
           <img src={`https://robohash.org/${x?.username}`} alt="" />
-          <p>{x?.username}</p>
+          <Wrapper>
+            <Minus />
+            <p>{x?.username}</p>
+            <Add />
+          </Wrapper>
         </List>
       ))}
     </Container>
