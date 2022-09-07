@@ -16,9 +16,9 @@ const BookClubPage = () => {
     actions: { receiveCurrentUser, receiveNewUserName },
   } = userData;
 
-  const bookGroup = hostingBookClubs !== null && allBookClub?.filter((x) => x?._id === bookClubID);
+  console.log(`allBookClub:`, allBookClub);
 
-  console.log(`bookClubName:`, bookGroup);
+  const bookGroup = hostingBookClubs !== null && allBookClub?.filter((x) => x?._id === bookClubID);
 
   return (
     <Wrapper>
