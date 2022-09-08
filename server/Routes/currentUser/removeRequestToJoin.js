@@ -18,58 +18,55 @@ const removeRequestToJoin = async (req, res) => {
   const getBookClub = await bookClubData?.collection("Book-Group").findOne({ bookClubName: bookClubName });
   const profile = await bookClubData?.collection("Users").findOne({ _id: _id });
 
-  const userAlreadyMember = getBookClub?.members.some((match) => profile?._id.includes(match?._id));
-  const userAlreadyPending = getBookClub?.pendingMembers.some((match) => profile?._id.includes(match?._id));
-  const userAlreadyRequestedToJoin = getBookClub?.joinRequestFromUsers?.some((match) =>
-    profile?._id.includes(match?._id)
+  const pendingToJoin = profile?.bookClubsToJoinPending?.some((match) => getBookClub?._id.includes(match?._id));
+
+  const requestStillPendingForHost = getBookClub?.joinRequestFromUsers?.some((match) =>
+    username.includes(match?.username)
   );
 
-  console.log(`userAlreadyMember:`, userAlreadyMember);
-  console.log(`userAlreadyPending:`, userAlreadyPending);
-  console.log(`userAlreadyRequestedToJoin:`, userAlreadyRequestedToJoin);
+  //For user
+  const idxOfjoinRequestFromUsers = profile?.bookClubsToJoinPending?.findIndex(
+    (object) => object.bookClubName === bookClubName
+  );
+  //For Book Club
+  const idxOfPendingToJoinRequest = getBookClub?.joinRequestFromUsers?.findIndex(
+    (object) => object?.username === username
+  );
 
-  if (userAlreadyMember === false && userAlreadyPending === false && userAlreadyRequestedToJoin === false) {
-    const requestFromUser = await bookClubData
-      ?.collection("Users")
-      .updateOne({ _id: _id }, { $push: { bookClubsToJoinPending: getBookClub } });
+  console.log(`idxOfPendingToJoinRequest:`, idxOfPendingToJoinRequest);
+  console.log(`idxOfjoinRequestFromUsers:`, idxOfjoinRequestFromUsers);
 
-    const bookClubReceivingRequest = await bookClubData?.collection("Book-Group").updateOne(
-      { _id: getBookClub?._id },
+  if (pendingToJoin && requestStillPendingForHost) {
+    const removeRequestToBookClub = await bookClubData.collection("Users").updateOne(
+      { _id: _id },
       {
-        $push: {
-          joinRequestFromUsers: {
-            username,
-            email,
-            _id,
-            joinedDate,
-            sub,
-          },
-        },
+        $pull: { bookClubsToJoinPending: profile?.bookClubsToJoinPending?.[idxOfjoinRequestFromUsers] },
+        $inc: { numberOfRequests: -1 },
       }
     );
 
-    await bookClubData.collection("Users").updateOne({ _id: _id }, { $inc: { numberOfRequests: 1 } });
-
-    await bookClubData
-      .collection("Book-Group")
-      .updateOne({ _id: getBookClub?._id }, { $inc: { numberOfRequestsToJoin: 1 } });
+    const removeRequestInBookClubData = await bookClubData.collection("Book-Group").updateOne(
+      { _id: getBookClub?._id },
+      {
+        $pull: { joinRequestFromUsers: getBookClub?.joinRequestFromUsers?.[idxOfPendingToJoinRequest] },
+        $inc: { numberOfRequestsToJoin: -1 },
+      }
+    );
 
     return (
       res.status(201).json({
         status: 201,
-        userRequest: requestFromUser,
-        bookClubRecievedResponse: bookClubReceivingRequest,
-        Message: `Success, request to join is submitted`,
+        requestRemovedForUser: removeRequestToBookClub,
+        removedRequestInBC: removeRequestInBookClubData,
+        Message: `Success, request has been removed`,
       }),
       client.close()
     );
-  } else if (userAlreadyMember === true || userAlreadyPending === true || userAlreadyRequestedToJoin === true) {
+  } else if (pendingToJoin === false && requestStillPendingForHost === false) {
     return (
       res.status(409).json({
         status: 409,
-        userRequest: username,
-        bookClubRecievedResponse: bookClubName,
-        message: `Either this member is already in the bookclub, the book club does not exists, or member is already pending`,
+        message: `Either this request is already removed or member accepted or rejected the request`,
       }),
       client.close()
     );
