@@ -13,36 +13,36 @@ const NavMenu = () => {
     <Menu>
       <ol>
         <li>
-          <StyledNavLink to="/">
+          <StyledNavLink reloadDocument to="/">
             <h3>Book Club Hub</h3>
           </StyledNavLink>
         </li>
         {/* searchbar */}
 
         <li>
-          <StyledNavLink to="/BrowseBooks">
+          <StyledNavLink reloadDocument to="/BrowseBooks">
             <h3>Browse Books</h3>
           </StyledNavLink>
         </li>
         <li>
-          <StyledNavLink to="/BrowseBookClubs">
+          <StyledNavLink reloadDocument to="/BrowseBookClubs">
             <h3>Browse Clubs</h3>
           </StyledNavLink>
         </li>
         {isAuthenticated && (
           <>
             <li>
-              <StyledNavLink to="/SearchForMembers">
+              <StyledNavLink reloadDocument to="/SearchForMembers">
                 <h3>Search New Members</h3>
               </StyledNavLink>
             </li>
             <li>
-              <StyledNavLink to="/MyBookClubs">
+              <StyledNavLink reloadDocument to="/MyBookClubs">
                 <h3>My Book Club(s)</h3>
               </StyledNavLink>
             </li>
             <li>
-              <StyledNavLink to="/Profile">
+              <StyledNavLink reloadDocument to="/Profile">
                 <h3>Profile</h3>
               </StyledNavLink>
             </li>

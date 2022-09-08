@@ -10,37 +10,39 @@ import { CurrentUserContext } from "../context/CurrentUserContext";
 import { UsersBookClubs } from "../components/UsersBookClubs";
 const MyBookClubs = () => {
   const userData = useContext(CurrentUserContext);
-  const { allUsers, allBookClubNames } = useContext(GlobalContext);
+  const { allUsers, allBookClubNames, allBookClub } = useContext(GlobalContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [bookClubName, setBookClubName] = useState("");
+  const [currentBookClubName, setCurrentBookClubName] = useState("");
   const [toggleModal, setToggleModal] = useState(false);
 
-  const { state } = userData;
-
-  const host = state.username;
+  // const { state } = userData;
+  const {
+    state: { _id, joinedDate, username, email, sub, hostingBookClubs, bookClubInvites },
+  } = userData;
+  // const host = state.username;
 
   const members = [
     {
-      _id: state._id,
-      joinedDate: state.joinedDate,
-      username: state.username,
-      email: state.email,
-      sub: state.sub,
+      _id,
+      joinedDate,
+      username,
+      email,
+      sub,
     },
   ];
 
   const allBookClubNamesLowerCased = allBookClubNames?.map((BC_Name) => BC_Name?.replace(/\s+/g, "").toLowerCase());
-  const typedBookClubNamesLowerCased = bookClubName?.replace(/\s+/g, "").toLowerCase();
+  const typedBookClubNamesLowerCased = currentBookClubName?.replace(/\s+/g, "").toLowerCase();
 
   const maxCharacters = 50;
 
   const createBookClub = (e) => {
     setIsLoading(true);
-    setBookClubName("");
+    setCurrentBookClubName("");
     fetch("/create-book-club", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ bookClubName: bookClubName, host: host, members: members }),
+      body: JSON.stringify({ bookClubName: currentBookClubName, host: username, members }),
     })
       .then((response) => {
         if (!response.ok) {
@@ -53,6 +55,8 @@ const MyBookClubs = () => {
       });
   };
 
+  console.log(`hostingBookClubs:`, hostingBookClubs);
+  // console.log(`allBookClub:`, allBookClub);
   return (
     <Container>
       <p>My Book Clubs</p>
@@ -73,26 +77,26 @@ const MyBookClubs = () => {
               name="ClubName"
               maxLength="50"
               placeholder="Enter at least 2 characters"
-              value={bookClubName}
-              onChange={(e) => setBookClubName(e.target.value)}
+              value={currentBookClubName}
+              onChange={(e) => setCurrentBookClubName(e.target.value)}
               required
             />
             {allBookClubNamesLowerCased?.includes(typedBookClubNamesLowerCased) && (
               <p>This username has already been taken.</p>
             )}
           </label>
-          <p>Characters left: {maxCharacters - bookClubName.length}</p>
+          <p>Characters left: {maxCharacters - currentBookClubName.length}</p>
           <CreateButton
             type="submit"
             value="Create"
-            changeOpacity={bookClubName.replace(/\s+/g, "").trim().length > 1}
+            changeOpacity={currentBookClubName?.replace(/\s+/g, "").trim().length > 1}
             onClick={() =>
               setTimeout(() => {
                 setToggleModal(false);
               }, 1000)
             }
             disabled={
-              bookClubName.replace(/\s+/g, "").trim().length < 2 ||
+              currentBookClubName.replace(/\s+/g, "").trim().length < 2 ||
               allBookClubNamesLowerCased?.includes(typedBookClubNamesLowerCased)
             }
           >

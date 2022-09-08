@@ -4,14 +4,14 @@ import { AiOutlineMinusCircle } from "react-icons/ai";
 
 export const Container = styled.div`
   border: 2px solid green;
-  height: 85vh;
+  height: auto;
   display: grid;
   align-items: center;
   text-align: center;
   justify-content: center;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: 1fr 1fr 1fr 1fr;
-  gap: 10px 10px;
+  /* gap: 10px 10px; */
   grid-template-areas:
     ". . . ."
     ". . . ."
@@ -20,29 +20,16 @@ export const Container = styled.div`
 
   img {
     margin: 0 auto;
+    width: 35%;
   }
 `;
 
 export const List = styled.li`
   margin-bottom: 2000;
   list-style: none;
-  /* border: 2px solid green; */
-
-  /* p {
-    padding: 5px 15px 0 15px;
-  } */
-`;
-
-export const Add = styled(AiOutlinePlusCircle)`
-  cursor: pointer;
-  width: 9%;
-  height: auto;
-`;
-
-export const Minus = styled(AiOutlineMinusCircle)`
-  cursor: pointer;
-  width: 9%;
-  height: auto;
+  border: 2px solid blue;
+  /* width: 90%; */
+  text-align: center;
 `;
 
 export const Wrapper = styled.div`
@@ -50,4 +37,11 @@ export const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   padding: 15px 15px 0 15px;
+  border: 2px solid red;
+`;
+
+export const BookClubInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
 `;

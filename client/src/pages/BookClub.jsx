@@ -12,14 +12,15 @@ const BookClubPage = () => {
   const userData = useContext(CurrentUserContext);
 
   const {
-    state: { _id, username, email, bookClubs, hostingBookClubs },
+    state: { _id, username, email, bookClubs, hostingBookClubs, bookClubInvites },
     actions: { receiveCurrentUser, receiveNewUserName },
   } = userData;
 
-  console.log(`allBookClub:`, allBookClub);
+  console.log(`bookClubInvites:`, bookClubInvites);
 
   const bookGroup = hostingBookClubs !== null && allBookClub?.filter((x) => x?._id === bookClubID);
 
+  console.log(`bookGroup:`, bookGroup);
   return (
     <Wrapper>
       <p>{bookGroup[0]?.bookClubName}</p>
@@ -53,17 +54,20 @@ const BookClubPage = () => {
           );
         })}
       </div>
+      <div>
+        <h3>Book Club Invites</h3>
+        {bookClubInvites?.map((x) => {
+          return (
+            <List>
+              <p>Book Clubs: {x?.bookClubName}</p>
+            </List>
+          );
+        })}
+      </div>
       <h3>Chat</h3>
       <Link to={`/BookClubConversation/${bookGroup[0]?._id}`}>
         <p> {bookGroup[0]?.bookClubName}</p>
       </Link>
-      {/* {hostingBookClubs?.map((group, idx) => (
-        <List key={idx}>
-          <Link to={`/BookClubConversation/${group?._id}`}>
-            <p> {group?.bookClubName}</p>
-          </Link>
-        </List>
-      ))} */}
     </Wrapper>
   );
 };

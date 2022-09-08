@@ -32,20 +32,25 @@ const App = () => {
         <Routes>
           <Route reloadDocument path="/" element={<Homepage />}></Route>
 
-          <Route exact path="/BrowseBooks" element={<BrowseBooks />}></Route>
-          <Route exact path="/BrowseBookClubs" element={<BrowseBookClubs />}></Route>
-          <Route exact path="/SearchForMembers" element={<SearchForMembers />}></Route>
-          <Route exact path="/MyBookClubs" element={<MyBookClubs />}></Route>
-          <Route exact path="/Chat" element={<Chat />}></Route>
+          <Route exact reloadDocument path="/BrowseBooks" element={<BrowseBooks />}></Route>
+          <Route exact reloadDocument path="/BrowseBookClubs" element={<BrowseBookClubs />}></Route>
+          <Route exact reloadDocument path="/SearchForMembers" element={<SearchForMembers />}></Route>
+          <Route exact reloadDocument path="/MyBookClubs" element={<MyBookClubs />}></Route>
+          <Route exact reloadDocument path="/Chat" element={<Chat />}></Route>
 
           {/* <Route exact path="/Chat" element={hasLoaded ? <Chat /> : <Navigate to="/" />}></Route> */}
-          <Route exact path="/BookClub/:bookClubID" element={<BookClub />}></Route>
+          <Route exact reloadDocument path="/BookClub/:bookClubID" element={<BookClub />}></Route>
 
-          <Route exact path="/BookClubConversation/:bookClubID" element={<BookClubConversation />}></Route>
+          <Route
+            exact
+            reloadDocument
+            path="/BookClubConversation/:bookClubID"
+            element={<BookClubConversation />}
+          ></Route>
 
-          <Route exact path="/Login" element={<Login />}></Route>
-          <Route exact path="/SignUp" element={<SignUp />}></Route>
-          <Route exact path="/Profile" element={<Profile />}></Route>
+          <Route exact reloadDocument path="/Login" element={<Login />}></Route>
+          <Route exact reloadDocument path="/SignUp" element={<SignUp />}></Route>
+          <Route exact reloadDocument path="/Profile" element={<Profile />}></Route>
         </Routes>
         <Footer />
       </BrowserRouter>

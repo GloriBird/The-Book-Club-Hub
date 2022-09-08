@@ -14,22 +14,6 @@ const SearchForMembers = () => {
     state: { _id, username, email, hostingBookClubs },
   } = userData;
 
-  // console.log(`hostingBookClubs:`, hostingBookClubs[0]?.bookClubName);
-
-  // const handleAddRequest = (e) => {
-  //   e.preventDefault();
-  //   fetch("/add-member", {
-  //     method: "PATCH",
-  //     headers: { "Content-type": "application/json" },
-  //     body: JSON.stringify({ _id: _id, joinedDate: joinedDate, username: username, email: email, sub:sub }),
-  //   }).then((response) => {
-  //     receiveNewUserName(randomUsername);
-  //     return response.json();
-  //   });
-  // };
-
-  // const { username, email, _id, joinedDate, bookClubName, sub } = req.body;
-
   const handleAddRequest = (e) => {
     e.preventDefault();
     setToggleModal(true);
@@ -44,7 +28,7 @@ const SearchForMembers = () => {
     });
   };
 
-  // console.log(`selectedUser:`, selectedUser);
+  console.log(`hostingBookClubs:`, hostingBookClubs);
   console.log(`isAdded:`, isAdded);
 
   const handleRemoveRequest = (e) => {
@@ -93,15 +77,13 @@ const SearchForMembers = () => {
         <List key={idx}>
           <img src={`https://robohash.org/${x?.username}`} alt="" />
           <Wrapper>
-            {/* <Minus id={x?.username} onClick={handleRemoveRequest} /> */}
-            <button id={x?.username} onClick={handleRemoveRequest}>
+            <button disabled={hostingBookClubs === undefined} id={x?.username} onClick={handleRemoveRequest}>
               -
             </button>
             <p>{x?.username}</p>
-            <button id={x?.username} onClick={handleAddRequest}>
+            <button disabled={hostingBookClubs === undefined} id={x?.username} onClick={handleAddRequest}>
               +
             </button>
-            {/* <Add id={x?.username} onClick={handleAddRequest} /> */}
           </Wrapper>
         </List>
       ))}
