@@ -17,7 +17,6 @@ const BrowseBookClubs = () => {
 
   // console.log(`allUsers:`, allUsers);
   const handleAddRequest = (e) => {
-    e.preventDefault();
     setToggleModal(true);
     // const bookGroup = allBookClub !== undefined && allUsers?.filter((x) => x?.bookClubName.includes(e.target.id));
     setIsAdded(true);
@@ -32,20 +31,19 @@ const BrowseBookClubs = () => {
     });
   };
 
-  // const handleRemoveRequest = (e) => {
-  //   e.preventDefault();
-  //   setToggleModal(true);
-  //   // const bookGroup = allBookClub !== undefined && allBookClub?.filter((x) => x?.bookClubName.includes(e.target.id));
-  //   setIsAdded(false);
+  const handleRemoveRequest = (e) => {
+    setToggleModal(true);
+    // const bookGroup = allBookClub !== undefined && allBookClub?.filter((x) => x?.bookClubName.includes(e.target.id));
+    setIsAdded(false);
 
-  //   fetch("/request-to-join-book-club", {
-  //     method: "PATCH",
-  //     headers: { "Content-type": "application/json" },
-  //     body: JSON.stringify({ _id, username, email, joinedDate, sub, bookClubName: e.target.id }),
-  //   }).then((response) => {
-  //     return response.json();
-  //   });
-  // };
+    fetch("/remove-request-to-join", {
+      method: "PATCH",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({ _id, username, email, joinedDate, sub, bookClubName: e.target.id }),
+    }).then((response) => {
+      return response.json();
+    });
+  };
 
   return (
     <Container>
@@ -54,10 +52,7 @@ const BrowseBookClubs = () => {
           <img src={`https://robohash.org/${x?.bookClubName}`} alt="" />
 
           <Wrapper>
-            <button
-              id={x?.bookClubName}
-              // onClick={handleRemoveRequest}
-            >
+            <button id={x?.bookClubName} onClick={handleRemoveRequest}>
               -
             </button>
             <BookClubInfo>

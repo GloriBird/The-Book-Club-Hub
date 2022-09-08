@@ -40,6 +40,7 @@ export const UsersBookClubs = () => {
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ _id, username, bookClubName: e.target.id, accept: false, reject: true }),
     });
+    // <navigate to="/MyBookClubs" />;
   };
 
   return (

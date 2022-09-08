@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { GlobalContext } from "../context/GlobalContext";
 
 import { SideBar } from "../components/SideBar";
 import {
@@ -16,6 +17,7 @@ const BookClubConversation = () => {
   const [userMessage, setUserMessage] = useState();
   const { bookClubID } = useParams();
   const messageRef = useRef();
+  const { trendingBooks, allUsers, allBookClub, allUsernames, userInData } = useContext(GlobalContext);
 
   const {
     state: { _id, username, email, bookClubs, hostingBookClubs },
@@ -29,7 +31,7 @@ const BookClubConversation = () => {
     setUserMessage(messageRef.current.value);
   };
 
-  const bookGroup = hostingBookClubs !== null && hostingBookClubs?.filter((x) => x?._id === bookClubID);
+  const bookGroup = hostingBookClubs !== null && allBookClub?.filter((x) => x?._id === bookClubID);
 
   console.log(`bookGroup:`, bookGroup);
 
