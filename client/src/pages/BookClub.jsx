@@ -5,30 +5,69 @@ import { Navigate, useNavigate, useParams, Link } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 
 const BookClubPage = () => {
+  const userData = useContext(CurrentUserContext);
+  const navigate = useNavigate();
   const { bookClubID } = useParams();
   const [getBookClub, setGetBookClub] = useState();
-  const { trendingBooks, allUsers, allBookClub, allUsernames, userInData } = useContext(GlobalContext);
-
-  const userData = useContext(CurrentUserContext);
+  const { trendingBooks, allUsers, allBookClub, allUsernames, userInData, sub } = useContext(GlobalContext);
 
   const {
-    state: { _id, username, email, bookClubs, hostingBookClubs, bookClubInvites },
+    state: { _id, username, email, bookClubs, hostingBookClubs, bookClubInvites, joinedDate },
     actions: { receiveCurrentUser, receiveNewUserName },
   } = userData;
 
-  console.log(`bookClubInvites:`, bookClubInvites);
-
   const bookGroup = hostingBookClubs !== null && allBookClub?.filter((x) => x?._id === bookClubID);
+  const currentUser = [
+    {
+      username,
+      _id,
+    },
+  ];
+  const handleLeaveGroup = () => {
+    fetch("/remove-member", {
+      method: "PATCH",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        _id: bookGroup[0]?._id,
+        host: bookGroup[0]?.host,
+        bookClubName: bookGroup[0]?.bookClubName,
+        member: currentUser,
+      }),
+    }).then((response) => {
+      return response.json();
+    });
+    navigate(0);
+  };
 
-  console.log(`bookGroup:`, bookGroup);
+  const handleJoinRequest = () => {
+    fetch("/request-to-join-book-club", {
+      method: "PATCH",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        joinedDate: joinedDate,
+        _id: _id,
+        bookClubName: bookGroup[0]?.bookClubName,
+        username: username,
+        email: email,
+        sub: sub,
+      }),
+    }).then((response) => {
+      return response.json();
+    });
+    navigate(0);
+  };
+
+  // console.log(`bookClubs:`, bookClubs !== null && bookClubs.includes(bookGroup[0]?.bookClubName));
+  // console.log(`bookGroup:`, bookGroup[0]?.bookClubName);
+
   return (
     <Wrapper>
       <p>{bookGroup[0]?.bookClubName}</p>
       <p>Reading List{bookGroup[0]?.ReadingList}</p>
       <div>
-        {bookGroup[0]?.members.map((x) => {
+        {bookGroup[0]?.members.map((x, idx) => {
           return (
-            <List>
+            <List key={idx}>
               <p>Members: {x?.username}</p>
             </List>
           );
@@ -36,9 +75,9 @@ const BookClubPage = () => {
       </div>
       <div>
         <h3>Pending Invites</h3>
-        {bookGroup[0]?.pendingMembers.map((x) => {
+        {bookGroup[0]?.pendingMembers.map((x, idx) => {
           return (
-            <List>
+            <List key={idx}>
               <p>Pending Members: {x?.username}</p>
             </List>
           );
@@ -46,9 +85,9 @@ const BookClubPage = () => {
       </div>
       <div>
         <h3>Requests from others</h3>
-        {bookGroup[0]?.joinRequestFromUsers.map((x) => {
+        {bookGroup[0]?.joinRequestFromUsers.map((x, idx) => {
           return (
-            <List>
+            <List key={idx}>
               <p>Pending Members: {x?.username}</p>
             </List>
           );
@@ -56,9 +95,9 @@ const BookClubPage = () => {
       </div>
       <div>
         <h3>Book Club Invites</h3>
-        {bookClubInvites?.map((x) => {
+        {bookClubInvites?.map((x, idx) => {
           return (
-            <List>
+            <List key={idx}>
               <p>Book Clubs: {x?.bookClubName}</p>
             </List>
           );
@@ -68,6 +107,14 @@ const BookClubPage = () => {
       <Link to={`/BookClubConversation/${bookGroup[0]?._id}`}>
         <p> {bookGroup[0]?.bookClubName}</p>
       </Link>
+      <div>
+        {bookClubs !== null &&
+          (bookClubs?.includes(bookGroup[0]?.bookClubName) === false ? (
+            <button onClick={handleJoinRequest}>Join Book Club</button>
+          ) : (
+            <button onClick={handleLeaveGroup}>Leave Book Club</button>
+          ))}
+      </div>
     </Wrapper>
   );
 };

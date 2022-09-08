@@ -16,7 +16,6 @@ export const UsersBookClubs = () => {
     actions: { receiveCurrentUser, receiveNewUserName },
   } = userData;
 
-  // console.log(`hostingBookClubs`);
   console.log(`bookClubs:`, bookClubs);
 
   const handleAccept = (e) => {
@@ -41,7 +40,6 @@ export const UsersBookClubs = () => {
       body: JSON.stringify({ _id, username, bookClubName: e.target.id, accept: false, reject: true }),
     });
     bookClubInvites.splice(e.target.id, 1);
-    // <navigate to="/MyBookClubs" />;
   };
 
   return (
