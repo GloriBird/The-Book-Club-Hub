@@ -29,17 +29,18 @@ export const UsersBookClubs = () => {
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ _id, username, bookClubName: e.target.id, accept: true, reject: false }),
     });
+    window.location.reload();
   };
 
   const handleDeny = (e) => {
     // e.preventDefault();
     setIsAccepted(false);
-    bookClubInvites.splice(e.target.id, 1);
     fetch("/accept-reject-invite", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ _id, username, bookClubName: e.target.id, accept: false, reject: true }),
     });
+    bookClubInvites.splice(e.target.id, 1);
     // <navigate to="/MyBookClubs" />;
   };
 
@@ -86,8 +87,10 @@ export const UsersBookClubs = () => {
       <Title>My Book Club Requests</Title>
       <Wrapper>
         {bookClubsToJoinPending?.map((group, idx) => (
-          <List key={idx}>
-            <p> {group?.bookClubName}</p>
+          <List key={idx} id={group?._id}>
+            <Link reloadDocument to={`/BookClub/${group?._id}`}>
+              <p> {group?.bookClubName}</p>
+            </Link>
           </List>
         ))}
       </Wrapper>
