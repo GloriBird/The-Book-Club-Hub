@@ -26,6 +26,13 @@ const BookClubPage = () => {
     },
   ];
 
+  // console.log(`bookClubsToJoinPending:`, bookClubsToJoinPending);
+  const bookClubAlreadyPending =
+    bookClubsToJoinPending !== undefined &&
+    bookClubsToJoinPending?.some((request) => request.bookClubName === bookGroup[0]?.bookClubName);
+
+  console.log(`bookClubAlreadyPending:`, bookClubAlreadyPending);
+
   const handleLeaveGroup = () => {
     fetch("/remove-member", {
       method: "PATCH",
@@ -99,6 +106,8 @@ const BookClubPage = () => {
     navigate(0);
   };
 
+  console.log(`is pending:`, pending);
+
   return (
     <Wrapper>
       <p>{bookGroup[0]?.bookClubName}</p>
@@ -158,12 +167,8 @@ const BookClubPage = () => {
         {bookClubs !== null &&
           bookClubsToJoinPending !== null &&
           (isAMember === false ? (
-            <button disabled={bookGroup[0]?.host === username} onClick={handleJoinRequest}>
-              {pending || bookClubsToJoinPending[0]?.bookClubName ? (
-                <p>Awaiting host response...</p>
-              ) : (
-                <p>Join Book Club</p>
-              )}
+            <button disabled={bookGroup[0]?.host === username || bookClubAlreadyPending} onClick={handleJoinRequest}>
+              {pending || bookClubAlreadyPending ? <p>Awaiting host response...</p> : <p>Join Book Club</p>}
             </button>
           ) : (
             <button disabled={bookGroup[0]?.host === username} onClick={handleLeaveGroup}>
