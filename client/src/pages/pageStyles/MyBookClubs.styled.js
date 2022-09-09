@@ -19,3 +19,15 @@ export const CreateClubButton = styled.button`
   border-radius: 5px;
   padding: 0.5% 1%;
 `;
+
+export const ChatButton = styled.button`
+  border: none;
+  cursor: pointer;
+  background-color: lightblue;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 5px;
+  padding: 0.5% 1%;
+  margin-top: 50px;
+`;
