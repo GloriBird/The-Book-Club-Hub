@@ -111,6 +111,13 @@ const BookClubPage = () => {
     navigate(0);
   };
 
+  const handleRemoveMember = (e) => {
+    e.preventDefault();
+    console.log(`e target id:`, e.target.id);
+    console.log(`e target className:`, e.target.className);
+
+    // /bookclub/:members
+  };
   console.log(`hostingBookClubs:`, hostingBookClubs);
   console.log(`bookGroup:`, bookGroup);
 
@@ -119,12 +126,20 @@ const BookClubPage = () => {
       {bookGroup !== undefined && hostingBookClubs !== null && (
         <>
           <p>{bookGroup[0]?.bookClubName}</p>
+          <p>Hosted by {bookGroup[0]?.host}</p>
           <p>Reading List{bookGroup[0]?.ReadingList}</p>
           <div>
+            <h3>Members</h3>
             {bookGroup[0]?.members.map((x, idx) => {
               return (
                 <List key={idx}>
-                  <p>Members: {x?.username}</p>
+                  {bookGroup[0]?.host !== x?.username && <p> {x?.username}</p>}
+
+                  {bookGroup[0]?.host === username && bookGroup[0]?.host !== x?.username && (
+                    <button id={x?.username} className={x?._id} onClick={handleRemoveMember}>
+                      Remove Member
+                    </button>
+                  )}
                 </List>
               );
             })}
@@ -193,7 +208,6 @@ const BookClubPage = () => {
           </div>
         </>
       )}
-      ;
     </Wrapper>
   );
 };
