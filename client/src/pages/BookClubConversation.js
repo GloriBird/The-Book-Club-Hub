@@ -14,16 +14,17 @@ import {
 
 const BookClubConversation = () => {
   const userData = useContext(CurrentUserContext);
+  const { trendingBooks, allUsers, allBookClub, allUsernames, userInData } = useContext(GlobalContext);
+
   const [userMessage, setUserMessage] = useState();
   const { bookClubID } = useParams();
   const messageRef = useRef();
-  const { trendingBooks, allUsers, allBookClub, allUsernames, userInData } = useContext(GlobalContext);
 
   const {
     state: { _id, username, email, bookClubs, hostingBookClubs },
   } = userData;
 
-  console.log(`hostingBookClubs:`, hostingBookClubs);
+  console.log(`allBookClub:`, allBookClub);
 
   const handleSubmit = (e) => {
     e.preventDefault();

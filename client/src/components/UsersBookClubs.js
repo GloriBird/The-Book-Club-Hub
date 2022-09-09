@@ -28,7 +28,8 @@ export const UsersBookClubs = () => {
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ _id, username, bookClubName: e.target.id, accept: true, reject: false }),
     });
-    window.location.reload();
+    navigate(0);
+    // window.location.reload();
   };
 
   const handleDeny = (e) => {

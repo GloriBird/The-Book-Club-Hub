@@ -12,7 +12,7 @@ const BrowseBookClubs = () => {
   const userData = useContext(CurrentUserContext);
 
   const {
-    state: { _id, username, email, bookClubName, joinedDate, sub },
+    state: { _id, username, email, bookClubName, joinedDate, sub, hostingBookClubs },
   } = userData;
 
   // console.log(`allUsers:`, allUsers);
@@ -20,7 +20,15 @@ const BrowseBookClubs = () => {
     setToggleModal(true);
     // const bookGroup = allBookClub !== undefined && allUsers?.filter((x) => x?.bookClubName.includes(e.target.id));
     setIsAdded(true);
-    console.log(`_id, username, email, bookClubName, joinedDate, sub:`, _id, username, email, joinedDate, sub);
+    console.log(
+      `_id, username, email, bookClubName, joinedDate, sub:`,
+      _id,
+      username,
+      email,
+      joinedDate,
+      sub,
+      hostingBookClubs
+    );
 
     fetch("/request-to-join-book-club", {
       method: "PATCH",
@@ -33,9 +41,7 @@ const BrowseBookClubs = () => {
 
   const handleRemoveRequest = (e) => {
     setToggleModal(true);
-    // const bookGroup = allBookClub !== undefined && allBookClub?.filter((x) => x?.bookClubName.includes(e.target.id));
     setIsAdded(false);
-
     fetch("/remove-request-to-join", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },

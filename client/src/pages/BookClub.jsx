@@ -9,6 +9,8 @@ const BookClubPage = () => {
   const navigate = useNavigate();
   const { bookClubID } = useParams();
   const [getBookClub, setGetBookClub] = useState();
+  const [pending, setPending] = useState(false);
+
   const { trendingBooks, allUsers, allBookClub, allUsernames, userInData, sub } = useContext(GlobalContext);
 
   const {
@@ -39,7 +41,9 @@ const BookClubPage = () => {
     navigate(0);
   };
 
-  const handleJoinRequest = () => {
+  const handleJoinRequest = (e) => {
+    setPending(true);
+    e.preventDefault();
     fetch("/request-to-join-book-club", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
@@ -54,11 +58,15 @@ const BookClubPage = () => {
     }).then((response) => {
       return response.json();
     });
-    navigate(0);
+    // navigate(0);
   };
 
-  // console.log(`bookClubs:`, bookClubs !== null && bookClubs.includes(bookGroup[0]?.bookClubName));
-  // console.log(`bookGroup:`, bookGroup[0]?.bookClubName);
+  const isAMember = bookClubs !== null && bookClubs?.some((x) => x?.bookClubName === bookGroup[0]?.bookClubName);
+  const isAHost =
+    hostingBookClubs !== null && hostingBookClubs?.some((x) => x?.bookClubName === bookGroup[0]?.bookClubName);
+
+  console.log(`bookClubs:`, isAMember);
+  console.log(`isAHost:`, isAHost);
 
   return (
     <Wrapper>
@@ -73,46 +81,55 @@ const BookClubPage = () => {
           );
         })}
       </div>
-      <div>
-        <h3>Pending Invites</h3>
-        {bookGroup[0]?.pendingMembers.map((x, idx) => {
-          return (
-            <List key={idx}>
-              <p>Pending Members: {x?.username}</p>
-            </List>
-          );
-        })}
-      </div>
-      <div>
-        <h3>Requests from others</h3>
-        {bookGroup[0]?.joinRequestFromUsers.map((x, idx) => {
-          return (
-            <List key={idx}>
-              <p>Pending Members: {x?.username}</p>
-            </List>
-          );
-        })}
-      </div>
-      <div>
-        <h3>Book Club Invites</h3>
-        {bookClubInvites?.map((x, idx) => {
-          return (
-            <List key={idx}>
-              <p>Book Clubs: {x?.bookClubName}</p>
-            </List>
-          );
-        })}
-      </div>
-      <h3>Chat</h3>
-      <Link to={`/BookClubConversation/${bookGroup[0]?._id}`}>
-        <p> {bookGroup[0]?.bookClubName}</p>
-      </Link>
+      {(isAMember === true || isAHost === true) && (
+        <>
+          <div>
+            <h3>Pending Invites</h3>
+            {bookGroup[0]?.pendingMembers.map((x, idx) => {
+              return (
+                <List key={idx}>
+                  <p>Pending Members: {x?.username}</p>
+                </List>
+              );
+            })}
+          </div>
+          <div>
+            <h3>Requests from others</h3>
+            {bookGroup[0]?.joinRequestFromUsers.map((x, idx) => {
+              return (
+                <List key={idx}>
+                  <p>Pending Members: {x?.username}</p>
+                </List>
+              );
+            })}
+          </div>
+          <div>
+            <h3>Book Club Invites</h3>
+            {bookClubInvites?.map((x, idx) => {
+              return (
+                <List key={idx}>
+                  <p>Book Clubs: {x?.bookClubName}</p>
+                </List>
+              );
+            })}
+          </div>
+          <h3>Chat</h3>
+          <Link to={`/BookClubConversation/${bookGroup[0]?._id}`}>
+            <p> {bookGroup[0]?.bookClubName}</p>
+          </Link>
+        </>
+      )}
       <div>
         {bookClubs !== null &&
-          (bookClubs?.includes(bookGroup[0]?.bookClubName) === false ? (
-            <button onClick={handleJoinRequest}>Join Book Club</button>
+          (isAMember === false ? (
+            <button disabled={bookGroup[0]?.host === username} onClick={handleJoinRequest}>
+              {" "}
+              {pending === true ? <p>Awaiting host response...</p> : <p>Join Book Club</p>}
+            </button>
           ) : (
-            <button onClick={handleLeaveGroup}>Leave Book Club</button>
+            <button disabled={bookGroup[0]?.host === username} onClick={handleLeaveGroup}>
+              Leave Book Club
+            </button>
           ))}
       </div>
     </Wrapper>
