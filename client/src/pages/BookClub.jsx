@@ -8,9 +8,8 @@ const BookClubPage = () => {
   const userData = useContext(CurrentUserContext);
   const navigate = useNavigate();
   const { bookClubID } = useParams();
-  const [getBookClub, setGetBookClub] = useState();
   const [pending, setPending] = useState(false);
-
+  const [getId, setGetId] = useState();
   const { trendingBooks, allUsers, allBookClub, allUsernames, userInData, sub } = useContext(GlobalContext);
 
   const {
@@ -30,8 +29,6 @@ const BookClubPage = () => {
   const bookClubAlreadyPending =
     bookClubsToJoinPending !== undefined &&
     bookClubsToJoinPending?.some((request) => request.bookClubName === bookGroup[0]?.bookClubName);
-
-  console.log(`bookClubAlreadyPending:`, bookClubAlreadyPending);
 
   const handleLeaveGroup = () => {
     fetch("/remove-member", {
@@ -67,20 +64,17 @@ const BookClubPage = () => {
       return response.json();
     });
   };
-
   const isAMember = bookClubs !== null && bookClubs?.some((x) => x?.bookClubName === bookGroup[0]?.bookClubName);
   const isAHost =
     hostingBookClubs !== null && hostingBookClubs?.some((x) => x?.bookClubName === bookGroup[0]?.bookClubName);
 
-  // console.log(`bookClubs:`, isAMember);
-  // console.log(`isAHost:`, isAHost);
   const handleAcceptUser = (e) => {
     bookGroup[0]?.joinRequestFromUsers.splice(e.target.id, 1);
     fetch("/accept-reject-user-request", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
-        _id,
+        _id: e.target.className,
         username: e.target.id,
         bookClubName: bookGroup[0]?.bookClubName,
         accept: true,
@@ -96,7 +90,7 @@ const BookClubPage = () => {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
-        _id,
+        _id: e.target.className,
         username: e.target.id,
         bookClubName: bookGroup[0]?.bookClubName,
         accept: false,
@@ -105,8 +99,6 @@ const BookClubPage = () => {
     });
     navigate(0);
   };
-
-  console.log(`is pending:`, pending);
 
   return (
     <Wrapper>
@@ -138,10 +130,10 @@ const BookClubPage = () => {
             {bookGroup[0]?.joinRequestFromUsers.map((x, idx) => (
               <List key={idx} id={idx}>
                 <p>Pending Members: {x?.username}</p>
-                <button id={x?.username} onClick={handleAcceptUser}>
+                <button id={x?.username} className={x?._id} onClick={handleAcceptUser}>
                   Accept
                 </button>
-                <button id={x?.username} onClick={handleDenyUser}>
+                <button id={x?.username} className={x?._id} onClick={handleDenyUser}>
                   Deny
                 </button>
               </List>

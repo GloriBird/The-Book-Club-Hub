@@ -17,7 +17,7 @@ const MyBookClubs = () => {
 
   // const { state } = userData;
   const {
-    state: { _id, joinedDate, username, email, sub, hostingBookClubs, bookClubInvites },
+    state: { _id, joinedDate, username, email, sub, hostingBookClubs, bookClubsToJoinPending, bookClubInvites },
   } = userData;
   // const host = state.username;
 
@@ -56,7 +56,7 @@ const MyBookClubs = () => {
   };
 
   console.log(`hostingBookClubs:`, hostingBookClubs);
-  // console.log(`allBookClub:`, allBookClub);
+  console.log(`bookClubsToJoinPending:`, bookClubsToJoinPending);
   return (
     <Container>
       <p>My Book Clubs</p>
