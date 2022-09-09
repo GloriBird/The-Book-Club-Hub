@@ -1,9 +1,10 @@
-import { Container } from "./pageStyles/BrowseBooks.styled";
+import { Container } from "./pageStyles/BrowseBookClubs.styled";
 import React, { useEffect, useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { GlobalContext } from "../context/GlobalContext";
 import ChatConvo from "../components/Chat/conversation";
-
+import MessageChat from "../components/messages/MessageChat";
+import UserOnline from "../components/userOnline/UserOnline";
 import {
   Messenger,
   ChatMenu,
@@ -47,12 +48,24 @@ const Chat = () => {
           </ChatMenu>
           <ChatBox>
             <ChatBoxWrapper>
-              <ChatBoxTop></ChatBoxTop>
-              <ChatBoxBottom></ChatBoxBottom>
+              <ChatBoxTop>
+                <MessageChat message={true} />
+                <MessageChat own={true} />
+                <MessageChat message={true} />
+                <MessageChat message={true} />
+                <MessageChat message={true} />
+              </ChatBoxTop>
+              <ChatBoxBottom>
+                <ChatMessageInput placeholder="write something"></ChatMessageInput>
+                <ChatSubmitButton>Send</ChatSubmitButton>
+              </ChatBoxBottom>
             </ChatBoxWrapper>
           </ChatBox>
-          <ChatOnline></ChatOnline>
-          <ChatOnlineWrapper>Online</ChatOnlineWrapper>
+          <ChatOnline>
+            <ChatOnlineWrapper>
+              <UserOnline />
+            </ChatOnlineWrapper>
+          </ChatOnline>
         </MainMenu>
       </Messenger>
     </>

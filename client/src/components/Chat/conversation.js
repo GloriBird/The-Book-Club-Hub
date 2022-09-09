@@ -5,7 +5,7 @@ const ChatConvo = () => {
   return (
     <Conversation>
       <ConversationImg
-        src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        src="https://images.pexels.com/photos/3686769/pexels-photo-3686769.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
         alt=""
       />
       <ConversationName>John Doe</ConversationName>
