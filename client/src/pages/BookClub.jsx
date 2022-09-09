@@ -113,13 +113,22 @@ const BookClubPage = () => {
 
   const handleRemoveMember = (e) => {
     e.preventDefault();
-    console.log(`e target id:`, e.target.id);
-    console.log(`e target className:`, e.target.className);
+    navigate(0);
 
-    // /bookclub/:members
+    // window.location.reload();
+    fetch("/remove-member", {
+      method: "PATCH",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        _id: bookGroup[0]?._id,
+        bookClubName: bookGroup[0]?.bookClubName,
+        host: bookGroup[0]?.host,
+        member: [{ username: e.target.id, _id: e.target.className }],
+      }),
+    });
   };
-  console.log(`hostingBookClubs:`, hostingBookClubs);
-  console.log(`bookGroup:`, bookGroup);
+  // console.log(`hostingBookClubs:`, hostingBookClubs);
+  // console.log(`bookGroup:`, bookGroup);
 
   return (
     <Wrapper>
