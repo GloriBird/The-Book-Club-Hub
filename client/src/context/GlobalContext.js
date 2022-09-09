@@ -9,6 +9,8 @@ export const GlobalProvider = ({ children }) => {
   const [allUsers, setAllUsers] = useState();
   const [allUsernames, setAllUsernames] = useState();
   const [allBookClub, setAllBookClubs] = useState();
+  const [currentBookClubMembers, setCurrentBookClubMembers] = useState();
+
   const [allBookClubNames, setAllBookClubNames] = useState();
   const userData = useContext(CurrentUserContext);
 
@@ -80,6 +82,8 @@ export const GlobalProvider = ({ children }) => {
         allUsernames,
         userInData,
         allBookClubNames,
+        setCurrentBookClubMembers,
+        currentBookClubMembers,
       }}
     >
       {children}

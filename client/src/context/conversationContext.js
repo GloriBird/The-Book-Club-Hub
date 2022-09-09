@@ -1,17 +1,34 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
+import { GlobalContext } from "./GlobalContext";
 
-export const conversationContext = createContext(null);
+export const ConversationContext = createContext();
 
-export const conversationProvider = ({ children }) => {
-  const [chatMessage, setChatMessage] = useState([]);
+export const ConversationProvider = ({ children }) => {
+  const { allBookClub, currentBookClubMembers } = useContext(GlobalContext);
+  const [conversations, setConversations] = useState([]);
 
-  //   const createConversation = (members) => {
-  //     setChatMessage((prevChatMessage) => {
-  //       return [...prevChatMessage, { members, messages: [] }];
-  //     });
-  //   };
+  const createConversation = (member) => {
+    setConversations((prevConversations) => {
+      return [...prevConversations, { member, messages: [] }];
+    });
+  };
+
+  const formattedConversations = conversations.map((conversation) => {
+    const members = conversation.members.map((recipient) => {
+      const sender = currentBookClubMembers.find((sender) => {
+        return sender.username === recipient;
+      });
+      const name = (sender && sender.name) || recipient;
+      return { username: recipient, name };
+    });
+    return { ...conversation, members };
+  });
+
+  //   console.log(`currentBookClubMembers:`, currentBookClubMembers);
 
   return (
-    <conversationContext.Provider value={{ setChatMessage, chatMessage }}>{children}</conversationContext.Provider>
+    <ConversationContext.Provider value={{ conversations: formattedConversations, createConversation }}>
+      {children}
+    </ConversationContext.Provider>
   );
 };

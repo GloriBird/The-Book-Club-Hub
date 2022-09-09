@@ -6,7 +6,8 @@ import { useLocation } from "react-router-dom";
 
 export const SideBar = () => {
   const userData = useContext(CurrentUserContext);
-  const { trendingBooks, allUsers, allBookClub, allUsernames, userInData, sub } = useContext(GlobalContext);
+  const { trendingBooks, allUsers, allBookClub, allUsernames, userInData, setCurrentBookClubMembers, sub } =
+    useContext(GlobalContext);
   const location = useLocation();
   const {
     state: { _id, username, email, bookClubs },
@@ -22,7 +23,9 @@ export const SideBar = () => {
       return x?.username;
     });
 
-  console.log(currentMembers);
+  useEffect(() => {
+    setCurrentBookClubMembers(bookGroup[0]?.members);
+  }, []);
 
   return (
     <Wrapper>

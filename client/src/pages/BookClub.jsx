@@ -17,7 +17,6 @@ const BookClubPage = () => {
   } = userData;
 
   const bookGroup = hostingBookClubs !== null && allBookClub?.filter((x) => x?._id === bookClubID);
-  // console.log(`bookClubsToJoinPending:`, bookClubsToJoinPending[0]?.bookClubName);
   const currentUser = [
     {
       username,
@@ -25,7 +24,6 @@ const BookClubPage = () => {
     },
   ];
 
-  // console.log(`bookClubsToJoinPending:`, bookClubsToJoinPending);
   const bookClubAlreadyPending =
     bookClubsToJoinPending !== undefined &&
     bookGroup !== undefined &&
@@ -75,12 +73,8 @@ const BookClubPage = () => {
     bookGroup !== undefined &&
     hostingBookClubs?.some((x) => x?.bookClubName === bookGroup[0]?.bookClubName);
 
-  console.log(`bookClubs:`, bookClubs);
   const handleAcceptUser = (e) => {
     bookGroup[0]?.joinRequestFromUsers.splice(e.target.id, 1);
-    console.log(`remove:`, bookGroup[0]?.joinRequestFromUsers.splice(e.target.id, 1));
-    console.log(e.target.className, e.target.id, bookGroup[0]?.bookClubName);
-
     fetch("/accept-reject-user-request", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
@@ -125,8 +119,6 @@ const BookClubPage = () => {
       }),
     });
   };
-  // console.log(`hostingBookClubs:`, hostingBookClubs);
-  // console.log(`bookGroup:`, bookGroup);
 
   return (
     <Wrapper>

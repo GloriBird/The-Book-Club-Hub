@@ -9,7 +9,6 @@ import Login from "../pages/Login";
 import BrowseBookClubs from "../pages/BrowseBookClubs";
 import SignUp from "../pages/SignUp";
 import Profile from "../pages/Profile";
-import Chat from "../pages/chat";
 import BookClub from "../pages/BookClub";
 import BookClubConversation from "../pages/BookClubConversation";
 import Footer from "../components/Footer";
@@ -28,7 +27,6 @@ const App = () => {
           <Route exact reloadDocument path="/BrowseBookClubs" element={<BrowseBookClubs />}></Route>
           <Route exact reloadDocument path="/SearchForMembers" element={<SearchForMembers />}></Route>
           <Route exact reloadDocument path="/MyBookClubs" element={<MyBookClubs />}></Route>
-          <Route exact reloadDocument path="/Chat" element={<Chat />}></Route>
 
           {/* <Route exact path="/Chat" element={hasLoaded ? <Chat /> : <Navigate to="/" />}></Route> */}
           <Route exact reloadDocument path="/BookClub/:bookClubID" element={<BookClub />}></Route>
