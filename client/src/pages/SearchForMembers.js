@@ -75,7 +75,7 @@ const SearchForMembers = () => {
     <Container>
       {allUsers?.map((x, idx) => (
         <List key={idx}>
-          <img src={`https://robohash.org/${x?.username}`} alt="" />
+          <img src={`https://avatars.dicebear.com/api/avataaars/${x?.username}.svg`} alt="" />
           <Wrapper>
             <button disabled={hostingBookClubs === undefined} id={x?.username} onClick={handleRemoveRequest}>
               -
