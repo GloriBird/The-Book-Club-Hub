@@ -55,7 +55,7 @@ const BrowseBookClubs = () => {
     <Container>
       {allBookClub?.map((x, idx) => (
         <List key={idx}>
-          <img src={`https://robohash.org/${x?.bookClubName}`} alt="" />
+          <img src={`https://avatars.dicebear.com/api/initials/${x?.bookClubName}.svg`} alt="" />
 
           <Wrapper>
             <button id={x?.bookClubName} onClick={handleRemoveRequest}>
