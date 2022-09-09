@@ -82,15 +82,3 @@ const createProfile = async (req, res) => {
 module.exports = {
   createProfile,
 };
-
-// const getTrimmedData = (obj) => {
-//   Object.keys(obj).some((key) => {
-//     if (typeof obj[key] === "object") {
-//       getTrimmedData(obj[key]);
-//     } else if (typeof obj[key] === "string" && obj[key].trim().length < 1) {
-//       console.log(true);
-//     } else if (typeof obj[key] === "string" && obj[key].trim().length > 0) {
-//       console.log(false);
-//     }
-//   });
-// };

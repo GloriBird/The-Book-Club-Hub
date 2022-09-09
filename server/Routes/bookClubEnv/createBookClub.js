@@ -68,6 +68,7 @@ const createBookClub = async (req, res) => {
     const trimmedMember = getTrimmedData(members);
 
     const BookClubCreated = {
+      _id: newID,
       bookClubName: bookClubName.replace(/\s+/g, " ").trim(),
       host: host.replace(/\s+/g, " ").trim(),
       members: trimmedMember,
@@ -82,7 +83,7 @@ const createBookClub = async (req, res) => {
 
     const newBookClub = await bookClubData
       .collection("Book-Group")
-      .insertOne(Object.assign({ _id: newID }, { dateCreated: dateCreated }, BookClubCreated));
+      .insertOne(Object.assign({ dateCreated: dateCreated }, BookClubCreated));
 
     const updateToHost = await bookClubData.collection("Users").updateOne(
       { _id: members?.[0]._id },

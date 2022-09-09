@@ -5,12 +5,20 @@ export const CurrentUserContext = createContext();
 
 const initialState = {
   hasLoaded: false,
+  error: null,
   _id: null,
   joinedDate: null,
   username: null,
   sub: null,
   email: null,
-  error: null,
+  bookClubInvites: null,
+  numberOfClubInvites: null,
+  bookClubs: null,
+  numberOfBookClubs: null,
+  bookClubsToJoinPending: null,
+  numberOfRequests: null,
+  hostingBookClubs: null,
+  hostingBookClubsCount: null,
 };
 
 const currentUserReducer = (state, action) => {
@@ -24,6 +32,14 @@ const currentUserReducer = (state, action) => {
         email: action.email,
         sub: action.sub,
         hasLoaded: true,
+        bookClubInvites: action.bookClubInvites,
+        numberOfClubInvites: action.numberOfClubInvites,
+        bookClubs: action.bookClubs,
+        numberOfBookClubs: action.numberOfBookClubs,
+        bookClubsToJoinPending: action.bookClubsToJoinPending,
+        numberOfRequests: action.numberOfRequests,
+        hostingBookClubs: action.hostingBookClubs,
+        hostingBookClubsCount: action.hostingBookClubsCount,
       };
     }
     case "receive-new-username": {
@@ -60,6 +76,14 @@ export const CurrentUserProvider = ({ children }) => {
       username: data?.username,
       email: data?.email,
       sub: data?.sub,
+      bookClubInvites: data?.bookClubInvites,
+      numberOfClubInvites: data?.numberOfClubInvites,
+      bookClubs: data?.bookClubs,
+      numberOfBookClubs: data?.numberOfBookClubs,
+      bookClubsToJoinPending: data?.bookClubsToJoinPending,
+      numberOfRequests: data?.numberOfRequests,
+      hostingBookClubs: data?.hostingBookClubs,
+      hostingBookClubsCount: data?.hostingBookClubsCount,
     });
   };
 
