@@ -20,12 +20,16 @@ const Profile = () => {
 
   return (
     <Container>
-      <ul>
-        <li>{user?.picture && <img src={user?.picture} alt={user?.name} />}</li>
-        <li>{username}</li>
-        <li>{user?.email}</li>
-        <li>Joined on: {joinedDate}</li>
-      </ul>
+      {username !== null && (
+        <ul>
+          <li>
+            <img src={`https://avatars.dicebear.com/api/avataaars/${username}.svg`} alt="" />
+          </li>
+          <li>{username}</li>
+          <li>{user?.email}</li>
+          <li>Joined on: {joinedDate}</li>
+        </ul>
+      )}
     </Container>
   );
 };
