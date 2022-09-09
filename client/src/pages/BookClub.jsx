@@ -66,7 +66,9 @@ const BookClubPage = () => {
   };
   const isAMember = bookClubs !== null && bookClubs?.some((x) => x?.bookClubName === bookGroup[0]?.bookClubName);
   const isAHost =
-    hostingBookClubs !== null && hostingBookClubs?.some((x) => x?.bookClubName === bookGroup[0]?.bookClubName);
+    hostingBookClubs !== null &&
+    bookGroup !== null &&
+    hostingBookClubs?.some((x) => x?.bookClubName === bookGroup[0]?.bookClubName);
 
   const handleAcceptUser = (e) => {
     bookGroup[0]?.joinRequestFromUsers.splice(e.target.id, 1);
@@ -130,12 +132,16 @@ const BookClubPage = () => {
             {bookGroup[0]?.joinRequestFromUsers.map((x, idx) => (
               <List key={idx} id={idx}>
                 <p>Pending Members: {x?.username}</p>
-                <button id={x?.username} className={x?._id} onClick={handleAcceptUser}>
-                  Accept
-                </button>
-                <button id={x?.username} className={x?._id} onClick={handleDenyUser}>
-                  Deny
-                </button>
+                {bookGroup[0]?.host === username && (
+                  <>
+                    <button id={x?.username} className={x?._id} onClick={handleAcceptUser}>
+                      Accept
+                    </button>
+                    <button id={x?.username} className={x?._id} onClick={handleDenyUser}>
+                      Deny
+                    </button>
+                  </>
+                )}
               </List>
             ))}
           </div>
