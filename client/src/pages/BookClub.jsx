@@ -167,7 +167,10 @@ const BookClubPage = () => {
         {bookClubs !== null &&
           bookClubsToJoinPending !== null &&
           (isAMember === false ? (
-            <button disabled={bookGroup[0]?.host === username || bookClubAlreadyPending} onClick={handleJoinRequest}>
+            <button
+              disabled={bookGroup[0]?.host === username || bookClubAlreadyPending || pending}
+              onClick={handleJoinRequest}
+            >
               {pending || bookClubAlreadyPending ? <p>Awaiting host response...</p> : <p>Join Book Club</p>}
             </button>
           ) : (
