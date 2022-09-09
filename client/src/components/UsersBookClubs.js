@@ -21,6 +21,8 @@ export const UsersBookClubs = () => {
   const handleAccept = (e) => {
     // e.preventDefault();
     setIsAccepted(true);
+    navigate(0);
+
     bookClubInvites.splice(e.target.id, 1);
     console.log(`e.target.id:`, e.target.id);
     fetch("/accept-reject-invite", {
@@ -28,7 +30,6 @@ export const UsersBookClubs = () => {
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ _id, username, bookClubName: e.target.id, accept: true, reject: false }),
     });
-    navigate(0);
     // window.location.reload();
   };
 

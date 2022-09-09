@@ -1,9 +1,6 @@
 import styled from "styled-components";
 
 export const CardGrid = styled.div`
-  /* color: red;
-  border: 2px solid red;
-  height: 100vh; */
   display: grid;
   grid-template-columns: 1fr 1.1fr 0.8fr;
   grid-template-rows: 1fr;
@@ -20,6 +17,7 @@ export const ChatForm = styled.form`
   justify-content: flex-end;
   width: 100%;
   grid-area: ChatArea;
+  overflow: auto;
 `;
 
 export const InputAndButtonWrapper = styled.div`

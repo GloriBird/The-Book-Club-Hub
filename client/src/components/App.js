@@ -14,16 +14,8 @@ import BookClub from "../pages/BookClub";
 import BookClubConversation from "../pages/BookClubConversation";
 import Footer from "../components/Footer";
 import SearchForMembers from "../pages/SearchForMembers";
-// import { CurrentUserContext } from "../context/CurrentUserContext";
 
 const App = () => {
-  // const userData = useContext(CurrentUserContext);
-
-  // const {
-  //   state: { _id, username, email },
-  // } = userData;
-
-  // console.log(`_id:`, _id, `username:`, username, `email:`, email);
   return (
     <>
       <GlobalStyles />

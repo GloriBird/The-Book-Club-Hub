@@ -114,8 +114,6 @@ const BookClubPage = () => {
   const handleRemoveMember = (e) => {
     e.preventDefault();
     navigate(0);
-
-    // window.location.reload();
     fetch("/remove-member", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },

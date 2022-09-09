@@ -4,6 +4,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 
 import { SideBar } from "../components/SideBar";
+
 import {
   CardGrid,
   ChatForm,
@@ -38,17 +39,21 @@ const BookClubConversation = () => {
 
   return (
     <>
-      <CardGrid>
-        <p>{bookGroup[0]?.bookClubName}</p>
-        <ChatForm onSubmit={handleSubmit}>
-          <p>{userMessage}</p>
-          <InputAndButtonWrapper>
-            <MessageBox type="text" ref={messageRef} />
-            <SendButton>Send</SendButton>
-          </InputAndButtonWrapper>
-        </ChatForm>
-        <SideBar />
-      </CardGrid>
+      {allBookClub !== undefined && (
+        <CardGrid>
+          <>
+            <p>{bookGroup[0]?.bookClubName}</p>
+            <ChatForm onSubmit={handleSubmit}>
+              <p>{userMessage}</p>
+              <InputAndButtonWrapper>
+                <MessageBox type="text" ref={messageRef} required />
+                <SendButton type="submit">Send</SendButton>
+              </InputAndButtonWrapper>
+            </ChatForm>
+            <SideBar />
+          </>
+        </CardGrid>
+      )}
     </>
   );
 };
