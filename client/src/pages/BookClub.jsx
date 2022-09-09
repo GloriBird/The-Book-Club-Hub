@@ -14,17 +14,18 @@ const BookClubPage = () => {
   const { trendingBooks, allUsers, allBookClub, allUsernames, userInData, sub } = useContext(GlobalContext);
 
   const {
-    state: { _id, username, email, bookClubs, hostingBookClubs, bookClubInvites, joinedDate },
-    actions: { receiveCurrentUser, receiveNewUserName },
+    state: { _id, username, email, bookClubs, hostingBookClubs, bookClubsToJoinPending, bookClubInvites, joinedDate },
   } = userData;
 
   const bookGroup = hostingBookClubs !== null && allBookClub?.filter((x) => x?._id === bookClubID);
+  // console.log(`bookClubsToJoinPending:`, bookClubsToJoinPending[0]?.bookClubName);
   const currentUser = [
     {
       username,
       _id,
     },
   ];
+
   const handleLeaveGroup = () => {
     fetch("/remove-member", {
       method: "PATCH",
@@ -58,15 +59,45 @@ const BookClubPage = () => {
     }).then((response) => {
       return response.json();
     });
-    // navigate(0);
   };
 
   const isAMember = bookClubs !== null && bookClubs?.some((x) => x?.bookClubName === bookGroup[0]?.bookClubName);
   const isAHost =
     hostingBookClubs !== null && hostingBookClubs?.some((x) => x?.bookClubName === bookGroup[0]?.bookClubName);
 
-  console.log(`bookClubs:`, isAMember);
-  console.log(`isAHost:`, isAHost);
+  // console.log(`bookClubs:`, isAMember);
+  // console.log(`isAHost:`, isAHost);
+  const handleAcceptUser = (e) => {
+    bookGroup[0]?.joinRequestFromUsers.splice(e.target.id, 1);
+    fetch("/accept-reject-user-request", {
+      method: "PATCH",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        _id,
+        username: e.target.id,
+        bookClubName: bookGroup[0]?.bookClubName,
+        accept: true,
+        reject: false,
+      }),
+    });
+    navigate(0);
+  };
+
+  const handleDenyUser = (e) => {
+    bookGroup[0]?.joinRequestFromUsers.splice(e.target.id, 1);
+    fetch("/accept-reject-user-request", {
+      method: "PATCH",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        _id,
+        username: e.target.id,
+        bookClubName: bookGroup[0]?.bookClubName,
+        accept: false,
+        reject: true,
+      }),
+    });
+    navigate(0);
+  };
 
   return (
     <Wrapper>
@@ -95,13 +126,17 @@ const BookClubPage = () => {
           </div>
           <div>
             <h3>Requests from others</h3>
-            {bookGroup[0]?.joinRequestFromUsers.map((x, idx) => {
-              return (
-                <List key={idx}>
-                  <p>Pending Members: {x?.username}</p>
-                </List>
-              );
-            })}
+            {bookGroup[0]?.joinRequestFromUsers.map((x, idx) => (
+              <List key={idx} id={idx}>
+                <p>Pending Members: {x?.username}</p>
+                <button id={x?.username} onClick={handleAcceptUser}>
+                  Accept
+                </button>
+                <button id={x?.username} onClick={handleDenyUser}>
+                  Deny
+                </button>
+              </List>
+            ))}
           </div>
           <div>
             <h3>Book Club Invites</h3>
@@ -121,10 +156,14 @@ const BookClubPage = () => {
       )}
       <div>
         {bookClubs !== null &&
+          bookClubsToJoinPending !== null &&
           (isAMember === false ? (
             <button disabled={bookGroup[0]?.host === username} onClick={handleJoinRequest}>
-              {" "}
-              {pending === true ? <p>Awaiting host response...</p> : <p>Join Book Club</p>}
+              {pending || bookClubsToJoinPending[0]?.bookClubName ? (
+                <p>Awaiting host response...</p>
+              ) : (
+                <p>Join Book Club</p>
+              )}
             </button>
           ) : (
             <button disabled={bookGroup[0]?.host === username} onClick={handleLeaveGroup}>
