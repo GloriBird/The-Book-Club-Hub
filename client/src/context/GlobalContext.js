@@ -10,6 +10,7 @@ export const GlobalProvider = ({ children }) => {
   const [allUsernames, setAllUsernames] = useState();
   const [allBookClub, setAllBookClubs] = useState();
   const [currentBookClubMembers, setCurrentBookClubMembers] = useState();
+  const [bookClubChat, setBookClubChat] = useState();
 
   const [allBookClubNames, setAllBookClubNames] = useState();
   const userData = useContext(CurrentUserContext);
@@ -84,6 +85,8 @@ export const GlobalProvider = ({ children }) => {
         allBookClubNames,
         setCurrentBookClubMembers,
         currentBookClubMembers,
+        bookClubChat,
+        setBookClubChat,
       }}
     >
       {children}

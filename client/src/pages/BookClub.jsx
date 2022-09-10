@@ -10,7 +10,8 @@ const BookClubPage = () => {
   const { bookClubID } = useParams();
   const [pending, setPending] = useState(false);
   const [getId, setGetId] = useState();
-  const { trendingBooks, allUsers, allBookClub, allUsernames, userInData, sub } = useContext(GlobalContext);
+  const { trendingBooks, allUsers, allBookClub, allUsernames, userInData, sub, bookClubChat } =
+    useContext(GlobalContext);
 
   const {
     state: { _id, username, email, bookClubs, hostingBookClubs, bookClubsToJoinPending, bookClubInvites, joinedDate },
@@ -185,7 +186,7 @@ const BookClubPage = () => {
               </div>
               <h3>Chat</h3>
               <Link to={`/BookClubConversation/${bookGroup[0]?._id}`}>
-                <p> {bookGroup[0]?.bookClubName}</p>
+                <button> {bookGroup[0]?.bookClubName}</button>
               </Link>
             </>
           )}

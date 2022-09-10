@@ -17,20 +17,34 @@ const socket = io.connect("http://localhost:8000");
 
 const BookClubConversation = () => {
   const userData = useContext(CurrentUserContext);
-  const { trendingBooks, allUsers, allBookClub, allUsernames, userInData } = useContext(GlobalContext);
-  const [userMessage, setUserMessage] = useState();
-
+  const { trendingBooks, allUsers, allBookClub, allUsernames, userInData, bookClubChat } = useContext(GlobalContext);
+  const [userMessage, setUserMessage] = useState("");
+  const [receivedMessage, setReceivedMessage] = useState("");
+  const [isOnline, setIsOnline] = useState(false);
   const { bookClubID } = useParams();
-
+  console.log(`bookClubChat:`, bookClubChat);
   const {
     state: { username, hostingBookClubs },
   } = userData;
 
-  const sendMessage = () => {
-    socket.emit("send_message", { message: "hello" });
+  const bookGroup = hostingBookClubs !== null && allBookClub?.filter((x) => x?._id === bookClubID);
+
+  const joinBookClubChat = () => {
+    setIsOnline(true);
+    if (bookClubChat !== "") {
+      socket.emit("join_chat", bookClubChat);
+    }
   };
 
-  const bookGroup = hostingBookClubs !== null && allBookClub?.filter((x) => x?._id === bookClubID);
+  const sendMessage = () => {
+    socket.emit("send_message", { message: userMessage, bookClubChat });
+  };
+
+  useEffect(() => {
+    socket.on("receive_message", (data) => {
+      setReceivedMessage(data.message);
+    });
+  }, [socket]);
 
   return (
     <>
@@ -39,14 +53,20 @@ const BookClubConversation = () => {
           <>
             <p>{bookGroup[0]?.bookClubName}</p>
             <ChatForm>
-              <p>
-                {username}:{userMessage}
-              </p>
+              <p>{receivedMessage} </p>
               <InputAndButtonWrapper>
-                <MessageBox type="text" required />
-                <SendButton onClick={sendMessage}>
-                  <p>Send</p>
-                </SendButton>
+                {isOnline ? (
+                  <>
+                    <MessageBox onChange={(e) => setUserMessage(e.target.value)} />
+                    <SendButton onClick={sendMessage}>
+                      <p>Send</p>
+                    </SendButton>
+                  </>
+                ) : (
+                  <button id={bookGroup[0]?._id} onClick={joinBookClubChat}>
+                    Click to Join
+                  </button>
+                )}
               </InputAndButtonWrapper>
             </ChatForm>
             <SideBar />

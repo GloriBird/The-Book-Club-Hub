@@ -48,8 +48,15 @@ const socketIO = require("socket.io")(http, {
 
 socketIO.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
+
+  socket.on("join_chat", (data) => {
+    socket.join(data);
+  });
+
   socket.on("send_message", (data) => {
-    console.log(`data received`, data);
+    socket.to(data.bookClubChat).emit("receive_message", data);
+
+    // socket.broadcast.emit("receive_message", data);
   });
 });
 //-------------------------------------------------------------------------------------------------
