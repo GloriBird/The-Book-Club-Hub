@@ -12,6 +12,7 @@ import {
   InputAndButtonWrapper,
   SendButton,
 } from "./pageStyles/BookClubConversation.styled";
+const moment = require("moment");
 
 const socket = io.connect("http://localhost:8000");
 
@@ -19,10 +20,12 @@ const BookClubConversation = () => {
   const userData = useContext(CurrentUserContext);
   const { trendingBooks, allUsers, allBookClub, allUsernames, userInData, bookClubChat } = useContext(GlobalContext);
   const [userMessage, setUserMessage] = useState("");
-  const [receivedMessage, setReceivedMessage] = useState("");
+  const [receivedMessage, setReceivedMessage] = useState([]);
   const [isOnline, setIsOnline] = useState(false);
+  const [chatMessages, setChatMessages] = useState([]);
+
   const { bookClubID } = useParams();
-  console.log(`bookClubChat:`, bookClubChat);
+
   const {
     state: { username, hostingBookClubs },
   } = userData;
@@ -37,12 +40,14 @@ const BookClubConversation = () => {
   };
 
   const sendMessage = () => {
-    socket.emit("send_message", { message: userMessage, bookClubChat });
+    socket.emit("send_message", { sender: username, message: userMessage, time: moment().calendar(), bookClubChat });
   };
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
-      setReceivedMessage(data.message);
+      console.log("data:", data);
+      setChatMessages((msgList) => [...msgList, data]);
+      // setReceivedMessage(data);
     });
   }, [socket]);
 
@@ -53,7 +58,13 @@ const BookClubConversation = () => {
           <>
             <p>{bookGroup[0]?.bookClubName}</p>
             <ChatForm>
-              <p>{receivedMessage} </p>
+              {/* <p>
+                {receivedMessage.sender} {receivedMessage.message}
+              </p>
+              <p>{receivedMessage.time}</p> */}
+              {chatMessages.map((msg) => {
+                return <h1>{msg.message}</h1>;
+              })}
               <InputAndButtonWrapper>
                 {isOnline ? (
                   <>
