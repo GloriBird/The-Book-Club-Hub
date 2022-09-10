@@ -4,12 +4,7 @@ const express = require("express");
 const morgan = require("morgan");
 const app = express();
 const port = 8000;
-const http = require("http").createServer(app);
-const socketIO = require("socket.io")(http, {
-  cors: {
-    origin: "*",
-  },
-});
+const cors = require("cors");
 
 const { getWeeklyTrendingBook } = require("./routes/getWeeklyTrendingBook");
 const { createProfile } = require("./routes/currentUser/createProfile");
@@ -35,12 +30,28 @@ const { getBookClubReadingList } = require("./routes/bookClubReadingList/getBook
 const { removeBookInReadingList } = require("./routes/bookClubReadingList/removeBookInReadingList");
 const { deleteProfile } = require("./routes/currentUser/deleteProfile");
 const { addBooks } = require("./routes/bookListEnv/addBooks");
+const { isObject } = require("util");
 
 //-------------------------------------------------------------------------------------------------
 app.use(morgan("tiny"));
 app.use(express.json());
 app.use(express.static("public"));
+app.use(cors());
+const http = require("http").createServer(app);
 
+const socketIO = require("socket.io")(http, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
+
+socketIO.on("connection", (socket) => {
+  console.log(`User Connected: ${socket.id}`);
+  socket.on("send_message", (data) => {
+    console.log(`data received`, data);
+  });
+});
 //-------------------------------------------------------------------------------------------------
 
 app.get("/weeklyTrendingBooks", getWeeklyTrendingBook);
@@ -94,7 +105,7 @@ app.get("*", (req, res) => {
 // });
 http.listen(port, () => {
   console.log(`Listening to port ${port}`);
-  socketIO.on("connection", function (socket) {
-    console.log("user connected" + socket.id);
-  });
+  // socketIO.on("connection", (socket) => {
+  //   console.log("user connected " + socket.id);
+  // });
 });

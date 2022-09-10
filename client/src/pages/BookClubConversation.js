@@ -3,7 +3,7 @@ import { CurrentUserContext } from "../context/CurrentUserContext";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 import { SideBar } from "../components/SideBar";
-// import io from "socket.io-client";
+import io from "socket.io-client";
 
 import {
   CardGrid,
@@ -13,7 +13,7 @@ import {
   SendButton,
 } from "./pageStyles/BookClubConversation.styled";
 
-// const socket = io.connect("http://localhost:8000");
+const socket = io.connect("http://localhost:8000");
 
 const BookClubConversation = () => {
   const userData = useContext(CurrentUserContext);
@@ -27,7 +27,7 @@ const BookClubConversation = () => {
   } = userData;
 
   const sendMessage = () => {
-    // socket.emit("send_message");
+    socket.emit("send_message", { message: "hello" });
   };
 
   const bookGroup = hostingBookClubs !== null && allBookClub?.filter((x) => x?._id === bookClubID);
