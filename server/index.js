@@ -2,6 +2,12 @@
 
 const express = require("express");
 const morgan = require("morgan");
+const app = express();
+const port = 8000;
+const http = require("http");
+const cors = require("cors");
+const { Server } = require("socket.io");
+
 const { getWeeklyTrendingBook } = require("./routes/getWeeklyTrendingBook");
 const { createProfile } = require("./routes/currentUser/createProfile");
 const { signedInProfile } = require("./routes/currentUser/signedInProfile");
@@ -27,12 +33,26 @@ const { removeBookInReadingList } = require("./routes/bookClubReadingList/remove
 const { deleteProfile } = require("./routes/currentUser/deleteProfile");
 const { addBooks } = require("./routes/bookListEnv/addBooks");
 
-const app = express();
-const port = 8000;
-
+//-------------------------------------------------------------------------------------------------
 app.use(morgan("tiny"));
 app.use(express.json());
 app.use(express.static("public"));
+app.use(cors());
+
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log(`User Connected: ${socket.id}`);
+});
+
+//-------------------------------------------------------------------------------------------------
 
 app.get("/weeklyTrendingBooks", getWeeklyTrendingBook);
 
