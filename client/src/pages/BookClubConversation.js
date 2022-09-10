@@ -40,7 +40,9 @@ const BookClubConversation = () => {
   };
 
   const sendMessage = () => {
-    socket.emit("send_message", { sender: username, message: userMessage, time: moment().calendar(), bookClubChat });
+    const msgData = { sender: username, message: userMessage, time: moment().calendar(), bookClubChat };
+    socket.emit("send_message", msgData);
+    setChatMessages((msgList) => [...msgList, msgData]);
   };
 
   useEffect(() => {
@@ -58,13 +60,14 @@ const BookClubConversation = () => {
           <>
             <p>{bookGroup[0]?.bookClubName}</p>
             <ChatForm>
-              {/* <p>
-                {receivedMessage.sender} {receivedMessage.message}
-              </p>
-              <p>{receivedMessage.time}</p> */}
-              {chatMessages.map((msg) => {
-                return <h1>{msg.message}</h1>;
-              })}
+              {chatMessages.map((msg, idx) => (
+                <div key={idx}>
+                  <p>
+                    {msg.sender}: {msg.message}
+                  </p>
+                  <p>{msg.time}</p>
+                </div>
+              ))}
               <InputAndButtonWrapper>
                 {isOnline ? (
                   <>
