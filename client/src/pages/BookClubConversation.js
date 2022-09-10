@@ -46,6 +46,7 @@ const BookClubConversation = () => {
     const msgData = { sender: username, message: userMessage, time: moment().calendar(), bookClubChat };
     socket.emit("send_message", msgData);
     setChatMessages((msgList) => [...msgList, msgData]);
+    setUserMessage("");
   }; //send post req -> push to mongoDB
 
   useEffect(() => {
@@ -54,6 +55,13 @@ const BookClubConversation = () => {
       setChatMessages((msgList) => [...msgList, data]);
     });
   }, [socket]);
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && userMessage.replace(/\s+/g, "").trim().length !== 0) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
 
   return (
     <>
@@ -64,8 +72,7 @@ const BookClubConversation = () => {
             <ChatForm>
               <Scrolling>
                 {chatMessages.map((msg, idx) => (
-                  // <div key={idx} id={username === msg.sender ? "currentUser" : "otherUser"}>
-                  <Wrapper>
+                  <Wrapper key={idx}>
                     {username === msg.sender ? (
                       <CurrentUser>
                         <p>
@@ -88,10 +95,10 @@ const BookClubConversation = () => {
                 {isOnline ? (
                   <>
                     <MessageBox
+                      type="text"
+                      value={userMessage}
                       onChange={(e) => setUserMessage(e.target.value)}
-                      onKeyPress={(e) => {
-                        e.key === "Enter" && sendMessage();
-                      }}
+                      onKeyPress={handleKeyPress}
                     />
                     <SendButton onClick={sendMessage}>
                       <p>Send</p>
