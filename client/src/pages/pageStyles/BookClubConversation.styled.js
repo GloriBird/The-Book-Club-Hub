@@ -42,3 +42,24 @@ export const SendButton = styled.button`
   border-radius: 5px;
   width: 10%;
 `;
+
+export const CurrentUser = styled.div`
+  border-radius: 5px;
+`;
+
+export const OtherUser = styled.div`
+  background-color: green;
+  width: fit-content;
+  text-align: end;
+`;
+
+export const Wrapper = styled.div`
+  border: 2px solid red;
+  text-align: left;
+
+  ${CurrentUser} {
+    text-align: right;
+    width: auto;
+    background-color: orange;
+  }
+`;

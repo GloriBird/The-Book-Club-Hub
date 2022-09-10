@@ -11,6 +11,9 @@ import {
   MessageBox,
   InputAndButtonWrapper,
   SendButton,
+  CurrentUser,
+  OtherUser,
+  Wrapper,
 } from "./pageStyles/BookClubConversation.styled";
 const moment = require("moment");
 
@@ -20,7 +23,6 @@ const BookClubConversation = () => {
   const userData = useContext(CurrentUserContext);
   const { trendingBooks, allUsers, allBookClub, allUsernames, userInData, bookClubChat } = useContext(GlobalContext);
   const [userMessage, setUserMessage] = useState("");
-  const [receivedMessage, setReceivedMessage] = useState([]);
   const [isOnline, setIsOnline] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
 
@@ -49,7 +51,6 @@ const BookClubConversation = () => {
     socket.on("receive_message", (data) => {
       console.log("data:", data);
       setChatMessages((msgList) => [...msgList, data]);
-      // setReceivedMessage(data);
     });
   }, [socket]);
 
@@ -61,17 +62,34 @@ const BookClubConversation = () => {
             <p>{bookGroup[0]?.bookClubName}</p>
             <ChatForm>
               {chatMessages.map((msg, idx) => (
-                <div key={idx}>
-                  <p>
-                    {msg.sender}: {msg.message}
-                  </p>
-                  <p>{msg.time}</p>
-                </div>
+                // <div key={idx} id={username === msg.sender ? "currentUser" : "otherUser"}>
+                <Wrapper>
+                  {username === msg.sender ? (
+                    <CurrentUser>
+                      <p>
+                        {msg.sender}: {msg.message}
+                      </p>
+                      <p>{msg.time}</p>
+                    </CurrentUser>
+                  ) : (
+                    <OtherUser>
+                      <p>
+                        {msg.sender}: {msg.message}
+                      </p>
+                      <p>{msg.time}</p>
+                    </OtherUser>
+                  )}
+                </Wrapper>
               ))}
               <InputAndButtonWrapper>
                 {isOnline ? (
                   <>
-                    <MessageBox onChange={(e) => setUserMessage(e.target.value)} />
+                    <MessageBox
+                      onChange={(e) => setUserMessage(e.target.value)}
+                      onKeyPress={(e) => {
+                        e.key === "Enter" && sendMessage();
+                      }}
+                    />
                     <SendButton onClick={sendMessage}>
                       <p>Send</p>
                     </SendButton>
