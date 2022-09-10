@@ -9,7 +9,7 @@ export const CardGrid = styled.div`
   gap: 30px;
 `;
 
-export const ChatForm = styled.form`
+export const ChatForm = styled.div`
   border: 2px solid blue;
   height: 85vh;
   display: flex;
