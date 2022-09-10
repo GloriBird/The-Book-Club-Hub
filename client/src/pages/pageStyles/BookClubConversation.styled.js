@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import ScrollToBottom from "react-scroll-to-bottom";
 
 export const CardGrid = styled.div`
   display: grid;
@@ -10,14 +11,15 @@ export const CardGrid = styled.div`
 `;
 
 export const ChatForm = styled.div`
-  border: 2px solid blue;
+  border: 12px solid blue;
   height: 85vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   width: 100%;
   grid-area: ChatArea;
-  overflow: auto;
+  /* overflow: auto; */
+  height: 80vh;
 `;
 
 export const InputAndButtonWrapper = styled.div`
@@ -34,6 +36,7 @@ export const MessageBox = styled.textarea`
   resize: none;
   outline: none;
   border-radius: 5px;
+  overflow: hidden;
 `;
 
 export const SendButton = styled.button`
@@ -62,4 +65,10 @@ export const Wrapper = styled.div`
     width: auto;
     background-color: orange;
   }
+`;
+
+export const Scrolling = styled(ScrollToBottom)`
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
 `;

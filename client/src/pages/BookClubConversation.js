@@ -4,7 +4,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 import { SideBar } from "../components/SideBar";
 import io from "socket.io-client";
-
+// import ScrollToBottom from "react-scroll-to-bottom";
 import {
   CardGrid,
   ChatForm,
@@ -14,6 +14,7 @@ import {
   CurrentUser,
   OtherUser,
   Wrapper,
+  Scrolling,
 } from "./pageStyles/BookClubConversation.styled";
 const moment = require("moment");
 
@@ -45,7 +46,7 @@ const BookClubConversation = () => {
     const msgData = { sender: username, message: userMessage, time: moment().calendar(), bookClubChat };
     socket.emit("send_message", msgData);
     setChatMessages((msgList) => [...msgList, msgData]);
-  };
+  }; //send post req -> push to mongoDB
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
@@ -61,26 +62,28 @@ const BookClubConversation = () => {
           <>
             <p>{bookGroup[0]?.bookClubName}</p>
             <ChatForm>
-              {chatMessages.map((msg, idx) => (
-                // <div key={idx} id={username === msg.sender ? "currentUser" : "otherUser"}>
-                <Wrapper>
-                  {username === msg.sender ? (
-                    <CurrentUser>
-                      <p>
-                        {msg.sender}: {msg.message}
-                      </p>
-                      <p>{msg.time}</p>
-                    </CurrentUser>
-                  ) : (
-                    <OtherUser>
-                      <p>
-                        {msg.sender}: {msg.message}
-                      </p>
-                      <p>{msg.time}</p>
-                    </OtherUser>
-                  )}
-                </Wrapper>
-              ))}
+              <Scrolling>
+                {chatMessages.map((msg, idx) => (
+                  // <div key={idx} id={username === msg.sender ? "currentUser" : "otherUser"}>
+                  <Wrapper>
+                    {username === msg.sender ? (
+                      <CurrentUser>
+                        <p>
+                          {msg.sender}: {msg.message}
+                        </p>
+                        <p>{msg.time}</p>
+                      </CurrentUser>
+                    ) : (
+                      <OtherUser>
+                        <p>
+                          {msg.sender}: {msg.message}
+                        </p>
+                        <p>{msg.time}</p>
+                      </OtherUser>
+                    )}
+                  </Wrapper>
+                ))}
+              </Scrolling>
               <InputAndButtonWrapper>
                 {isOnline ? (
                   <>
