@@ -65,23 +65,16 @@ app.patch("/accept-reject-invite", acceptRejectInvite);
 app.patch("/request-to-join-book-club", requestsToJoin);
 app.patch("/remove-request-to-join", removeRequestToJoin);
 
-// app.delete("/delete-profile/:id", deleteProfile);
-// app.post("/profile/add-favourite-books", addProfileFavouriteBooks);
-// app.get("/profile/current-favourite-books", getProfileFavouriteBooks);
-// app.post("/profile/add-reading-list", addProfileReadingList);
-// app.get("/profile/current-reading-list", getProfileFavouriteBooks);
-
 // // FIND USER:
-app.get("/users", getAllUsers); //Each user will have unique id
+app.get("/users", getAllUsers);
 app.get("/user/:sub", getSingleUser);
 //   // BOOKCLUB:
 app.post("/create-book-club", createBookClub);
 app.get("/browse-book-clubs", getAllBookClubs);
-// app.get("/my-book-clubs", getMainUserBookClubs) //Bookclub you're currently in, This can be done in the frontend, later on bookclub members are added on
+
 app.get("/book-club/:name", getSingleBookClub);
 app.delete("/delete-book-club/:name", deleteBookClub);
 app.post("/add-books", addBooks);
-// app.post("/book-list", getBookList);
 
 // // BOOKCLUB MEMBERS:
 app.patch("/add-member", addBookClubMembers);
@@ -95,7 +88,6 @@ app.patch("/accept-reject-user-request", acceptRejectUserRequest);
 app.post("/bookClub/reading-list", addBookClubReadingList);
 app.get("/bookClub/:groupName/reading-list", getBookClubReadingList);
 app.patch("/remove-book-reading-list", removeBookInReadingList);
-// app.delete("/delete-member/:member", deleteMember);
 
 // // CHAT:
 // app.post("/bookclub/start-chat", startBookClubChat);
