@@ -53,6 +53,10 @@ socketIO.on("connection", (socket) => {
     socket.join(data);
   });
 
+  socket.on("online_members", (members) => {
+    console.log(`members online:`, members);
+  });
+
   socket.on("send_message", (data) => {
     console.log(`data:`, data);
     socket.to(data.bookClubChat).emit("receive_message", data);

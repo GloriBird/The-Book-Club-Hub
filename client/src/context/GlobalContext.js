@@ -13,6 +13,7 @@ export const GlobalProvider = ({ children }) => {
   const [bookClubChat, setBookClubChat] = useState();
   const [weeklyTrendingBooks, setWeeklyTrendingBooks] = useState();
   const [allBookClubNames, setAllBookClubNames] = useState();
+
   const userData = useContext(CurrentUserContext);
 
   const [isAllUsersLoading, setIsAllUsersLoading] = useState(true);
@@ -30,7 +31,6 @@ export const GlobalProvider = ({ children }) => {
   //     });
   // }, []);
 
-  //"key", "title", "first_publish_year", "cover_edition_key", "author_name", "author_key"
   useEffect(() => {
     const getWeeklyBooks = async () => {
       const thisWeeksBooks = await fetch("https://openlibrary.org/trending/weekly.json");
@@ -46,8 +46,6 @@ export const GlobalProvider = ({ children }) => {
         return weeklyBooks;
       });
       setWeeklyTrendingBooks(currentWeeksBooks);
-      // console.log(`currentWeeksBooks:`, currentWeeksBooks);
-      // setChatMessages((msgList) => [...msgList, msgData]);
     };
     getWeeklyBooks();
   }, []);

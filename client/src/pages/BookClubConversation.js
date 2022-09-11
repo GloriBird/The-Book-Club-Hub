@@ -26,7 +26,6 @@ const BookClubConversation = () => {
   const [userMessage, setUserMessage] = useState("");
   const [isOnline, setIsOnline] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
-
   const { bookClubID } = useParams();
 
   const {
@@ -35,7 +34,7 @@ const BookClubConversation = () => {
 
   const bookGroup = hostingBookClubs !== null && allBookClub?.filter((x) => x?._id === bookClubID);
 
-  const joinBookClubChat = () => {
+  const joinBookClubChat = (e) => {
     setIsOnline(true);
     if (bookClubChat !== "") {
       socket.emit("join_chat", bookClubChat);
@@ -47,7 +46,7 @@ const BookClubConversation = () => {
     socket.emit("send_message", msgData);
     setChatMessages((msgList) => [...msgList, msgData]);
     setUserMessage("");
-  }; //send post req -> push to mongoDB
+  };
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
@@ -105,7 +104,7 @@ const BookClubConversation = () => {
                     </SendButton>
                   </>
                 ) : (
-                  <button id={bookGroup[0]?._id} onClick={joinBookClubChat}>
+                  <button id={bookGroup[0]?._id} className={username} onClick={joinBookClubChat}>
                     Click to Join
                   </button>
                 )}
