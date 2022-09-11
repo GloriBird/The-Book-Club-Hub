@@ -5,9 +5,7 @@ import { GlobalContext } from "../context/GlobalContext";
 
 const BrowseBookClubs = () => {
   const { allUsers, allBookClub } = useContext(GlobalContext);
-  const [toggleModal, setToggleModal] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
-  const [selectedBookClub, setSelectedBookClub] = useState();
 
   const userData = useContext(CurrentUserContext);
 
@@ -17,8 +15,6 @@ const BrowseBookClubs = () => {
 
   // console.log(`allUsers:`, allUsers);
   const handleAddRequest = (e) => {
-    setToggleModal(true);
-    // const bookGroup = allBookClub !== undefined && allUsers?.filter((x) => x?.bookClubName.includes(e.target.id));
     setIsAdded(true);
     console.log(
       `_id, username, email, bookClubName, joinedDate, sub:`,
@@ -40,7 +36,6 @@ const BrowseBookClubs = () => {
   };
 
   const handleRemoveRequest = (e) => {
-    setToggleModal(true);
     setIsAdded(false);
     fetch("/remove-request-to-join", {
       method: "PATCH",
