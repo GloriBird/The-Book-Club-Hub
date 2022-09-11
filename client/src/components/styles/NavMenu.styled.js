@@ -4,14 +4,14 @@ import { NavLink } from "react-router-dom";
 export const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: #2a1710;
-
-  /* font-size: 2rem; */
 `;
 
 export const Menu = styled.nav`
   z-index: 10;
   width: 100%;
   background-color: #f9ebc8;
+  padding: 7px 0;
+  box-shadow: 0px -6px 15px #f2deac inset;
 
   ol {
     list-style-type: none;
@@ -22,11 +22,10 @@ export const Menu = styled.nav`
 
     li {
       color: #2a1710;
-      padding: 0.5% 1%;
-      border-radius: 5px;
+      border-bottom: 4px solid transparent;
 
       &:hover {
-        background-color: #f9ebc8;
+        border-bottom: 4px solid #444444;
       }
     }
   }

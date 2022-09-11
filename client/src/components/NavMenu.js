@@ -17,8 +17,6 @@ const NavMenu = () => {
             <h2>Book Club Hub</h2>
           </StyledNavLink>
         </li>
-        {/* searchbar */}
-
         <li>
           <StyledNavLink reloadDocument to="/BrowseBooks">
             <h2>Browse Books</h2>

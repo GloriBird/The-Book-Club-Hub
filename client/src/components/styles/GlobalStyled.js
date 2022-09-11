@@ -9,6 +9,7 @@ const GlobalStyles = createGlobalStyle`
     --color-pale-forest-green: #A0BCC2;
     --font-family: 'Permanent Marker', Arial, Helvetica, sans-serif;
     --font-body: 'Permanent Marker', Arial, Helvetica, sans-serif;
+    --main-background-color: #fefbe7;
   }
 
 

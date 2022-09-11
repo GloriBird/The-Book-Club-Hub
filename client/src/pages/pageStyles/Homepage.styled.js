@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  background-color: #f9ebc8;
-  height: 100vh;
+  background-color: #fefbe7;
+  height: 100%;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -49,4 +50,12 @@ export const LandingPage = styled.div`
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
+
+  h1 {
+    font-size: 3rem;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+  }
 `;

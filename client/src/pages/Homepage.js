@@ -6,8 +6,6 @@ import PopUpModal from "../components/PopUpModal";
 import { Wrapper, NewUserForm, ConfirmButton, BookImg, LandingPage } from "./pageStyles/Homepage.styled";
 import bookAndTea from "../assets/bookAndTea.png";
 
-import { Container } from "../components/styles/PopUpModal.styled";
-
 const Homepage = () => {
   const { allUsernames } = useContext(GlobalContext);
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -98,7 +96,7 @@ const Homepage = () => {
       <LandingPage>
         <div>
           <h1>Is this a book club?</h1>
-          <h2>Not sure where to start?</h2>
+          <h1>Not sure where to start?</h1>
           <p>
             <strong>1.</strong> Explore some books reccomendation below.
           </p>
@@ -154,41 +152,3 @@ const Homepage = () => {
 };
 
 export default Homepage;
-
-// const Wrapper = styled.div`
-//   border: 10px solid green;
-
-//   height: 100vh;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: space-between;
-// `;
-
-// const NewUserForm = styled.form`
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   align-items: center;
-//   width: 100%;
-
-//   input[type="text"] {
-//     margin: 10px 0;
-//     width: 300px;
-//     text-align: center;
-//   }
-// `;
-
-// const ConfirmButton = styled.button`
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   align-items: center;
-//   background-color: green;
-//   border: none;
-//   padding: 2% 7%;
-//   margin-top: 40px;
-//   width: 100px;
-//   background-color: var(--color-pale-forest-green);
-//   opacity: ${(props) => (props.changeOpacity ? 1 : 0.3)};
-//   cursor: ${(props) => (props.disabled ? "default" : "pointer")};
-// `;
