@@ -28,5 +28,9 @@ export const Menu = styled.nav`
         border-bottom: 4px solid #444444;
       }
     }
+
+    li:hover:nth-child(2) {
+      border-bottom: 4px solid transparent;
+    }
   }
 `;

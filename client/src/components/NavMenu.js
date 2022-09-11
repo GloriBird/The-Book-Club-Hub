@@ -4,6 +4,7 @@ import LoginButton from "./LoginButton";
 import SignOutButton from "./SignOutButton";
 import SignUpButton from "./SignUpButton";
 import BookClubConversation from "../pages/BookClubConversation";
+import SearchBooks from "../pages/SearchBooks";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const NavMenu = () => {
@@ -18,10 +19,17 @@ const NavMenu = () => {
           </StyledNavLink>
         </li>
         <li>
+          <input></input>
+          <StyledNavLink reloadDocument to="/SearchBooks">
+            <button>Search</button>
+          </StyledNavLink>
+        </li>
+        <li>
           <StyledNavLink reloadDocument to="/BrowseBooks">
             <h2>Browse Books</h2>
           </StyledNavLink>
         </li>
+
         <li>
           <StyledNavLink reloadDocument to="/BrowseBookClubs">
             <h2>Browse Clubs</h2>
