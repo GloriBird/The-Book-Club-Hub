@@ -4,7 +4,7 @@ import React, { useState, useContext } from "react";
 import NavMenu from "./NavMenu";
 import Homepage from "../pages/Homepage";
 import MyBookClubs from "../pages/MyBookClubs";
-import BrowseBooks from "../pages/BrowseBooks";
+import WeeklyTrendingBooks from "../pages/WeeklyTrendingBooks";
 import Login from "../pages/Login";
 import BrowseBookClubs from "../pages/BrowseBookClubs";
 import SignUp from "../pages/SignUp";
@@ -25,7 +25,7 @@ const App = () => {
           <NavMenu />
           <Routes>
             <Route reloadDocument path="/" element={<Homepage />}></Route>
-            <Route exact reloadDocument path="/BrowseBooks" element={<BrowseBooks />}></Route>
+            <Route exact reloadDocument path="/WeeklyTrendingBooks" element={<WeeklyTrendingBooks />}></Route>
             <Route exact reloadDocument path="/BrowseBookClubs" element={<BrowseBookClubs />}></Route>
             <Route exact reloadDocument path="/SearchForMembers" element={<SearchForMembers />}></Route>
             <Route exact reloadDocument path="/MyBookClubs" element={<MyBookClubs />}></Route>

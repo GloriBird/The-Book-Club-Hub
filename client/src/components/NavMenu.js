@@ -1,11 +1,11 @@
 import { StyledNavLink } from "./styles/NavMenu.styled";
-import { Menu } from "./styles/NavMenu.styled";
+import React, { useContext, useState } from "react";
+import { Menu, Dropdown, DropdownOptions } from "./styles/NavMenu.styled";
 import LoginButton from "./LoginButton";
 import SignOutButton from "./SignOutButton";
 import SignUpButton from "./SignUpButton";
-import BookClubConversation from "../pages/BookClubConversation";
-import SearchBooks from "../pages/SearchBooks";
 import { useAuth0 } from "@auth0/auth0-react";
+import { GlobalContext } from "../context/GlobalContext";
 
 const NavMenu = () => {
   const { user, isAuthenticated, isLoading, error } = useAuth0();
@@ -19,21 +19,24 @@ const NavMenu = () => {
           </StyledNavLink>
         </li>
         <li>
-          <input></input>
-          <StyledNavLink reloadDocument to="/SearchBooks">
-            <button>Search</button>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink reloadDocument to="/BrowseBooks">
+          <Dropdown>
             <h2>Browse Books</h2>
-          </StyledNavLink>
+            <DropdownOptions>
+              <StyledNavLink reloadDocument to="/SearchBooks">
+                <h4>Search Books</h4>
+              </StyledNavLink>
+              <StyledNavLink reloadDocument to="/WeeklyTrendingBooks">
+                <h4>Weekly Trending Books</h4>
+              </StyledNavLink>
+            </DropdownOptions>
+          </Dropdown>
         </li>
-
         <li>
-          <StyledNavLink reloadDocument to="/BrowseBookClubs">
-            <h2>Browse Clubs</h2>
-          </StyledNavLink>
+          <div>
+            <StyledNavLink reloadDocument to="/BrowseBookClubs">
+              <h2>Browse Clubs</h2>
+            </StyledNavLink>
+          </div>
         </li>
         {isAuthenticated && (
           <>

@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+import { GlobalContext } from "../context/GlobalContext";
 
 const SearchBooks = () => {
-  return <div>SearchBooks</div>;
+  const { searchBook } = useContext(GlobalContext);
+  return <div>hello</div>;
 };
 
 export default SearchBooks;

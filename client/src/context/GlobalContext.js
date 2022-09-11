@@ -13,7 +13,9 @@ export const GlobalProvider = ({ children }) => {
   const [bookClubChat, setBookClubChat] = useState();
   const [weeklyTrendingBooks, setWeeklyTrendingBooks] = useState();
   const [allBookClubNames, setAllBookClubNames] = useState();
+  const [searchBook, setSearchedBooks] = useState("");
 
+  console.log(`searchBook:`, searchBook);
   const userData = useContext(CurrentUserContext);
 
   const [isAllUsersLoading, setIsAllUsersLoading] = useState(true);
@@ -22,14 +24,6 @@ export const GlobalProvider = ({ children }) => {
   const {
     state: { _id, username, email },
   } = userData;
-
-  // useEffect(() => {
-  //   fetch("/weeklyTrendingBooks")
-  //     .then((res) => res.json())
-  //     .then((weeksTrendingBooks) => {
-  //       setTrendingBooks(weeksTrendingBooks?.data);
-  //     });
-  // }, []);
 
   useEffect(() => {
     const getWeeklyBooks = async () => {
@@ -49,8 +43,6 @@ export const GlobalProvider = ({ children }) => {
     };
     getWeeklyBooks();
   }, []);
-
-  console.log(`weeklyTrendingBooks:`, weeklyTrendingBooks);
 
   useEffect(() => {
     setIsAllUsersLoading(true);
@@ -94,6 +86,8 @@ export const GlobalProvider = ({ children }) => {
         currentBookClubMembers,
         bookClubChat,
         setBookClubChat,
+        searchBook,
+        setSearchedBooks,
       }}
     >
       {children}

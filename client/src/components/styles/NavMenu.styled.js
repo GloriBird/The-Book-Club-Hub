@@ -23,14 +23,45 @@ export const Menu = styled.nav`
     li {
       color: #2a1710;
       border-bottom: 4px solid transparent;
+      height: 100%;
 
       &:hover {
         border-bottom: 4px solid #444444;
+        cursor: pointer;
       }
     }
 
-    li:hover:nth-child(2) {
-      border-bottom: 4px solid transparent;
+    /* li:nth-child(2) {
+      border: 2px solid red;
+      margin: 0;
+      padding: 0;
+    } */
+  }
+`;
+
+export const DropdownOptions = styled.div`
+  display: none;
+  position: absolute;
+  width: 130%;
+  top: calc(100% + 0.2rem);
+  background-color: #f9ebc8;
+  padding: 1rem;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  box-shadow: -6px 4px 10px -1px rgba(0, 0, 0, 0.31);
+  line-height: 2rem;
+
+  &:hover {
+    display: block;
+  }
+`;
+
+export const Dropdown = styled.div`
+  position: relative;
+
+  &:hover {
+    ${DropdownOptions} {
+      display: block;
     }
   }
 `;
