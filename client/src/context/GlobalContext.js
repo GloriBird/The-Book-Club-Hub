@@ -5,11 +5,15 @@ import { CurrentUserContext } from "./CurrentUserContext";
 export const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
-  const [trendingBooks, setTrendingBooks] = useState();
+  // const [trendingBooks, setTrendingBooks] = useState();
   const [allUsers, setAllUsers] = useState();
   const [allUsernames, setAllUsernames] = useState();
   const [allBookClub, setAllBookClubs] = useState();
+  const [currentBookClubMembers, setCurrentBookClubMembers] = useState();
+  const [bookClubChat, setBookClubChat] = useState();
+  const [weeklyTrendingBooks, setWeeklyTrendingBooks] = useState();
   const [allBookClubNames, setAllBookClubNames] = useState();
+
   const userData = useContext(CurrentUserContext);
 
   const [isAllUsersLoading, setIsAllUsersLoading] = useState(true);
@@ -19,28 +23,34 @@ export const GlobalProvider = ({ children }) => {
     state: { _id, username, email },
   } = userData;
 
-  console.log(`username`, username);
+  // useEffect(() => {
+  //   fetch("/weeklyTrendingBooks")
+  //     .then((res) => res.json())
+  //     .then((weeksTrendingBooks) => {
+  //       setTrendingBooks(weeksTrendingBooks?.data);
+  //     });
+  // }, []);
+
   useEffect(() => {
-    fetch("/weeklyTrendingBooks")
-      .then((res) => res.json())
-      .then((weeksTrendingBooks) => {
-        setTrendingBooks(weeksTrendingBooks?.data);
+    const getWeeklyBooks = async () => {
+      const thisWeeksBooks = await fetch("https://openlibrary.org/trending/weekly.json");
+      const listOfUser = await thisWeeksBooks.json();
+      const currentWeeksBooks = await listOfUser?.works?.map((x) => {
+        const weeklyBooks = {
+          title: x?.title,
+          first_published: x?.first_publish_year,
+          cover: x?.cover_edition_key,
+          author: x?.author_name,
+          author_key: x?.author_key,
+        };
+        return weeklyBooks;
       });
+      setWeeklyTrendingBooks(currentWeeksBooks);
+    };
+    getWeeklyBooks();
   }, []);
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     setIsAllUsersLoading(true);
-  //     fetch(`/users`)
-  //       .then((res) => res.json())
-  //       .then((listOfUser) => {
-  //         setAllUsers(listOfUser.account);
-  //         const getAllUsernames = listOfUser?.account.map(({ username }) => username);
-  //         setAllUsernames(getAllUsernames);
-  //         setIsAllUsersLoading(false);
-  //       });
-  //   }
-  // }, []);
+  console.log(`weeklyTrendingBooks:`, weeklyTrendingBooks);
 
   useEffect(() => {
     setIsAllUsersLoading(true);
@@ -73,13 +83,17 @@ export const GlobalProvider = ({ children }) => {
   return (
     <GlobalContext.Provider
       value={{
-        trendingBooks,
         allUsers,
+        weeklyTrendingBooks,
         allBookClub,
         isAllUsersLoading,
         allUsernames,
         userInData,
         allBookClubNames,
+        setCurrentBookClubMembers,
+        currentBookClubMembers,
+        bookClubChat,
+        setBookClubChat,
       }}
     >
       {children}

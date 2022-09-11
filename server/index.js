@@ -2,6 +2,10 @@
 
 const express = require("express");
 const morgan = require("morgan");
+const app = express();
+const port = 8000;
+const cors = require("cors");
+
 const { getWeeklyTrendingBook } = require("./routes/getWeeklyTrendingBook");
 const { createProfile } = require("./routes/currentUser/createProfile");
 const { signedInProfile } = require("./routes/currentUser/signedInProfile");
@@ -26,13 +30,39 @@ const { getBookClubReadingList } = require("./routes/bookClubReadingList/getBook
 const { removeBookInReadingList } = require("./routes/bookClubReadingList/removeBookInReadingList");
 const { deleteProfile } = require("./routes/currentUser/deleteProfile");
 const { addBooks } = require("./routes/bookListEnv/addBooks");
+const { isObject } = require("util");
 
-const app = express();
-const port = 8000;
-
+//-------------------------------------------------------------------------------------------------
 app.use(morgan("tiny"));
 app.use(express.json());
 app.use(express.static("public"));
+app.use(cors());
+const http = require("http").createServer(app);
+
+const socketIO = require("socket.io")(http, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
+
+socketIO.on("connection", (socket) => {
+  console.log(`User Connected: ${socket.id}`);
+
+  socket.on("join_chat", (data) => {
+    socket.join(data);
+  });
+
+  socket.on("online_members", (members) => {
+    console.log(`members online:`, members);
+  });
+
+  socket.on("send_message", (data) => {
+    console.log(`data:`, data);
+    socket.to(data.bookClubChat).emit("receive_message", data);
+  });
+});
+//-------------------------------------------------------------------------------------------------
 
 app.get("/weeklyTrendingBooks", getWeeklyTrendingBook);
 
@@ -45,23 +75,16 @@ app.patch("/accept-reject-invite", acceptRejectInvite);
 app.patch("/request-to-join-book-club", requestsToJoin);
 app.patch("/remove-request-to-join", removeRequestToJoin);
 
-// app.delete("/delete-profile/:id", deleteProfile);
-// app.post("/profile/add-favourite-books", addProfileFavouriteBooks);
-// app.get("/profile/current-favourite-books", getProfileFavouriteBooks);
-// app.post("/profile/add-reading-list", addProfileReadingList);
-// app.get("/profile/current-reading-list", getProfileFavouriteBooks);
-
 // // FIND USER:
-app.get("/users", getAllUsers); //Each user will have unique id
+app.get("/users", getAllUsers);
 app.get("/user/:sub", getSingleUser);
 //   // BOOKCLUB:
 app.post("/create-book-club", createBookClub);
 app.get("/browse-book-clubs", getAllBookClubs);
-// app.get("/my-book-clubs", getMainUserBookClubs) //Bookclub you're currently in, This can be done in the frontend, later on bookclub members are added on
+
 app.get("/book-club/:name", getSingleBookClub);
 app.delete("/delete-book-club/:name", deleteBookClub);
 app.post("/add-books", addBooks);
-// app.post("/book-list", getBookList);
 
 // // BOOKCLUB MEMBERS:
 app.patch("/add-member", addBookClubMembers);
@@ -75,7 +98,6 @@ app.patch("/accept-reject-user-request", acceptRejectUserRequest);
 app.post("/bookClub/reading-list", addBookClubReadingList);
 app.get("/bookClub/:groupName/reading-list", getBookClubReadingList);
 app.patch("/remove-book-reading-list", removeBookInReadingList);
-// app.delete("/delete-member/:member", deleteMember);
 
 // // CHAT:
 // app.post("/bookclub/start-chat", startBookClubChat);
@@ -88,6 +110,12 @@ app.get("*", (req, res) => {
   });
 });
 
-app.listen(port, () => {
+// app.listen(port, () => {
+//   console.log(`Listening to port ${port}`);
+// });
+http.listen(port, () => {
   console.log(`Listening to port ${port}`);
+  // socketIO.on("connection", (socket) => {
+  //   console.log("user connected " + socket.id);
+  // });
 });

@@ -10,14 +10,14 @@ const BookClubPage = () => {
   const { bookClubID } = useParams();
   const [pending, setPending] = useState(false);
   const [getId, setGetId] = useState();
-  const { trendingBooks, allUsers, allBookClub, allUsernames, userInData, sub } = useContext(GlobalContext);
+  const { trendingBooks, allUsers, allBookClub, allUsernames, userInData, sub, bookClubChat } =
+    useContext(GlobalContext);
 
   const {
     state: { _id, username, email, bookClubs, hostingBookClubs, bookClubsToJoinPending, bookClubInvites, joinedDate },
   } = userData;
 
   const bookGroup = hostingBookClubs !== null && allBookClub?.filter((x) => x?._id === bookClubID);
-  // console.log(`bookClubsToJoinPending:`, bookClubsToJoinPending[0]?.bookClubName);
   const currentUser = [
     {
       username,
@@ -25,7 +25,6 @@ const BookClubPage = () => {
     },
   ];
 
-  // console.log(`bookClubsToJoinPending:`, bookClubsToJoinPending);
   const bookClubAlreadyPending =
     bookClubsToJoinPending !== undefined &&
     bookGroup !== undefined &&
@@ -75,12 +74,8 @@ const BookClubPage = () => {
     bookGroup !== undefined &&
     hostingBookClubs?.some((x) => x?.bookClubName === bookGroup[0]?.bookClubName);
 
-  console.log(`bookClubs:`, bookClubs);
   const handleAcceptUser = (e) => {
     bookGroup[0]?.joinRequestFromUsers.splice(e.target.id, 1);
-    console.log(`remove:`, bookGroup[0]?.joinRequestFromUsers.splice(e.target.id, 1));
-    console.log(e.target.className, e.target.id, bookGroup[0]?.bookClubName);
-
     fetch("/accept-reject-user-request", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
@@ -113,13 +108,18 @@ const BookClubPage = () => {
 
   const handleRemoveMember = (e) => {
     e.preventDefault();
-    console.log(`e target id:`, e.target.id);
-    console.log(`e target className:`, e.target.className);
-
-    // /bookclub/:members
+    navigate(0);
+    fetch("/remove-member", {
+      method: "PATCH",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        _id: bookGroup[0]?._id,
+        bookClubName: bookGroup[0]?.bookClubName,
+        host: bookGroup[0]?.host,
+        member: [{ username: e.target.id, _id: e.target.className }],
+      }),
+    });
   };
-  console.log(`hostingBookClubs:`, hostingBookClubs);
-  console.log(`bookGroup:`, bookGroup);
 
   return (
     <Wrapper>
@@ -186,7 +186,7 @@ const BookClubPage = () => {
               </div>
               <h3>Chat</h3>
               <Link to={`/BookClubConversation/${bookGroup[0]?._id}`}>
-                <p> {bookGroup[0]?.bookClubName}</p>
+                <button> {bookGroup[0]?.bookClubName}</button>
               </Link>
             </>
           )}

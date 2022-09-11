@@ -14,36 +14,34 @@ const NavMenu = () => {
       <ol>
         <li>
           <StyledNavLink reloadDocument to="/">
-            <h3>Book Club Hub</h3>
+            <h2>Book Club Hub</h2>
           </StyledNavLink>
         </li>
-        {/* searchbar */}
-
         <li>
           <StyledNavLink reloadDocument to="/BrowseBooks">
-            <h3>Browse Books</h3>
+            <h2>Browse Books</h2>
           </StyledNavLink>
         </li>
         <li>
           <StyledNavLink reloadDocument to="/BrowseBookClubs">
-            <h3>Browse Clubs</h3>
+            <h2>Browse Clubs</h2>
           </StyledNavLink>
         </li>
         {isAuthenticated && (
           <>
             <li>
               <StyledNavLink reloadDocument to="/SearchForMembers">
-                <h3>Search New Members</h3>
+                <h2>Search New Members</h2>
               </StyledNavLink>
             </li>
             <li>
               <StyledNavLink reloadDocument to="/MyBookClubs">
-                <h3>My Book Club(s)</h3>
+                <h2>My Book Club(s)</h2>
               </StyledNavLink>
             </li>
             <li>
               <StyledNavLink reloadDocument to="/Profile">
-                <h3>Profile</h3>
+                <h2>Profile</h2>
               </StyledNavLink>
             </li>
           </>
