@@ -26,7 +26,8 @@ const SiteFooter = styled.footer`
   align-items: center;
   justify-content: space-evenly;
 
-  padding: 7px 0;
+  padding: 8px 0;
+  box-shadow: 0px 5px 7px #eed493 inset;
 `;
 
 const SocialIcons = styled.img`

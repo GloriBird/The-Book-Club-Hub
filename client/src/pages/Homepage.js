@@ -95,16 +95,15 @@ const Homepage = () => {
     <Wrapper>
       <LandingPage>
         <div>
-          <h1>Is this a book club?</h1>
           <h1>Not sure where to start?</h1>
           <p>
-            <strong>1.</strong> Explore some books reccomendation below.
+            <strong>1.</strong> Check out some books and book clubs that might interest you.
           </p>
           <p>
             <strong>2.</strong> Ask a few friends nicely (or not) to join your book club.
           </p>
           <p>
-            <strong>3.</strong> Read and enjoy, or not, I can’t tell you what to do.
+            <strong>3.</strong> Make new friends while reading, or not, I can’t tell you what to do.
           </p>
         </div>
         <BookImg src={bookAndTea} alt="" />

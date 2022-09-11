@@ -11,7 +11,7 @@ export const Menu = styled.nav`
   width: 100%;
   background-color: #f9ebc8;
   padding: 7px 0;
-  box-shadow: 0px -6px 15px #f2deac inset;
+  box-shadow: 0px -6px 7px #eed493 inset;
 
   ol {
     list-style-type: none;

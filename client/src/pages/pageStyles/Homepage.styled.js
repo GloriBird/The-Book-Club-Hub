@@ -48,14 +48,19 @@ export const BookImg = styled.img`
 export const LandingPage = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
+
+  div {
+    line-height: 3rem;
+  }
 
   h1 {
     font-size: 3rem;
+    line-height: 5rem;
   }
 
-  h2 {
-    font-size: 2.5rem;
+  p {
+    font-size: 1.5rem;
   }
 `;

@@ -8,7 +8,7 @@ import styled from "styled-components";
 import PopUpModal from "../components/PopUpModal";
 
 const CarouselTrendingBooks = () => {
-  const { trendingBooks } = useContext(GlobalContext);
+  const { weeklyTrendingBooks } = useContext(GlobalContext);
 
   const breakPoints = [
     { width: 1, itemsToShow: 1 },
@@ -18,12 +18,14 @@ const CarouselTrendingBooks = () => {
     { width: 500, itemsToShow: 5 },
   ];
 
+  // console.log(`trendingBooks:`, trendingBooks);
+
   return (
     <Wrapper>
       <CarouselStyle breakPoints={breakPoints}>
-        {trendingBooks?.map((x, idx) => (
+        {weeklyTrendingBooks?.map((x, idx) => (
           <List key={idx}>
-            <img src={`https://covers.openlibrary.org/b/olid/${x.cover_edition_key}-M.jpg`} alt={"book Covers"} />
+            <img src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`} alt={"book Covers"} />
             <p>{x?.title}</p>
             <p>{x.author_name}</p>
           </List>
@@ -38,6 +40,7 @@ export default CarouselTrendingBooks;
 const CarouselStyle = styled(Carousel)`
   display: flex;
   flex-direction: column;
+  z-index: 5;
 `;
 
 const Wrapper = styled.div`

@@ -12,7 +12,7 @@ export default LoginButton;
 
 const Title = styled.h2`
   cursor: pointer;
-  border-bottom: 4px solid #f9ebc8;
+  border-bottom: 4px solid transparent;
 
   &:hover {
     border-bottom: 4px solid #444444;
