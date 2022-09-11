@@ -1,11 +1,9 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { CurrentUserContext } from "./CurrentUserContext";
 
 export const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
-  // const [trendingBooks, setTrendingBooks] = useState();
   const [allUsers, setAllUsers] = useState();
   const [allUsernames, setAllUsernames] = useState();
   const [allBookClub, setAllBookClubs] = useState();
@@ -13,17 +11,9 @@ export const GlobalProvider = ({ children }) => {
   const [bookClubChat, setBookClubChat] = useState();
   const [weeklyTrendingBooks, setWeeklyTrendingBooks] = useState();
   const [allBookClubNames, setAllBookClubNames] = useState();
-  const [searchBook, setSearchedBooks] = useState("");
-
-  console.log(`searchBook:`, searchBook);
-  const userData = useContext(CurrentUserContext);
 
   const [isAllUsersLoading, setIsAllUsersLoading] = useState(true);
-  const { user, isAuthenticated } = useAuth0();
-
-  const {
-    state: { _id, username, email },
-  } = userData;
+  const { user } = useAuth0();
 
   useEffect(() => {
     const getWeeklyBooks = async () => {
@@ -62,10 +52,7 @@ export const GlobalProvider = ({ children }) => {
       .then((res) => res.json())
       .then((data) => {
         const getAllBookClubNames = data.BookClubs.map(({ bookClubName }) => bookClubName);
-
-        // setHostingBC(getHostingBC);
         setAllBookClubNames(getAllBookClubNames);
-        // console.log(`browse-book-clubs:`, data.BookClubs);
         setAllBookClubs(data.BookClubs);
       });
   }, []);
@@ -86,8 +73,6 @@ export const GlobalProvider = ({ children }) => {
         currentBookClubMembers,
         bookClubChat,
         setBookClubChat,
-        searchBook,
-        setSearchedBooks,
       }}
     >
       {children}

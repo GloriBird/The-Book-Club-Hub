@@ -4,6 +4,12 @@ import { NavLink } from "react-router-dom";
 export const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: #2a1710;
+
+  h4:hover {
+    background-color: #dae5d0;
+    border-radius: 5px;
+    margin: 0;
+  }
 `;
 
 export const Menu = styled.nav`
@@ -31,11 +37,10 @@ export const Menu = styled.nav`
       }
     }
 
-    /* li:nth-child(2) {
-      border: 2px solid red;
-      margin: 0;
-      padding: 0;
-    } */
+    li:nth-child(2) {
+      border-bottom: 4px solid transparent;
+      cursor: pointer;
+    }
   }
 `;
 
@@ -43,7 +48,7 @@ export const DropdownOptions = styled.div`
   display: none;
   position: absolute;
   width: 130%;
-  top: calc(100% + 0.2rem);
+  /* top: calc(100% + 0.15rem); */
   background-color: #f9ebc8;
   padding: 1rem;
   border-bottom-left-radius: 10px;

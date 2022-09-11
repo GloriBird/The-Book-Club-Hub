@@ -20,7 +20,7 @@ const CarouselTrendingBooks = () => {
   ];
 
   // console.log(`trendingBooks:`, trendingBooks);
-
+  //cover_edition_key
   return (
     <Wrapper>
       <CarouselStyle cols={6} rows={3} gap={10} loop showDots breakPoints={breakPoints}>
