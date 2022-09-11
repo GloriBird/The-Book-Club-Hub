@@ -24,15 +24,18 @@ const CarouselTrendingBooks = () => {
   return (
     <Wrapper>
       <CarouselStyle cols={6} rows={3} gap={10} loop showDots breakPoints={breakPoints}>
-        {weeklyTrendingBooks?.map((x, idx) => (
-          <Carousel.Item key={idx}>
-            <Books>
-              <BookImgs src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`} alt={"book Covers"} />
-              <p>{x?.title}</p>
-              <p>{x?.author}</p>
-            </Books>
-          </Carousel.Item>
-        ))}
+        {weeklyTrendingBooks?.map(
+          (x, idx) =>
+            x?.cover !== undefined && (
+              <Carousel.Item key={idx}>
+                <Books>
+                  <BookImgs src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`} alt={"book Covers"} />
+                  <p>{x?.title}</p>
+                  <p>{x?.author}</p>
+                </Books>
+              </Carousel.Item>
+            )
+        )}
       </CarouselStyle>
     </Wrapper>
   );
