@@ -2,18 +2,18 @@ import React, { useEffect, useState, useContext } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { GlobalContext } from "../context/GlobalContext";
 import { CurrentUserContext } from "../context/CurrentUserContext";
-
-// import Carousel from "react-elastic-carousel";
-import styled from "styled-components";
 import PopUpModal from "../components/PopUpModal";
+import { Wrapper, NewUserForm, ConfirmButton, BookImg, LandingPage } from "./pageStyles/Homepage.styled";
+import bookAndTea from "../assets/bookAndTea.png";
+
+import { Container } from "../components/styles/PopUpModal.styled";
 
 const Homepage = () => {
-  const { trendingBooks, allUsers, isAllUsersLoading, allUsernames, userInData } = useContext(GlobalContext);
+  const { allUsernames } = useContext(GlobalContext);
   const { user, isAuthenticated, isLoading } = useAuth0();
   const [hasLoaded, setHasLoaded] = useState(false);
   const userData = useContext(CurrentUserContext);
 
-  const [toggleModal, setToggleModal] = useState(false);
   const [newUsername, setNewUsername] = useState("");
 
   const [timedModalPopUp, setTimedModalPopUp] = useState(false);
@@ -35,7 +35,6 @@ const Homepage = () => {
       return response.json();
     });
   }
-  // console.log(`userInData:`, userInData);
 
   // Add to data if use is new user
   useEffect(() => {
@@ -96,15 +95,22 @@ const Homepage = () => {
 
   return (
     <Wrapper>
-      <main>
-        <button
-          onClick={() => {
-            setToggleModal(true);
-          }}
-        >
-          Open PopUp
-        </button>
-      </main>
+      <LandingPage>
+        <div>
+          <h1>Is this a book club?</h1>
+          <h2>Not sure where to start?</h2>
+          <p>
+            <strong>1.</strong> Explore some books reccomendation below.
+          </p>
+          <p>
+            <strong>2.</strong> Ask a few friends nicely (or not) to join your book club.
+          </p>
+          <p>
+            <strong>3.</strong> Read and enjoy, or not, I can’t tell you what to do.
+          </p>
+        </div>
+        <BookImg src={bookAndTea} alt="" />
+      </LandingPage>
       <PopUpModal trigger={timedModalPopUp} setTrigger={setTimedModalPopUp}>
         <h1>Assign Username</h1>
         <NewUserForm onSubmit={handleUsername}>
@@ -149,40 +155,40 @@ const Homepage = () => {
 
 export default Homepage;
 
-const Wrapper = styled.div`
-  border: 10px solid green;
+// const Wrapper = styled.div`
+//   border: 10px solid green;
 
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
+//   height: 100vh;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between;
+// `;
 
-const NewUserForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+// const NewUserForm = styled.form`
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   width: 100%;
 
-  input[type="text"] {
-    margin: 10px 0;
-    width: 300px;
-    text-align: center;
-  }
-`;
+//   input[type="text"] {
+//     margin: 10px 0;
+//     width: 300px;
+//     text-align: center;
+//   }
+// `;
 
-const ConfirmButton = styled.button`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: green;
-  border: none;
-  padding: 2% 7%;
-  margin-top: 40px;
-  width: 100px;
-  background-color: var(--color-pale-forest-green);
-  opacity: ${(props) => (props.changeOpacity ? 1 : 0.3)};
-  cursor: ${(props) => (props.disabled ? "default" : "pointer")};
-`;
+// const ConfirmButton = styled.button`
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   background-color: green;
+//   border: none;
+//   padding: 2% 7%;
+//   margin-top: 40px;
+//   width: 100px;
+//   background-color: var(--color-pale-forest-green);
+//   opacity: ${(props) => (props.changeOpacity ? 1 : 0.3)};
+//   cursor: ${(props) => (props.disabled ? "default" : "pointer")};
+// `;

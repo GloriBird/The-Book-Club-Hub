@@ -11,6 +11,7 @@ export const StyledNavLink = styled(NavLink)`
 export const Menu = styled.nav`
   z-index: 10;
   width: 100%;
+  background-color: #f9ebc8;
 
   ol {
     list-style-type: none;

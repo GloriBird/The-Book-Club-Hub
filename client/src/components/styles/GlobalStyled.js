@@ -8,7 +8,7 @@ const GlobalStyles = createGlobalStyle`
     --color-pale-green: #DAE5D0;
     --color-pale-forest-green: #A0BCC2;
     --font-family: 'Permanent Marker', Arial, Helvetica, sans-serif;
-    --font-body: 'Kosugi', Arial, Helvetica, sans-serif;
+    --font-body: 'Permanent Marker', Arial, Helvetica, sans-serif;
   }
 
 
@@ -54,6 +54,8 @@ input, button, textarea, select {
 */
 p, h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-family);
+    color: #3b3b3b;
+    
 
   overflow-wrap: break-word;
 }
