@@ -80,7 +80,7 @@ const SearchBooks = () => {
 export default SearchBooks;
 
 const Wrapper = styled.div`
-  height: 200vh;
+  height: 170vh;
   display: flex;
   flex-direction: column;
 
@@ -108,7 +108,7 @@ const Books = styled.div`
   text-align: center;
 
   div {
-    padding-top: 10px;
+    padding: 20px;
   }
 
   p {
@@ -128,7 +128,7 @@ const BookImgs = styled.img`
   filter: drop-shadow(-5px 5px 3px #f1d591);
 
   &:hover {
-    width: 210px;
+    width: 205px;
 
     /* filter: drop-shadow(-10px 10px 3px #e8c97d); */
     cursor: pointer;
