@@ -7,7 +7,7 @@ const SearchBooks = () => {
   // const { searchBook } = useContext(GlobalContext);
   const [searchResult, setSearchResult] = useState("");
   const [showSearch, setShowSearch] = useState("");
-  const [pageNumber, setPageNumber] = useState();
+  const [numberResult, setNumberResult] = useState();
 
   useEffect(() => {
     const getResults = async () => {
@@ -21,6 +21,7 @@ const SearchBooks = () => {
           cover: x?.cover_edition_key,
           author: x?.author_name,
           author_key: x?.author_key,
+          isbn: x?.isbn,
         };
         return allResults;
       });
@@ -30,7 +31,6 @@ const SearchBooks = () => {
     getResults();
   }, [searchResult]);
 
-  console.log(`showSearch:`, showSearch);
   const breakPoints = [
     { width: 1, itemsToShow: 1 },
     { width: 200, itemsToShow: 2 },
@@ -38,14 +38,6 @@ const SearchBooks = () => {
     { width: 400, itemsToShow: 4 },
     { width: 500, itemsToShow: 5 },
   ];
-
-  const filterBooksWithCovers = showSearch?.filter((x) => {
-    if (x?.cover !== undefined) {
-      return true;
-    } else {
-      return false;
-    }
-  });
 
   return (
     <Wrapper>
@@ -55,7 +47,7 @@ const SearchBooks = () => {
         placeholder="Search"
         onChange={(e) => setSearchResult(e.target.value)}
       />
-      <p>Number of results {filterBooksWithCovers?.length}</p>
+      <p>Number of results</p>
       <CarouselStyle cols={6} rows={2} loop showDots breakPoints={breakPoints}>
         {showSearch?.length > 0 &&
           showSearch?.map(
