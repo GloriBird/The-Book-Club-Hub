@@ -58,7 +58,9 @@ const removeBooks = async (req, res) => {
     await bookClubData.collection("Users").updateOne(
       { "hostingBookClubs.bookClubName": bookClubName },
       {
-        $pull: { "hostingBookClubs.$.readingList": profile?.hostingBookClubs[0]?.readingList[idxOfBookToRemove] },
+        $pull: {
+          "hostingBookClubs.$.readingList": profile?.hostingBookClubs[0]?.readingList[idxOfBookToRemoveFromHost],
+        },
         $inc: { bookCount: -1 },
       }
     );
