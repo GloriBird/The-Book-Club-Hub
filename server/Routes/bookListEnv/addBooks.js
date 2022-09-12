@@ -17,11 +17,11 @@ const addBooks = async (req, res) => {
   const getBookClub = await bookClubData.collection("Book-Group").findOne({ bookClubName: bookClubName });
   const profile = await bookClubData.collection("Users").findOne({ username: added_by });
 
-  const bookAlreadyIncluded = getBookClub?.readingList?.some((match) => title.includes(match?.title));
-  // const isBookIncluded = profile?.hostingBookClubs?.readingList?.some((match) => title.includes(match?.title));
+  const bookAlreadyIncluded = getBookClub?.readingList?.some((match) => match?.title === title);
 
-  // console.log(`test:`, test);
-  if (bookAlreadyIncluded === false) {
+  const isHost = profile?.hostingBookClubs?.some((x) => added_by.includes(x?.host));
+
+  if (bookAlreadyIncluded === false && isHost === true) {
     const bookToAdd = await bookClubData.collection("Book-Group").updateOne(
       { bookClubName: getBookClub?.bookClubName },
       {
@@ -69,12 +69,12 @@ const addBooks = async (req, res) => {
       }),
       client.close()
     );
-  } else if (bookAlreadyIncluded === true) {
+  } else if (bookAlreadyIncluded === true || isHost === undefined) {
     return (
       res.status(409).json({
         status: 409,
         addedBook: title,
-        message: `This book has already been added to the book club`,
+        message: `Either this book has already been added to the book club or user is not a host`,
       }),
       client.close()
     );
