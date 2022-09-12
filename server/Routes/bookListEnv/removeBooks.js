@@ -15,10 +15,9 @@ const removeBooks = async (req, res) => {
   const { added_by, date_added, bookClubName, author, title, book_img, first_published } = req.body;
 
   const getBookClub = await bookClubData.collection("Book-Group").findOne({ bookClubName: bookClubName });
-
   const bookIsInBookClub = getBookClub?.readingList?.some((match) => title.includes(match?.title));
 
-  console.log(`title:`, title.replace(/\s+/g, "").trim().length > 0);
+  const profile = await bookClubData.collection("Users").findOne({ username: added_by });
 
   //Index of book to remove from book club
   const idxOfBookToRemove =
@@ -32,13 +31,34 @@ const removeBooks = async (req, res) => {
         })
       : undefined;
 
-  //   console.log(`bookIsInBookClub:`, bookIsInBookClub);
+  //Index of book to remove from book club
+  const isHost = profile?.hostingBookClubs?.some((x) => added_by.includes(x?.host));
 
-  if (bookIsInBookClub === true) {
+  //Index of book to remove from user's hostingBookClubs
+  const idxOfBookToRemoveFromHost =
+    title.length > 0
+      ? profile?.hostingBookClubs[0]?.readingList?.findIndex((object) => {
+          if (isHost) {
+            return object?.title === title;
+          } else {
+            return false;
+          }
+        })
+      : undefined;
+
+  if (bookIsInBookClub === true && isHost) {
     const bookToRemove = await bookClubData.collection("Book-Group").updateOne(
       { bookClubName: getBookClub?.bookClubName },
       {
         $pull: { readingList: getBookClub?.readingList[idxOfBookToRemove] },
+        $inc: { bookCount: -1 },
+      }
+    );
+
+    await bookClubData.collection("Users").updateOne(
+      { "hostingBookClubs.bookClubName": bookClubName },
+      {
+        $pull: { "hostingBookClubs.$.readingList": profile?.hostingBookClubs[0]?.readingList[idxOfBookToRemove] },
         $inc: { bookCount: -1 },
       }
     );
@@ -51,7 +71,7 @@ const removeBooks = async (req, res) => {
       }),
       client.close()
     );
-  } else if (bookIsInBookClub === false) {
+  } else if (bookIsInBookClub === false || isHost === false) {
     return (
       res.status(409).json({
         status: 409,
