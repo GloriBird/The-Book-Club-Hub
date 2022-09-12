@@ -3,7 +3,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { GlobalContext } from "../context/GlobalContext";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 
-import Carousel from "react-elastic-carousel";
+// import Carousel from "react-elastic-carousel";
+import Carousel from "react-grid-carousel";
 import styled from "styled-components";
 import PopUpModal from "../components/PopUpModal";
 
@@ -18,18 +19,21 @@ const CarouselTrendingBooks = () => {
     { width: 500, itemsToShow: 5 },
   ];
 
-  // console.log(`trendingBooks:`, trendingBooks);
-
   return (
     <Wrapper>
-      <CarouselStyle breakPoints={breakPoints}>
-        {weeklyTrendingBooks?.map((x, idx) => (
-          <List key={idx}>
-            <img src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`} alt={"book Covers"} />
-            <p>{x?.title}</p>
-            <p>{x.author_name}</p>
-          </List>
-        ))}
+      <CarouselStyle cols={6} rows={3} gap={10} loop showDots breakPoints={breakPoints}>
+        {weeklyTrendingBooks?.map(
+          (x, idx) =>
+            x?.cover !== undefined && (
+              <Carousel.Item key={idx}>
+                <Books>
+                  <BookImgs src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`} alt={"book Covers"} />
+                  <p>{x?.title}</p>
+                  <p>{x?.author}</p>
+                </Books>
+              </Carousel.Item>
+            )
+        )}
       </CarouselStyle>
     </Wrapper>
   );
@@ -38,26 +42,38 @@ const CarouselTrendingBooks = () => {
 export default CarouselTrendingBooks;
 
 const CarouselStyle = styled(Carousel)`
-  display: flex;
-  flex-direction: column;
   z-index: 5;
 `;
 
 const Wrapper = styled.div`
-  border: 10px solid green;
-
-  height: 100vh;
+  height: auto;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 
-  ${CarouselStyle} {
-    border: 10px solid red;
+  padding: 2% 0;
+  border: 12px solid green;
+  background-color: var(--main-background-color);
+`;
+
+const Books = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+
+  p {
+    padding-top: 10px;
   }
 `;
 
-const List = styled.li`
-  margin-bottom: 2000;
-  list-style: none;
-  z-index: -1000;
+const BookImgs = styled.img`
+  width: 200px;
+  margin: auto;
+  height: auto;
+  border-radius: 10px;
+  filter: drop-shadow(-5px 5px 3px #f1d591);
+
+  &:hover {
+    filter: drop-shadow(-10px 10px 3px #e8c97d);
+    cursor: pointer;
+  }
 `;

@@ -6,7 +6,6 @@ import twitter from "../assets/twitter.png";
 const Footer = () => {
   return (
     <SiteFooter>
-      <h2>COMPANY</h2>
       <p>About us</p>
       <p>Careers</p>
       <p>Terms</p>
@@ -26,13 +25,23 @@ const SiteFooter = styled.footer`
   align-items: center;
   justify-content: space-evenly;
 
-  padding: 8px 0;
+  padding: 12px 0;
   box-shadow: 0px 5px 7px #eed493 inset;
+
+  p {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 `;
 
 const SocialIcons = styled.img`
   display: flex;
   width: 1.5%;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export default Footer;
