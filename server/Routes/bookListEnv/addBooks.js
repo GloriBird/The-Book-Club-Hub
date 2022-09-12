@@ -12,6 +12,12 @@ const addBooks = async (req, res) => {
   await client.connect();
 
   const bookClubData = client.db("Book-Club");
+  const { username, dataAdded, bookClubName, bookImg } = req.body;
+
+  const getBookClub = await bookClubData.collection("Book-Group").findOne({ bookClubName: bookClubName });
+  const profile = await bookClubData.collection("Users").findOne({ username: username });
+
+  const userAlreadyMember = getBookClub?.readingList.some((match) => bookClubName.includes(match?.bookClubName));
 };
 
 module.exports = {

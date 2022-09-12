@@ -40,37 +40,47 @@ const SearchBooks = () => {
   ];
 
   return (
-    <Wrapper>
+    <>
       <SearchInput
         type="text"
         className="Search"
         placeholder="Search"
         onChange={(e) => setSearchResult(e.target.value)}
       />
-      <p>Number of results</p>
-      <CarouselStyle cols={6} rows={2} loop showDots breakPoints={breakPoints}>
-        {showSearch?.length > 0 &&
-          showSearch?.map(
-            (x, idx) =>
-              x?.cover !== undefined && (
-                <Carousel.Item key={idx}>
-                  <Books>
-                    <BookImgs src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`} alt={"book Covers"} />
-                    <p>{x?.title}</p>
-                    <p>{x?.author}</p>
-                  </Books>
-                </Carousel.Item>
-              )
-          )}
-      </CarouselStyle>
-    </Wrapper>
+      <Wrapper>
+        <CarouselStyle cols={6} rows={2} loop showDots breakPoints={breakPoints}>
+          {showSearch?.length > 0 &&
+            showSearch?.map(
+              (x, idx) =>
+                x?.cover !== undefined && (
+                  <Carousel.Item key={idx}>
+                    <Books>
+                      <BookImgs src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`} alt={"book Covers"} />
+                      <div>
+                        <p>
+                          <span>Title:</span> {x?.title}
+                        </p>
+                        <p>
+                          <span>Author:</span> {x?.author?.[0]}
+                        </p>
+                        <p>
+                          <span>First published:</span> {x?.first_published}
+                        </p>
+                      </div>
+                    </Books>
+                  </Carousel.Item>
+                )
+            )}
+        </CarouselStyle>
+      </Wrapper>
+    </>
   );
 };
 
 export default SearchBooks;
 
 const Wrapper = styled.div`
-  height: 120vh;
+  height: 200vh;
   display: flex;
   flex-direction: column;
 
@@ -85,7 +95,11 @@ const CarouselStyle = styled(Carousel)`
 
 const SearchInput = styled.input`
   color: blue;
-  width: 200px;
+  width: 300px;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: row;
+  align-self: center;
 `;
 
 const Books = styled.div`
@@ -93,8 +107,16 @@ const Books = styled.div`
   flex-direction: column;
   text-align: center;
 
-  p {
+  div {
     padding-top: 10px;
+  }
+
+  p {
+    padding-top: 2px;
+  }
+
+  span {
+    font-weight: bold;
   }
 `;
 
@@ -106,7 +128,9 @@ const BookImgs = styled.img`
   filter: drop-shadow(-5px 5px 3px #f1d591);
 
   &:hover {
-    filter: drop-shadow(-10px 10px 3px #e8c97d);
+    width: 210px;
+
+    /* filter: drop-shadow(-10px 10px 3px #e8c97d); */
     cursor: pointer;
   }
 `;
