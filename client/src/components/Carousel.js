@@ -2,8 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { GlobalContext } from "../context/GlobalContext";
 import { CurrentUserContext } from "../context/CurrentUserContext";
-
-// import Carousel from "react-elastic-carousel";
 import Carousel from "react-grid-carousel";
 import styled from "styled-components";
 import PopUpModal from "../components/PopUpModal";
