@@ -11,6 +11,8 @@ const WeeklyTrendingBooks = () => {
     state: { _id, username, email },
   } = userData;
 
+  
+
   return (
     <div>
       <p>Browse Books</p>
