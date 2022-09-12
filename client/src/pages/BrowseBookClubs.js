@@ -16,16 +16,6 @@ const BrowseBookClubs = () => {
   // console.log(`allUsers:`, allUsers);
   const handleAddRequest = (e) => {
     setIsAdded(true);
-    console.log(
-      `_id, username, email, bookClubName, joinedDate, sub:`,
-      _id,
-      username,
-      email,
-      joinedDate,
-      sub,
-      hostingBookClubs
-    );
-
     fetch("/request-to-join-book-club", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },

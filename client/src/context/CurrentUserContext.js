@@ -93,7 +93,7 @@ export const CurrentUserProvider = ({ children }) => {
         const getData = await fetch(`/signedInProfile/${user?.sub}`);
         const listOfUser = await getData.json();
         const signedInProfile = await listOfUser.account;
-        // await setSignedInUser(signedInProfile);
+        console.log(`signedInProfile:`, signedInProfile);
         return receiveCurrentUser(signedInProfile);
       } else {
         <></>;

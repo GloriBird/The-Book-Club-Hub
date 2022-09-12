@@ -15,10 +15,13 @@ const addBooks = async (req, res) => {
   const { added_by, date_added, bookClubName, author, title, book_img, first_published } = req.body;
 
   const getBookClub = await bookClubData.collection("Book-Group").findOne({ bookClubName: bookClubName });
+  const profile = await bookClubData.collection("Users").findOne({ username: added_by });
 
-  const bookAlreadyIncluded = getBookClub?.readingList?.some((match) => title.includes(match?.title));
+  const bookAlreadyIncluded = getBookClub?.readingList?.some((match) => match?.title === title);
 
-  if (bookAlreadyIncluded === false) {
+  const isHost = profile?.hostingBookClubs?.some((x) => added_by.includes(x?.host));
+
+  if (bookAlreadyIncluded === false && isHost === true) {
     const bookToAdd = await bookClubData.collection("Book-Group").updateOne(
       { bookClubName: getBookClub?.bookClubName },
       {
@@ -38,6 +41,26 @@ const addBooks = async (req, res) => {
       .collection("Book-Group")
       .updateOne({ bookClubName: getBookClub?.bookClubName }, { $inc: { bookCount: 1 } });
 
+    await bookClubData.collection("Users").updateOne(
+      { "hostingBookClubs.bookClubName": bookClubName },
+      {
+        $push: {
+          "hostingBookClubs.$.readingList": {
+            title,
+            book_img,
+            author,
+            first_published,
+            date_added,
+            added_by,
+          },
+        },
+      }
+    );
+
+    await bookClubData
+      .collection("Users")
+      .updateOne({ "hostingBookClubs.bookClubName": bookClubName }, { $inc: { "hostingBookClubs.$.bookCount": 1 } });
+
     return (
       res.status(201).json({
         status: 201,
@@ -46,12 +69,12 @@ const addBooks = async (req, res) => {
       }),
       client.close()
     );
-  } else if (bookAlreadyIncluded === true) {
+  } else if (bookAlreadyIncluded === true || isHost === undefined) {
     return (
       res.status(409).json({
         status: 409,
         addedBook: title,
-        message: `This book has already been added to the book club`,
+        message: `Either this book has already been added to the book club or user is not a host`,
       }),
       client.close()
     );
