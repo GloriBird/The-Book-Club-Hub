@@ -3,15 +3,13 @@ import React, { useEffect, useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { GlobalContext } from "../context/GlobalContext";
 import CarouselTrendingBooks from "../components/Carousel";
-const BrowseBooks = () => {
+const WeeklyTrendingBooks = () => {
   const userData = useContext(CurrentUserContext);
   const { trendingBooks, allUsers, isAllUsersLoading, allUsernames } = useContext(GlobalContext);
 
   const {
     state: { _id, username, email },
   } = userData;
-
-  console.log(`_id:`, _id, `username:`, username, `email:`, email);
 
   return (
     <div>
@@ -21,4 +19,4 @@ const BrowseBooks = () => {
   );
 };
 
-export default BrowseBooks;
+export default WeeklyTrendingBooks;
