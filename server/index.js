@@ -102,9 +102,6 @@ app.patch("/remove-book-reading-list", removeBookInReadingList);
 app.patch("/add-books", addBooks);
 app.patch("/remove-books", removeBooks);
 
-// app.post("/bookclub/start-chat", startBookClubChat);
-// app.get("/bookclub/chat", getBookClubChat);
-
 app.get("*", (req, res) => {
   res.status(404).json({
     status: 404,
@@ -117,7 +114,4 @@ app.get("*", (req, res) => {
 // });
 http.listen(port, () => {
   console.log(`Listening to port ${port}`);
-  // socketIO.on("connection", (socket) => {
-  //   console.log("user connected " + socket.id);
-  // });
 });

@@ -11,7 +11,6 @@ const addBookClubReadingList = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   await client.connect();
   const bookClubData = client.db("Book-Club");
-  //   const totalBookClubs = await bookClubData.collection("Book-Group").find().toArray();
 
   const { _id, title, author, firstPublished, dateAdded } = req.body;
 

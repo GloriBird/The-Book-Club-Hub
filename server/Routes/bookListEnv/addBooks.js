@@ -15,9 +15,12 @@ const addBooks = async (req, res) => {
   const { added_by, date_added, bookClubName, author, title, book_img, first_published } = req.body;
 
   const getBookClub = await bookClubData.collection("Book-Group").findOne({ bookClubName: bookClubName });
+  const profile = await bookClubData.collection("Users").findOne({ username: added_by });
 
   const bookAlreadyIncluded = getBookClub?.readingList?.some((match) => title.includes(match?.title));
+  // const isBookIncluded = profile?.hostingBookClubs?.readingList?.some((match) => title.includes(match?.title));
 
+  // console.log(`test:`, test);
   if (bookAlreadyIncluded === false) {
     const bookToAdd = await bookClubData.collection("Book-Group").updateOne(
       { bookClubName: getBookClub?.bookClubName },
@@ -37,6 +40,26 @@ const addBooks = async (req, res) => {
     await bookClubData
       .collection("Book-Group")
       .updateOne({ bookClubName: getBookClub?.bookClubName }, { $inc: { bookCount: 1 } });
+
+    await bookClubData.collection("Users").updateOne(
+      { "hostingBookClubs.bookClubName": bookClubName },
+      {
+        $push: {
+          "hostingBookClubs.$.readingList": {
+            title,
+            book_img,
+            author,
+            first_published,
+            date_added,
+            added_by,
+          },
+        },
+      }
+    );
+
+    await bookClubData
+      .collection("Users")
+      .updateOne({ "hostingBookClubs.bookClubName": bookClubName }, { $inc: { "hostingBookClubs.$.bookCount": 1 } });
 
     return (
       res.status(201).json({

@@ -30,12 +30,6 @@ const acceptRejectUserRequest = async (req, res) => {
     profile?._id.includes(match?._id)
   );
 
-  console.log(`idxOfJoinRequestFromUsers:`, idxOfJoinRequestFromUsers);
-  console.log(`idxOfBookClubToRemove:`, idxOfBookClubToRemove);
-  console.log(`userAlreadyMember:`, userAlreadyMember);
-  console.log(`userAlreadyPending:`, userAlreadyPending);
-  console.log(`userAlreadyRequestToJoin:`, userAlreadyRequestToJoin);
-
   if (
     accept === true &&
     reject === false &&
