@@ -7,7 +7,7 @@ const SearchBooks = () => {
   // const { searchBook } = useContext(GlobalContext);
   const [searchResult, setSearchResult] = useState("");
   const [showSearch, setShowSearch] = useState("");
-  const [pageNumber, setPageNumber] = useState();
+  const [numberResult, setNumberResult] = useState();
 
   useEffect(() => {
     const getResults = async () => {
@@ -21,6 +21,7 @@ const SearchBooks = () => {
           cover: x?.cover_edition_key,
           author: x?.author_name,
           author_key: x?.author_key,
+          isbn: x?.isbn,
         };
         return allResults;
       });
@@ -30,7 +31,6 @@ const SearchBooks = () => {
     getResults();
   }, [searchResult]);
 
-  console.log(`showSearch:`, showSearch);
   const breakPoints = [
     { width: 1, itemsToShow: 1 },
     { width: 200, itemsToShow: 2 },
@@ -39,46 +39,48 @@ const SearchBooks = () => {
     { width: 500, itemsToShow: 5 },
   ];
 
-  const filterBooksWithCovers = showSearch?.filter((x) => {
-    if (x?.cover !== undefined) {
-      return true;
-    } else {
-      return false;
-    }
-  });
-
   return (
-    <Wrapper>
+    <>
       <SearchInput
         type="text"
         className="Search"
         placeholder="Search"
         onChange={(e) => setSearchResult(e.target.value)}
       />
-      <p>Number of results {filterBooksWithCovers?.length}</p>
-      <CarouselStyle cols={6} rows={2} loop showDots breakPoints={breakPoints}>
-        {showSearch?.length > 0 &&
-          showSearch?.map(
-            (x, idx) =>
-              x?.cover !== undefined && (
-                <Carousel.Item key={idx}>
-                  <Books>
-                    <BookImgs src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`} alt={"book Covers"} />
-                    <p>{x?.title}</p>
-                    <p>{x?.author}</p>
-                  </Books>
-                </Carousel.Item>
-              )
-          )}
-      </CarouselStyle>
-    </Wrapper>
+      <Wrapper>
+        <CarouselStyle cols={6} rows={2} loop showDots breakPoints={breakPoints}>
+          {showSearch?.length > 0 &&
+            showSearch?.map(
+              (x, idx) =>
+                x?.cover !== undefined && (
+                  <Carousel.Item key={idx}>
+                    <Books>
+                      <BookImgs src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`} alt={"book Covers"} />
+                      <div>
+                        <p>
+                          <span>Title:</span> {x?.title}
+                        </p>
+                        <p>
+                          <span>Author:</span> {x?.author?.[0]}
+                        </p>
+                        <p>
+                          <span>First published:</span> {x?.first_published}
+                        </p>
+                      </div>
+                    </Books>
+                  </Carousel.Item>
+                )
+            )}
+        </CarouselStyle>
+      </Wrapper>
+    </>
   );
 };
 
 export default SearchBooks;
 
 const Wrapper = styled.div`
-  height: 120vh;
+  height: 170vh;
   display: flex;
   flex-direction: column;
 
@@ -93,7 +95,11 @@ const CarouselStyle = styled(Carousel)`
 
 const SearchInput = styled.input`
   color: blue;
-  width: 200px;
+  width: 300px;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: row;
+  align-self: center;
 `;
 
 const Books = styled.div`
@@ -101,8 +107,16 @@ const Books = styled.div`
   flex-direction: column;
   text-align: center;
 
+  div {
+    padding: 20px;
+  }
+
   p {
-    padding-top: 10px;
+    padding-top: 2px;
+  }
+
+  span {
+    font-weight: bold;
   }
 `;
 
@@ -114,7 +128,9 @@ const BookImgs = styled.img`
   filter: drop-shadow(-5px 5px 3px #f1d591);
 
   &:hover {
-    filter: drop-shadow(-10px 10px 3px #e8c97d);
+    width: 205px;
+
+    /* filter: drop-shadow(-10px 10px 3px #e8c97d); */
     cursor: pointer;
   }
 `;
