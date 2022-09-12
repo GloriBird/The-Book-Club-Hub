@@ -30,6 +30,7 @@ const { getBookClubReadingList } = require("./routes/bookClubReadingList/getBook
 const { removeBookInReadingList } = require("./routes/bookClubReadingList/removeBookInReadingList");
 const { deleteProfile } = require("./routes/currentUser/deleteProfile");
 const { addBooks } = require("./routes/bookListEnv/addBooks");
+const { removeBooks } = require("./routes/bookListEnv/removeBooks");
 
 //-------------------------------------------------------------------------------------------------
 app.use(morgan("tiny"));
@@ -98,7 +99,8 @@ app.get("/bookClub/:groupName/reading-list", getBookClubReadingList);
 app.patch("/remove-book-reading-list", removeBookInReadingList);
 
 // // CHAT:
-app.post("/add-books", addBooks);
+app.patch("/add-books", addBooks);
+app.patch("/remove-books", removeBooks);
 
 // app.post("/bookclub/start-chat", startBookClubChat);
 // app.get("/bookclub/chat", getBookClubChat);
