@@ -36,8 +36,8 @@ const CarouselTrendingBooks = () => {
     const weeksBooks =
       weeklyTrendingBooks !== undefined && weeklyTrendingBooks?.filter((x) => x?.title.includes(e.target.id));
     setIsAdded(!isAdded);
-    console.log(`e.target.id:`, e.target.id);
     setReceiveBookName(e.target.id);
+
     setSelectedBook({
       added_by: username,
       title: weeksBooks[0]?.title,
@@ -75,18 +75,16 @@ const CarouselTrendingBooks = () => {
     }
   };
 
-  // const getHostingBookClubNames = hostingBookClubs !== undefined && hostingBookClubs?.map(({ bookClubName }) => bookClubName);
-  const test = "Atomic Habits";
+  const bookAdded =
+    receiveBookName !== undefined && hostingBookClubs?.[0]?.readingList?.filter((x) => x?.title === receiveBookName);
 
-  const isFound = hostingBookClubs?.some((element) => {
-    if (element?.bookClubName === "Atomic Habits") {
-      return true;
-    }
+  // const hostingTitles = receiveBookName !== undefined && hostingBookClubs[0]?.readingList?.map(({ title }) => title);
+  // const bookAdded = receiveBookName !== undefined && hostingBookClubs[0]?.readingList?.map(({ title }) => title);
+  const test = receiveBookName !== undefined && hostingBookClubs?.[0]?.readingList?.filter((x) => x?.title);
+  // console.log(`receiveBookName:`, receiveBookName);
 
-    return false;
-  });
+  console.log(`test:`, test);
 
-  console.log(`hostingBookClubs:`, hostingBookClubs);
   return (
     <Wrapper>
       <CarouselStyle cols={5} rows={3} gap={10} loop showDots responsiveLayout={updateColumns}>
@@ -116,8 +114,10 @@ const CarouselTrendingBooks = () => {
         )}
       </CarouselStyle>
       <PopUpModal trigger={toggleModal} setTrigger={setToggleModal}>
-        {hostingBookClubs?.map((x) => (
-          <button onClick={handleSelection}>{x?.bookClubName}</button>
+        {hostingBookClubs?.map((x, idx) => (
+          <button key={idx} disabled={x?.title === test[0]} onClick={handleSelection}>
+            {x?.bookClubName}
+          </button>
         ))}
       </PopUpModal>
     </Wrapper>

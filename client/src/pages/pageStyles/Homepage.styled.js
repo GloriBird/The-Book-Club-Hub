@@ -2,12 +2,14 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   background-color: #fefbe7;
-  height: 100%;
-  overflow: hidden;
+  /* height: 100%;
+  overflow: hidden; */
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
 `;
 
 export const NewUserForm = styled.form`
@@ -20,6 +22,8 @@ export const NewUserForm = styled.form`
   input[type="text"] {
     margin: 10px 0;
     width: 300px;
+    border-radius: 5px;
+    height: 40px;
     text-align: center;
   }
 `;
@@ -33,7 +37,8 @@ export const ConfirmButton = styled.button`
   border: none;
   padding: 2% 7%;
   margin-top: 40px;
-  width: 100px;
+  width: 200px;
+  border-radius: 8px;
   background-color: var(--color-pale-forest-green);
   opacity: ${(props) => (props.changeOpacity ? 1 : 0.3)};
   cursor: ${(props) => (props.disabled ? "default" : "pointer")};
