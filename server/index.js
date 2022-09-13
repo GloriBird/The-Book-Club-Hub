@@ -55,6 +55,7 @@ socketIO.on("connection", (socket) => {
 
   socket.on("online_members", (members) => {
     console.log(`members online:`, members);
+    // socket.to(members.bookClubChat).emit("online_users", members);
   });
 
   socket.on("send_message", (data) => {

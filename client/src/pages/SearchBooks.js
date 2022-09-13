@@ -4,19 +4,19 @@ import styled from "styled-components";
 import Carousel from "react-grid-carousel";
 import PopUpModal from "../components/PopUpModal";
 import { CurrentUserContext } from "../context/CurrentUserContext";
+import { BiSearchAlt } from "react-icons/bi";
+
 const moment = require("moment");
 
 const SearchBooks = () => {
   // const { searchBook } = useContext(GlobalContext);
   const [searchResult, setSearchResult] = useState("");
   const [showSearch, setShowSearch] = useState("");
-  const [numberResult, setNumberResult] = useState();
   const [toggleModal, setToggleModal] = useState(false);
   const userData = useContext(CurrentUserContext);
   const [isAdded, setIsAdded] = useState(false);
   const [selectedBook, setSelectedBook] = useState();
   const [receiveBookName, setReceiveBookName] = useState();
-  const [getSearchedBok, setGetSearchedBook] = useState();
 
   const {
     state: { _id, username, email, hostingBookClubs },
@@ -98,12 +98,17 @@ const SearchBooks = () => {
 
   return (
     <>
-      <SearchInput
-        type="text"
-        className="Search"
-        placeholder="Search"
-        onChange={(e) => setSearchResult(e.target.value)}
-      />
+      <SearchArea>
+        <h2>
+          Start your search <BiSearchAlt style={{ marginLeft: 10 }} />
+        </h2>
+        <SearchInput
+          type="text"
+          className="Search"
+          placeholder="Seach book title"
+          onChange={(e) => setSearchResult(e.target.value)}
+        />
+      </SearchArea>
       <Wrapper>
         <CarouselStyle cols={6} rows={2} loop showDots breakPoints={breakPoints}>
           {showSearch?.length > 0 &&
@@ -157,7 +162,6 @@ const Wrapper = styled.div`
   flex-direction: column;
 
   padding: 2% 0;
-  border: 12px solid green;
   background-color: var(--main-background-color);
 `;
 
@@ -165,13 +169,32 @@ const CarouselStyle = styled(Carousel)`
   z-index: 5;
 `;
 
+const SearchArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+
+  h2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 0;
+  }
+`;
+
 const SearchInput = styled.input`
-  color: blue;
-  width: 300px;
-  margin: 10px 0;
+  width: 400px;
+  margin-top: 20px;
   display: flex;
   flex-direction: row;
   align-self: center;
+  border-radius: 5px;
+  height: 40px;
+  text-align: center;
+  border-color: #dae5d0;
 `;
 
 const Books = styled.div`
@@ -202,7 +225,7 @@ const BookImgs = styled.img`
   &:hover {
     width: 205px;
 
-    /* filter: drop-shadow(-10px 10px 3px #e8c97d); */
+    filter: drop-shadow(-10px 10px 3px #e8c97d);
     cursor: pointer;
   }
 `;
