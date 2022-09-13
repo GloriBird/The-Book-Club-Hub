@@ -8,7 +8,6 @@ export const Container = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
-  border: 10px solid red;
 `;
 
 export const Wrapper = styled.div`
@@ -21,9 +20,8 @@ export const Wrapper = styled.div`
   flex-direction: column;
   display: inline-block;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 30px;
   padding: 10px;
-  border: 10px solid green;
 `;
 
 export const ModalContent = styled.div`
@@ -31,7 +29,6 @@ export const ModalContent = styled.div`
   flex-direction: row;
   justify-content: end;
   align-items: center;
-  /* border: 10px solid red; */
   width: 100%;
 `;
 
@@ -39,5 +36,4 @@ export const CloseModal = styled(IoClose)`
   cursor: pointer;
   width: 7%;
   height: auto;
-  /* border: 10px solid blue; */
 `;
