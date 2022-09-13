@@ -55,11 +55,8 @@ const MyBookClubs = () => {
       });
   };
 
-  console.log(`hostingBookClubs:`, hostingBookClubs);
-  console.log(`bookClubsToJoinPending:`, bookClubsToJoinPending);
   return (
     <Container>
-      <p>My Book Clubs</p>
       <CreateClubButton
         onClick={() => {
           setToggleModal(true);

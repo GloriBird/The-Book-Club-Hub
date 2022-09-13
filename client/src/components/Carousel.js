@@ -172,6 +172,8 @@ const AddBookButton = styled.button`
   height: 30px;
   align-items: center;
   box-shadow: 0px -4px 7px #afc39e inset;
+  font-size: 1rem;
+  font-weight: 700;
 
   &:hover {
     cursor: pointer;

@@ -1,17 +1,16 @@
 import styled from "styled-components";
-import { AiOutlinePlusCircle } from "react-icons/ai";
-import { AiOutlineMinusCircle } from "react-icons/ai";
 
 export const Container = styled.div`
-  border: 2px solid green;
+  /* border: 2px solid green; */
   height: auto;
   display: grid;
   align-items: center;
   text-align: center;
   justify-content: center;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: 1fr 1fr 1fr;
   /* gap: 10px 10px; */
+  background-color: #fefbe7;
   grid-template-areas:
     ". . . ."
     ". . . ."
@@ -20,16 +19,17 @@ export const Container = styled.div`
 
   img {
     margin: 0 auto;
-    width: 35%;
+    border-radius: 5px;
+    height: 200px;
+    width: fit-content;
   }
 `;
 
 export const List = styled.li`
-  margin-bottom: 2000;
   list-style: none;
-  border: 2px solid blue;
-  /* width: 90%; */
+  /* border: 2px solid blue; */
   text-align: center;
+  margin-top: 50px;
 `;
 
 export const Wrapper = styled.div`
@@ -37,11 +37,26 @@ export const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   padding: 15px 15px 0 15px;
-  border: 2px solid red;
+  /* border: 2px solid red; */
 `;
 
 export const BookClubInfo = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 20px;
+`;
+
+export const AddRemoveButtons = styled.button`
+  list-style: none;
+  text-align: center;
+  background-color: #dae5d0;
+  box-shadow: 0px -4px 7px #afc39e inset;
+  border: none;
+  border-radius: 5px;
+  height: 30px;
+  width: 30px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;

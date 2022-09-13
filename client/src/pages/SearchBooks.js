@@ -223,8 +223,6 @@ const BookImgs = styled.img`
   filter: drop-shadow(-5px 5px 3px #f1d591);
 
   &:hover {
-    width: 205px;
-
     filter: drop-shadow(-10px 10px 3px #e8c97d);
     cursor: pointer;
   }
@@ -236,4 +234,16 @@ const AddBookButton = styled.button`
   justify-content: center;
   margin: 10px auto;
   width: 60%;
+  background-color: #dae5d0;
+  border-radius: 5px;
+  border: none;
+  height: 30px;
+  align-items: center;
+  box-shadow: 0px -4px 7px #afc39e inset;
+  font-size: 1rem;
+  font-weight: 700;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
