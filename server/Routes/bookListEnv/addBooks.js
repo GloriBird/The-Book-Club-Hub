@@ -27,6 +27,7 @@ const addBooks = async (req, res) => {
       {
         $push: {
           readingList: {
+            bookClubName,
             title,
             book_img,
             author,
@@ -46,6 +47,7 @@ const addBooks = async (req, res) => {
       {
         $push: {
           "hostingBookClubs.$.readingList": {
+            bookClubName,
             title,
             book_img,
             author,

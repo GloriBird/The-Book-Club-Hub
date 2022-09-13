@@ -5,6 +5,7 @@ import { CurrentUserContext } from "../context/CurrentUserContext";
 import PopUpModal from "../components/PopUpModal";
 import { Wrapper, NewUserForm, ConfirmButton, BookImg, LandingPage } from "./pageStyles/Homepage.styled";
 import bookAndTea from "../assets/bookAndTea.png";
+import { Container, CreateClubButton, ChatButton } from "./pageStyles/MyBookClubs.styled";
 
 const Homepage = () => {
   const { allUsernames } = useContext(GlobalContext);
@@ -92,61 +93,65 @@ const Homepage = () => {
   const typedUsernameLowerCased = newUsername?.toLowerCase();
 
   return (
-    <Wrapper>
-      <LandingPage>
-        <div>
-          <h1>Not sure where to start?</h1>
-          <p>
-            <strong>1.</strong> Check out some books and book clubs that might interest you.
-          </p>
-          <p>
-            <strong>2.</strong> Ask a few friends nicely (or not) to join your book club.
-          </p>
-          <p>
-            <strong>3.</strong> Make new friends while reading, or not, I can’t tell you what to do.
-          </p>
-        </div>
-        <BookImg src={bookAndTea} alt="" />
-      </LandingPage>
-      <PopUpModal trigger={timedModalPopUp} setTrigger={setTimedModalPopUp}>
-        <h1>Assign Username</h1>
-        <NewUserForm onSubmit={handleUsername}>
-          <label>
-            <p>Let us know your username, if you decide to skip we'll assign you one.</p>
-            <em>Make sure there are no space in between the characters</em>
-            <input
-              type="text"
-              name="ClubName"
-              maxLength="30"
-              placeholder="Enter at least 2 characters"
-              value={newUsername}
-              onChange={(e) => setNewUsername(e.target.value)}
-              required
-            />
-            {allUsernamesLowerCased?.includes(typedUsernameLowerCased) && <p>This username has already been taken.</p>}
-            <p>Characters left: {maxCharacters - newUsername.length}</p>
-          </label>
-          <ConfirmButton
-            type="submit"
-            value="Create"
-            changeOpacity={newUsername.trim().length > 1 || newUsername.trim().length <= 30 || containsSpace === true}
-            disabled={
-              newUsername.trim().length < 2 ||
-              newUsername.trim().length > 30 ||
-              containsSpace === true ||
-              allUsernamesLowerCased?.includes(typedUsernameLowerCased)
-            }
-            onClick={() =>
-              setTimeout(() => {
-                setTimedModalPopUp(false);
-              }, 1000)
-            }
-          >
-            {hasLoaded ? "Loading..." : "Submit Username"}
-          </ConfirmButton>
-        </NewUserForm>
-      </PopUpModal>
-    </Wrapper>
+    <Container>
+      <Wrapper>
+        <LandingPage>
+          <div>
+            <h1>Not sure where to start?</h1>
+            <p>
+              <strong>1.</strong> Check out some books and book clubs that might interest you.
+            </p>
+            <p>
+              <strong>2.</strong> Ask a few friends nicely (or not) to join your book club.
+            </p>
+            <p>
+              <strong>3.</strong> Make new friends while reading, or not, I can’t tell you what to do.
+            </p>
+          </div>
+          <BookImg src={bookAndTea} alt="" />
+        </LandingPage>
+        <PopUpModal trigger={timedModalPopUp} setTrigger={setTimedModalPopUp} style={{ backgroundColor: "blue" }}>
+          <h1>Assign Username</h1>
+          <NewUserForm onSubmit={handleUsername}>
+            <label>
+              <p>Let us know your username, if you decide to skip we'll assign you one.</p>
+              <em>Make sure there are no space in between the characters</em>
+              <input
+                type="text"
+                name="ClubName"
+                maxLength="30"
+                placeholder="Enter at least 2 characters"
+                value={newUsername}
+                onChange={(e) => setNewUsername(e.target.value)}
+                required
+              />
+              {allUsernamesLowerCased?.includes(typedUsernameLowerCased) && (
+                <p>This username has already been taken.</p>
+              )}
+              <p>Characters left: {maxCharacters - newUsername.length}</p>
+            </label>
+            <ConfirmButton
+              type="submit"
+              value="Create"
+              changeOpacity={newUsername.trim().length > 1 || newUsername.trim().length <= 30 || containsSpace === true}
+              disabled={
+                newUsername.trim().length < 2 ||
+                newUsername.trim().length > 30 ||
+                containsSpace === true ||
+                allUsernamesLowerCased?.includes(typedUsernameLowerCased)
+              }
+              onClick={() =>
+                setTimeout(() => {
+                  setTimedModalPopUp(false);
+                }, 1000)
+              }
+            >
+              {hasLoaded ? "Loading..." : "Submit Username"}
+            </ConfirmButton>
+          </NewUserForm>
+        </PopUpModal>
+      </Wrapper>
+    </Container>
   );
 };
 

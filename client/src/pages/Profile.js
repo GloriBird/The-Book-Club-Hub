@@ -37,7 +37,6 @@ const Profile = () => {
 export default Profile;
 
 const Container = styled.div`
-  border: 2px solid green;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
