@@ -3,8 +3,8 @@ import { GlobalContext } from "../context/GlobalContext";
 import styled from "styled-components";
 import Carousel from "react-grid-carousel";
 import PopUpModal from "../components/PopUpModal";
-
 import { CurrentUserContext } from "../context/CurrentUserContext";
+const moment = require("moment");
 
 const SearchBooks = () => {
   // const { searchBook } = useContext(GlobalContext);
@@ -16,27 +16,29 @@ const SearchBooks = () => {
   const [isAdded, setIsAdded] = useState(false);
   const [selectedBook, setSelectedBook] = useState();
   const [receiveBookName, setReceiveBookName] = useState();
+  const [getSearchedBok, setGetSearchedBook] = useState();
 
   const {
     state: { _id, username, email, hostingBookClubs },
   } = userData;
-
   const handleAddBook = (e) => {
     e.preventDefault();
     setToggleModal(true);
-
+    const pickedBook = showSearch !== undefined && showSearch?.filter((x) => x?.title.includes(e.target.id));
     setIsAdded(!isAdded);
     setReceiveBookName(e.target.id);
 
     setSelectedBook({
-      // added_by: username,
-      // title: weeksBooks[0]?.title,
-      // author: weeksBooks[0]?.author[0],
-      // first_published: weeksBooks[0]?.first_published,
-      // book_img: `https://covers.openlibrary.org/b/olid/${weeksBooks[0]?.cover}-M.jpg`,
-      // date_added: moment().format("LL"),
+      added_by: username,
+      title: pickedBook[0]?.title,
+      author: pickedBook[0]?.author[0],
+      first_published: pickedBook[0]?.first_published,
+      book_img: `https://covers.openlibrary.org/b/olid/${pickedBook[0]?.cover?.cover}-M.jpg`,
+      date_added: moment().format("LL"),
     });
   };
+
+  console.log(`selectedBook:`, selectedBook);
 
   useEffect(() => {
     const getResults = async () => {
@@ -211,12 +213,4 @@ const AddBookButton = styled.button`
   justify-content: center;
   margin: 10px auto;
   width: 60%;
-
-  &:focus {
-    margin: 0 50px 30px 50px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    /* background-color: ${(props) => (props.isClicked ? "green" : "blue")}; */
-  }
 `;
