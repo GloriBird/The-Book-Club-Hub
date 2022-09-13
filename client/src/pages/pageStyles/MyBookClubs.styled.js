@@ -7,6 +7,7 @@ export const Container = styled.div`
   align-items: center;
   flex-direction: column;
   font-family: Arial, Helvetica, sans-serif;
+  background-color: #fefbe7;
 `;
 
 export const CreateClubButton = styled.button`
@@ -18,6 +19,9 @@ export const CreateClubButton = styled.button`
   flex-direction: column;
   border-radius: 5px;
   padding: 0.5% 1%;
+  font-size: 1rem;
+  margin-top: 50px;
+  font-weight: bolder;
 `;
 
 export const ChatButton = styled.button`

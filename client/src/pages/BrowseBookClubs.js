@@ -1,4 +1,12 @@
-import { Container, List, Add, Minus, Wrapper, BookClubInfo } from "./pageStyles/BrowseBookClubs.styled";
+import {
+  Container,
+  List,
+  Add,
+  Minus,
+  Wrapper,
+  BookClubInfo,
+  AddRemoveButtons,
+} from "./pageStyles/BrowseBookClubs.styled";
 import React, { useEffect, useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { GlobalContext } from "../context/GlobalContext";
@@ -43,16 +51,16 @@ const BrowseBookClubs = () => {
           <img src={`https://avatars.dicebear.com/api/initials/${x?.bookClubName}.svg`} alt="" />
 
           <Wrapper>
-            <button id={x?.bookClubName} onClick={handleRemoveRequest}>
+            <AddRemoveButtons id={x?.bookClubName} onClick={handleRemoveRequest}>
               -
-            </button>
+            </AddRemoveButtons>
             <BookClubInfo>
               <p>{x?.bookClubName}</p>
               <p>Hosted by {x?.host}</p>
             </BookClubInfo>
-            <button id={x?.bookClubName} onClick={handleAddRequest}>
+            <AddRemoveButtons id={x?.bookClubName} onClick={handleAddRequest}>
               +
-            </button>
+            </AddRemoveButtons>
           </Wrapper>
         </List>
       ))}
