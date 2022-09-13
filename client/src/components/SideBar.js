@@ -6,15 +6,24 @@ import { useLocation } from "react-router-dom";
 
 export const SideBar = () => {
   const userData = useContext(CurrentUserContext);
-  const { trendingBooks, allUsers, allBookClub, allUsernames, userInData, setCurrentBookClubMembers, setBookClubChat } =
-    useContext(GlobalContext);
+  const {
+    trendingBooks,
+    allUsers,
+    allBookClub,
+    allUsernames,
+    userInData,
+    setCurrentBookClubMembers,
+    onlineUsers,
+    setBookClubChat,
+  } = useContext(GlobalContext);
 
   const location = useLocation();
 
-  const [onlineMembers, setOnlineMembers] = useState();
+  // const [onlineMembers, setOnlineMembers] = useState([]);
+  const [userOnline, setUserOnline] = useState([]);
 
   const {
-    state: { _id, username, email, bookClubs },
+    state: { _id, username, email, bookClubs, onChat },
   } = userData;
 
   const getURL = location.pathname;
@@ -36,10 +45,12 @@ export const SideBar = () => {
     <Wrapper>
       <h3>Contacts</h3>
       <MemberArea>
-        {allBookClub !== undefined &&
+        {/* {allBookClub !== undefined &&
           currentMembers.map((x, idx) => {
             return <p key={idx}>{x}</p>;
-          })}
+          })} */}
+        {allBookClub !== undefined &&
+          currentMembers.map((x) => (x === username && onChat ? <p>{x} Online</p> : <p>{x} Offline</p>))}
       </MemberArea>
     </Wrapper>
   );

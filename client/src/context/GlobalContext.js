@@ -11,6 +11,7 @@ export const GlobalProvider = ({ children }) => {
   const [bookClubChat, setBookClubChat] = useState();
   const [weeklyTrendingBooks, setWeeklyTrendingBooks] = useState();
   const [allBookClubNames, setAllBookClubNames] = useState();
+  const [onlineUsers, setOnlineUsers] = useState([]);
 
   const [isAllUsersLoading, setIsAllUsersLoading] = useState(true);
   const { user } = useAuth0();
@@ -58,6 +59,7 @@ export const GlobalProvider = ({ children }) => {
   }, []);
 
   const userInData = allUsers?.some((existingUser) => existingUser?.sub.includes(user?.sub));
+  console.log(`onlineUsers:`, onlineUsers);
 
   return (
     <GlobalContext.Provider
@@ -73,6 +75,8 @@ export const GlobalProvider = ({ children }) => {
         currentBookClubMembers,
         bookClubChat,
         setBookClubChat,
+        onlineUsers,
+        setOnlineUsers,
       }}
     >
       {children}

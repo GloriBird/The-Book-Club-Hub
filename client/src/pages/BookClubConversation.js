@@ -26,20 +26,28 @@ const BookClubConversation = () => {
   const [userMessage, setUserMessage] = useState("");
   const [isOnline, setIsOnline] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
+  const [onlineMembers, setOnlineMembers] = useState([]);
+
   const { bookClubID } = useParams();
 
   const {
     state: { username, hostingBookClubs },
+    actions: { receiveUserOnline },
   } = userData;
 
   const bookGroup = hostingBookClubs !== null && allBookClub?.filter((x) => x?._id === bookClubID);
 
   const joinBookClubChat = (e) => {
     setIsOnline(true);
+    receiveUserOnline(true);
     if (bookClubChat !== "") {
       socket.emit("join_chat", bookClubChat);
+      socket.emit("online_members", username);
+      setOnlineMembers(username);
     }
   };
+
+  console.log(`onlineMembers:`, onlineMembers);
 
   const sendMessage = () => {
     const msgData = { sender: username, message: userMessage, time: moment().calendar(), bookClubChat };
@@ -50,7 +58,6 @@ const BookClubConversation = () => {
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
-      console.log("data:", data);
       setChatMessages((msgList) => [...msgList, data]);
     });
   }, [socket]);
