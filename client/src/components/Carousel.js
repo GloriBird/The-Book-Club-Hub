@@ -115,7 +115,7 @@ const CarouselTrendingBooks = () => {
       </CarouselStyle>
       <PopUpModal trigger={toggleModal} setTrigger={setToggleModal}>
         {hostingBookClubs?.map((x, idx) => (
-          <button key={idx} disabled={x?.title === test[0]} onClick={handleSelection}>
+          <button key={idx} onClick={handleSelection}>
             {x?.bookClubName}
           </button>
         ))}
