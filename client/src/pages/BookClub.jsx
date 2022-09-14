@@ -125,120 +125,121 @@ const BookClubPage = () => {
     <>
       {username !== null ? (
         <Wrapper>
-          {bookGroup !== undefined && hostingBookClubs !== null && (
-            <>
-              <SpaceAreas>
-                <h2>{bookGroup[0]?.bookClubName}</h2>
-                <p>Hosted by {bookGroup[0]?.host}</p>
-              </SpaceAreas>
-              {/* <h2>Reading List{bookGroup[0]?.ReadingList}:</h2> */}
-              <SpaceAreas>
-                <div>
-                  <MemberList>
-                    <h2>Members:</h2>
-                    {bookGroup[0]?.members.map((x, idx) => {
-                      return (
-                        <List key={idx}>
-                          <MembersArea>
-                            <p> {x?.username}</p>
-                            {bookGroup[0]?.host === username && bookGroup[0]?.host !== x?.username && (
-                              <RemoveMemberButton id={x?.username} className={x?._id} onClick={handleRemoveMember}>
-                                Remove Member
-                              </RemoveMemberButton>
-                            )}
-                          </MembersArea>
-                        </List>
-                      );
-                    })}
-                  </MemberList>
-                </div>
-              </SpaceAreas>
+          <BookClubInfo>
+            {bookGroup !== undefined && hostingBookClubs !== null && (
+              <>
+                <SpaceAreas>
+                  <h1>{bookGroup[0]?.bookClubName}</h1>
+                  <p>Hosted by {bookGroup[0]?.host}</p>
+                </SpaceAreas>
+                {/* <h2>Reading List{bookGroup[0]?.ReadingList}:</h2> */}
+                <SpaceAreas>
+                  <div>
+                    <MemberList>
+                      <h3>Members:</h3>
+                      {bookGroup[0]?.members.map((x, idx) => {
+                        return (
+                          <List key={idx}>
+                            <MembersArea>
+                              <p> {x?.username}</p>
+                              {bookGroup[0]?.host === username && bookGroup[0]?.host !== x?.username && (
+                                <RemoveMemberButton id={x?.username} className={x?._id} onClick={handleRemoveMember}>
+                                  Remove Member
+                                </RemoveMemberButton>
+                              )}
+                            </MembersArea>
+                          </List>
+                        );
+                      })}
+                    </MemberList>
+                  </div>
+                </SpaceAreas>
 
-              {(isAMember === true || isAHost === true) && (
-                <>
-                  <SpaceAreas>
-                    {bookGroup[0]?.pendingMembers.length > 0 && (
+                {(isAMember === true || isAHost === true) && (
+                  <>
+                    <SpaceAreas>
+                      {bookGroup[0]?.pendingMembers.length > 0 && (
+                        <>
+                          <div>
+                            <h3>Users To Accept Invite</h3>
+                            {bookGroup[0]?.pendingMembers.map((x, idx) => {
+                              return (
+                                <List key={idx}>
+                                  <p>Pending Members: {x?.username}</p>
+                                </List>
+                              );
+                            })}
+                          </div>
+                        </>
+                      )}
+                    </SpaceAreas>
+                    {bookGroup[0]?.joinRequestFromUsers?.length > 0 && (
+                      <SpaceAreas>
+                        <h3>Join Requests From Users</h3>
+                        {bookGroup[0]?.joinRequestFromUsers.map((x, idx) => (
+                          <List key={idx} id={idx}>
+                            <UsersRequest>
+                              <p>{x?.username}</p>
+                              {bookGroup[0]?.host === username && (
+                                <>
+                                  <AcceptButton id={x?.username} className={x?._id} onClick={handleAcceptUser}>
+                                    Accept
+                                  </AcceptButton>
+                                  <DenyButton id={x?.username} className={x?._id} onClick={handleDenyUser}>
+                                    Deny
+                                  </DenyButton>
+                                </>
+                              )}
+                            </UsersRequest>
+                          </List>
+                        ))}
+                      </SpaceAreas>
+                    )}
+                    {bookGroup[0]?.bookClubInvites?.length > 0 && (
                       <>
-                        <div>
-                          <h3>Users To Accept Invite</h3>
-                          {bookGroup[0]?.pendingMembers.map((x, idx) => {
+                        <SpaceAreas>
+                          <h3>Invites To Join Book Club</h3>
+                          {bookClubInvites?.map((x, idx) => {
                             return (
                               <List key={idx}>
-                                <p>Pending Members: {x?.username}</p>
+                                <p>Book Clubs: {x?.bookClubName}</p>
                               </List>
                             );
                           })}
-                        </div>
+                        </SpaceAreas>
                       </>
                     )}
-                  </SpaceAreas>
-                  {bookGroup[0]?.joinRequestFromUsers?.length > 0 && (
-                    <SpaceAreas>
-                      <h3>Join Requests From Users</h3>
-                      {bookGroup[0]?.joinRequestFromUsers.map((x, idx) => (
-                        <List key={idx} id={idx}>
-                          <UsersRequest>
-                            <p>{x?.username}</p>
-                            {bookGroup[0]?.host === username && (
-                              <>
-                                <AcceptButton id={x?.username} className={x?._id} onClick={handleAcceptUser}>
-                                  Accept
-                                </AcceptButton>
-                                <DenyButton id={x?.username} className={x?._id} onClick={handleDenyUser}>
-                                  Deny
-                                </DenyButton>
-                              </>
-                            )}
-                          </UsersRequest>
-                        </List>
-                      ))}
-                    </SpaceAreas>
-                  )}
-                  {/* </RequestToJoin> */}
-                  {bookGroup[0]?.bookClubInvites?.length > 0 && (
-                    <>
+                    <ChatArea>
+                      <h3>Chat</h3>
+                      <Link to={`/BookClubConversation/${bookGroup[0]?._id}`}>
+                        <Buttons> Join Book Club Chat</Buttons>
+                      </Link>
+                    </ChatArea>
+                  </>
+                )}
+                <div>
+                  {bookClubs !== null &&
+                    bookClubsToJoinPending !== null &&
+                    (isAMember === false ? (
                       <SpaceAreas>
-                        <h3>Invites To Join Book Club</h3>
-                        {bookClubInvites?.map((x, idx) => {
-                          return (
-                            <List key={idx}>
-                              <p>Book Clubs: {x?.bookClubName}</p>
-                            </List>
-                          );
-                        })}
+                        <JoinBookClubButton
+                          disabled={bookGroup[0]?.host === username || bookClubAlreadyPending || pending}
+                          onClick={handleJoinRequest}
+                        >
+                          {pending || bookClubAlreadyPending ? <p>Awaiting host response...</p> : <p>Join Book Club</p>}
+                        </JoinBookClubButton>
                       </SpaceAreas>
-                    </>
-                  )}
-                  <ChatArea>
-                    <h3>Chat</h3>
-                    <Link to={`/BookClubConversation/${bookGroup[0]?._id}`}>
-                      <Buttons> Join Book Club Chat</Buttons>
-                    </Link>
-                  </ChatArea>
-                </>
-              )}
-              <div>
-                {bookClubs !== null &&
-                  bookClubsToJoinPending !== null &&
-                  (isAMember === false ? (
-                    <SpaceAreas>
-                      <JoinBookClubButton
-                        disabled={bookGroup[0]?.host === username || bookClubAlreadyPending || pending}
-                        onClick={handleJoinRequest}
-                      >
-                        {pending || bookClubAlreadyPending ? <p>Awaiting host response...</p> : <p>Join Book Club</p>}
-                      </JoinBookClubButton>
-                    </SpaceAreas>
-                  ) : (
-                    <SpaceAreas>
-                      <button disabled={bookGroup[0]?.host === username} onClick={handleLeaveGroup}>
-                        Leave Book Club
-                      </button>
-                    </SpaceAreas>
-                  ))}
-              </div>
-            </>
-          )}
+                    ) : (
+                      <SpaceAreas>
+                        <button disabled={bookGroup[0]?.host === username} onClick={handleLeaveGroup}>
+                          Leave Book Club
+                        </button>
+                      </SpaceAreas>
+                    ))}
+                </div>
+              </>
+            )}
+          </BookClubInfo>
         </Wrapper>
       ) : (
         <Landing>Loading...</Landing>
@@ -250,14 +251,15 @@ const BookClubPage = () => {
 export default BookClubPage;
 
 const Wrapper = styled.div`
-  height: 80vh;
-  border: 2px solid red;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  text-align: center;
+  display: grid;
+  border: 10px solid red;
   padding-left: 50px;
+  grid-template-columns: 0.7fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-template-areas: "BookClubInfo Books";
+  gap: 30px;
+  height: 100vh;
 
   h3 {
     text-align: left;
@@ -314,7 +316,6 @@ const MembersArea = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  /* border: 2px solid red; */
 `;
 
 const RemoveMemberButton = styled.button`
@@ -339,6 +340,10 @@ const RemoveMemberButton = styled.button`
 const UsersRequest = styled.div`
   display: flex;
   align-items: center;
+
+  p {
+    line-height: 40px;
+  }
 `;
 
 const MemberList = styled.li`
@@ -351,14 +356,12 @@ const MemberList = styled.li`
 const ChatArea = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
+ */
   align-content: center;
   padding: 20px 0;
 `;
 
 const JoinBookClubButton = styled.button`
-  /* box-shadow: 0px -4px 7px #001d6e inset; */
   box-shadow: ${(props) => (props.disabled ? "#dcdcdc" : "0px -4px 7px #001d6e inset")};
 
   border-radius: 5px;
@@ -387,12 +390,13 @@ const Buttons = styled.button`
   flex-direction: row;
   justify-content: center; */
   padding: 0 20px;
-  background-color: #f9ebc8;
+  background-color: #f1a661;
   border-radius: 5px;
   border: none;
   height: 30px;
   align-items: center;
-  box-shadow: 0px -4px 7px #f1d591 inset;
+  color: white;
+  box-shadow: 0px -4px 7px #e48a37 inset;
   font-size: 1rem;
   font-weight: 700;
 
@@ -404,4 +408,8 @@ const Buttons = styled.button`
 const SpaceAreas = styled.div`
   margin: 10px 0;
   text-align: left;
+`;
+
+const BookClubInfo = styled.div`
+  grid-area: BookClubInfo;
 `;

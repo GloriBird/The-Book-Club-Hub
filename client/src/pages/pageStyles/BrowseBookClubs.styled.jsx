@@ -14,7 +14,6 @@ export const Container = styled.div`
   grid-template-areas:
     ". . . ."
     ". . . ."
-    ". . . ."
     ". . . .";
 
   img {
@@ -30,14 +29,14 @@ export const List = styled.li`
   /* border: 2px solid blue; */
   text-align: center;
   margin-top: 50px;
+  /* width: 250px; */
 `;
 
 export const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 15px 15px 0 15px;
-  /* border: 2px solid red; */
+  /* padding: 15px 15px 0 15px; */
 `;
 
 export const BookClubInfo = styled.div`
