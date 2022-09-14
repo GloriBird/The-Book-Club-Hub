@@ -44,7 +44,7 @@ export const UsersBookClubs = () => {
     bookClubInvites.splice(e.target.id, 1);
   };
 
-  console.log(`username:`, username);
+  console.log(`bookClubs:`, bookClubs);
   return (
     <>
       {username !== null ? (
@@ -68,44 +68,71 @@ export const UsersBookClubs = () => {
               </Wrapper>
             </>
           )}
-          <MyBookClubs>My Book Clubs</MyBookClubs>
-          <Wrapper>
-            {bookClubs?.map((group, idx) => (
-              <List key={idx} id={group?._id}>
-                <Link reloadDocument to={`/BookClub/${group?._id}`}>
-                  <p>{group?.bookClubName}</p>
-                </Link>
-              </List>
-            ))}
-          </Wrapper>
-          <Title>Book Club Invites</Title>
-          <Wrapper>
-            {bookClubInvites?.map(
-              (group, idx) => (
-                // isAccepted !== null && (
-                <List key={idx} id={idx}>
-                  <p> {group?.bookClubName}</p>
-                  <button id={group?.bookClubName} onClick={handleAccept}>
-                    Accept
-                  </button>
-                  <button id={group?.bookClubName} onClick={handleDeny}>
-                    Deny
-                  </button>
-                </List>
-              )
-              // )
-            )}
-          </Wrapper>
-          <Title>My Book Club Requests</Title>
-          <Wrapper>
-            {bookClubsToJoinPending?.map((group, idx) => (
-              <List key={idx} id={group?._id}>
-                <Link reloadDocument to={`/BookClub/${group?._id}`}>
-                  <p> {group?.bookClubName}</p>
-                </Link>
-              </List>
-            ))}
-          </Wrapper>
+          {bookClubs?.length > 0 && (
+            <>
+              <Title>My Book Clubs</Title>
+              <Wrapper>
+                {bookClubs?.map((group, idx) => (
+                  <List key={idx} id={group?._id}>
+                    <Link style={{ textDecoration: "none" }} reloadDocument to={`/BookClub/${group?._id}`}>
+                      <BookClubImg
+                        src={`https://avatars.dicebear.com/api/initials/${group?.bookClubName}.svg`}
+                        alt=""
+                      />
+                      <p>{group?.bookClubName}</p>
+                    </Link>
+                  </List>
+                ))}
+              </Wrapper>
+            </>
+          )}
+          {bookClubInvites?.length > 0 && (
+            <>
+              <Title>Book Club Invites</Title>
+              <Wrapper>
+                {bookClubInvites?.map(
+                  (group, idx) => (
+                    // isAccepted !== null && (
+                    <List key={idx} id={idx}>
+                      <div>
+                        <BookClubImg
+                          src={`https://avatars.dicebear.com/api/initials/${group?.bookClubName}.svg`}
+                          alt=""
+                        />
+                        <p> {group?.bookClubName}</p>
+                        <AcceptButton id={group?.bookClubName} onClick={handleAccept}>
+                          Accept
+                        </AcceptButton>
+                        <DenyButton id={group?.bookClubName} onClick={handleDeny}>
+                          Deny
+                        </DenyButton>
+                      </div>
+                    </List>
+                  )
+                  // )
+                )}
+              </Wrapper>
+            </>
+          )}
+
+          {bookClubsToJoinPending.length > 0 && (
+            <>
+              <MyBookClubRequest>My Book Club Requests</MyBookClubRequest>
+              <Wrapper style={{ marginBottom: 50 }}>
+                {bookClubsToJoinPending?.map((group, idx) => (
+                  <List key={idx} id={group?._id}>
+                    <Link style={{ textDecoration: "none" }} reloadDocument to={`/BookClub/${group?._id}`}>
+                      <BookClubImg
+                        src={`https://avatars.dicebear.com/api/initials/${group?.bookClubName}.svg`}
+                        alt=""
+                      />
+                      <p>{group?.bookClubName}</p>
+                    </Link>
+                  </List>
+                ))}
+              </Wrapper>
+            </>
+          )}
         </>
       ) : (
         <p>Loading...</p>
@@ -115,11 +142,11 @@ export const UsersBookClubs = () => {
 };
 
 const Title = styled.h3`
-  padding-top: 1%;
+  padding-top: 3%;
 `;
 
 const Wrapper = styled.ol`
-  border: 2px solid red;
+  /* border: 2px dotted red; */
   width: 100vw;
   height: 20vh;
   display: flex;
@@ -142,7 +169,6 @@ const List = styled.li`
   list-style: none;
   padding: 0.5% 1%;
   height: 100%;
-  /* border: 2px solid blue; */
   display: flex;
 
   span {
@@ -151,14 +177,53 @@ const List = styled.li`
     justify-content: space-evenly;
     padding-right: 20px;
   }
-  /*  */
+
+  div {
+    text-align: center;
+  }
 `;
 
 const BookClubImg = styled.img`
   border-radius: 5px;
   height: 100%;
+  margin: auto;
 `;
 
-const MyBookClubs = styled.h3`
-  padding-top: 3%;
+const DenyButton = styled.button`
+  list-style: none;
+  text-align: center;
+  box-shadow: 0px -4px 7px #b01818 inset;
+  border-radius: 5px;
+  background-color: #de5151;
+  height: 30px;
+  width: 100px;
+  margin: 0 5px;
+  border: none;
+  color: white;
+  font-weight: bolder;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const AcceptButton = styled.button`
+  list-style: none;
+  text-align: center;
+  box-shadow: 0px -4px 7px #68a033 inset;
+  border-radius: 5px;
+  background-color: #a1cf8b;
+  height: 30px;
+  width: 100px;
+  margin: 0 5px;
+  border: none;
+  font-weight: bolder;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const MyBookClubRequest = styled.h3`
+  padding-top: 6%;
 `;
