@@ -29,8 +29,6 @@ export const BookList = () => {
     setBookClubChat(getIdFromURL);
   }, []);
 
-  console.log(`bookGroup:`, bookGroup);
-
   return (
     <>
       {username !== undefined ? (

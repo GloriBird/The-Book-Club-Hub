@@ -254,7 +254,7 @@ const Wrapper = styled.div`
   display: grid;
   border: 10px solid red;
   /* padding-left: 50px; */
-  grid-template-columns: 0.7fr 1fr;
+  grid-template-columns: 0.6fr 1fr;
   grid-template-rows: 1fr;
   gap: 0px 0px;
   grid-template-areas: "BookClubDetails Books";
