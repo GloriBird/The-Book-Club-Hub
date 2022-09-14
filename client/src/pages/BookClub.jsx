@@ -3,7 +3,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { Navigate, useNavigate, useParams, Link } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
-
+import BookList from "../components/BookList";
 const BookClubPage = () => {
   const userData = useContext(CurrentUserContext);
   const navigate = useNavigate();
@@ -120,7 +120,6 @@ const BookClubPage = () => {
     });
   };
 
-  console.log(`bookGroup[0]?.joinRequestFromUsers:`, bookGroup[0]?.joinRequestFromUsers);
   return (
     <>
       {username !== null ? (
@@ -240,6 +239,7 @@ const BookClubPage = () => {
               </>
             )}
           </BookClubInfo>
+          <BookList />
         </Wrapper>
       ) : (
         <Landing>Loading...</Landing>
@@ -253,11 +253,11 @@ export default BookClubPage;
 const Wrapper = styled.div`
   display: grid;
   border: 10px solid red;
-  padding-left: 50px;
+  /* padding-left: 50px; */
   grid-template-columns: 0.7fr 1fr;
   grid-template-rows: 1fr;
   gap: 0px 0px;
-  grid-template-areas: "BookClubInfo Books";
+  grid-template-areas: "BookClubDetails Books";
   gap: 30px;
   height: 100vh;
 
@@ -356,7 +356,6 @@ const MemberList = styled.li`
 const ChatArea = styled.div`
   display: flex;
   flex-direction: row;
- */
   align-content: center;
   padding: 20px 0;
 `;
@@ -407,9 +406,10 @@ const Buttons = styled.button`
 
 const SpaceAreas = styled.div`
   margin: 10px 0;
-  text-align: left;
+  /* text-align: left; */
 `;
 
 const BookClubInfo = styled.div`
-  grid-area: BookClubInfo;
+  grid-area: BookClubDetails;
+  margin: 0 auto;
 `;

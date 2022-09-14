@@ -33,7 +33,7 @@ const SearchBooks = () => {
       title: pickedBook[0]?.title,
       author: pickedBook[0]?.author[0],
       first_published: pickedBook[0]?.first_published,
-      book_img: `https://covers.openlibrary.org/b/olid/${pickedBook[0]?.cover?.cover}-M.jpg`,
+      cover: pickedBook[0]?.cover,
       date_added: moment().format("LL"),
     });
   };
