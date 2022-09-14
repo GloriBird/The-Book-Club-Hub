@@ -62,12 +62,15 @@ const SearchBooks = () => {
     getResults();
   }, [searchResult]);
 
-  const breakPoints = [
-    { width: 1, itemsToShow: 1 },
-    { width: 200, itemsToShow: 2 },
-    { width: 300, itemsToShow: 3 },
-    { width: 400, itemsToShow: 4 },
-    { width: 500, itemsToShow: 5 },
+  const updateColumns = [
+    {
+      breakpoint: 1200,
+      cols: 4,
+    },
+    {
+      breakpoint: 990,
+      cols: 3,
+    },
   ];
 
   const handleSelection = (e) => {
@@ -110,7 +113,7 @@ const SearchBooks = () => {
         />
       </SearchArea>
       <Wrapper>
-        <CarouselStyle cols={6} rows={2} loop showDots breakPoints={breakPoints}>
+        <CarouselStyle cols={6} rows={2} loop showDots responsiveLayout={updateColumns}>
           {showSearch?.length > 0 &&
             showSearch?.map(
               (x, idx) =>
