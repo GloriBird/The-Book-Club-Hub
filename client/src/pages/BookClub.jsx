@@ -36,8 +36,6 @@ const BookClubPage = () => {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
-        _id: bookGroup[0]?._id,
-        host: bookGroup[0]?.host,
         bookClubName: bookGroup[0]?.bookClubName,
         member: currentUser,
       }),
@@ -89,7 +87,7 @@ const BookClubPage = () => {
         reject: false,
       }),
     });
-    navigate(0);
+    window.location.reload();
   };
 
   const handleDenyUser = (e) => {
@@ -106,7 +104,7 @@ const BookClubPage = () => {
         reject: true,
       }),
     });
-    // navigate(0);
+    window.location.reload();
   };
 
   const handleRemoveMember = (e) => {
