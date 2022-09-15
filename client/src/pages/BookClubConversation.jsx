@@ -4,7 +4,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 import { SideBar } from "../components/SideBar";
 import io from "socket.io-client";
-// import ScrollToBottom from "react-scroll-to-bottom";
+import BookListInChat from "../components/BookListInChat";
 import {
   CardGrid,
   ChatForm,
@@ -21,6 +21,7 @@ import {
   MsgArea,
   OtherMemberMsgArea,
   OtherProfileImg,
+  JoinButton,
   OtherProfileTime,
 } from "./pageStyles/BookClubConversation.styled";
 const moment = require("moment");
@@ -43,7 +44,6 @@ const BookClubConversation = () => {
   } = userData;
 
   const bookGroup = hostingBookClubs !== null && allBookClub?.filter((x) => x?._id === bookClubID);
-
   const joinBookClubChat = (e) => {
     setIsOnline(true);
     receiveUserOnline(true);
@@ -54,13 +54,13 @@ const BookClubConversation = () => {
     }
   };
 
-  console.log(`onlineMembers:`, onlineMembers);
-
   const sendMessage = () => {
-    const msgData = { sender: username, message: userMessage, time: moment().calendar(), bookClubChat };
-    socket.emit("send_message", msgData);
-    setChatMessages((msgList) => [...msgList, msgData]);
-    setUserMessage("");
+    if (userMessage.replace(/\s+/g, "").trim().length > 0) {
+      const msgData = { sender: username, message: userMessage, time: moment().calendar(), bookClubChat };
+      socket.emit("send_message", msgData);
+      setChatMessages((msgList) => [...msgList, msgData]);
+      setUserMessage("");
+    }
   };
 
   useEffect(() => {
@@ -76,14 +76,13 @@ const BookClubConversation = () => {
     }
   };
 
-  console.log(`chatMsg`, chatMessages);
   return (
     <>
       {allBookClub !== undefined && (
         <CardGrid>
           <>
-            <p>{bookGroup[0]?.bookClubName}</p>
-            <ChatForm>
+            <BookListInChat currentBookClub={bookGroup[0]?.bookClubName} readingList={bookGroup[0]?.readingList} />
+            <ChatForm joined={isOnline}>
               <Scrolling>
                 {chatMessages.map((msg, idx) => (
                   <Wrapper key={idx}>
@@ -123,14 +122,14 @@ const BookClubConversation = () => {
                       onChange={(e) => setUserMessage(e.target.value)}
                       onKeyPress={handleKeyPress}
                     />
-                    <SendButton onClick={sendMessage}>
+                    <SendButton onClick={sendMessage} disabled={userMessage.replace(/\s+/g, "").trim().length < 1}>
                       <p>Send</p>
                     </SendButton>
                   </>
                 ) : (
-                  <button id={bookGroup[0]?._id} className={username} onClick={joinBookClubChat}>
+                  <JoinButton id={bookGroup[0]?._id} className={username} onClick={joinBookClubChat}>
                     Click to Join
-                  </button>
+                  </JoinButton>
                 )}
               </InputAndButtonWrapper>
             </ChatForm>

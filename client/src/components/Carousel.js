@@ -13,9 +13,7 @@ const CarouselTrendingBooks = () => {
   const [toggleModal, setToggleModal] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const [selectedBook, setSelectedBook] = useState();
-  const [receiveBookName, setReceiveBookName] = useState();
-  const [showBookClubName, setShowBookClubName] = useState();
-  const { user, isLoading, isAuthenticated } = useAuth0();
+  const { isLoading, isAuthenticated } = useAuth0();
 
   const {
     state: { _id, username, email, hostingBookClubs },
@@ -40,8 +38,6 @@ const CarouselTrendingBooks = () => {
     const weeksBooks =
       weeklyTrendingBooks !== undefined && weeklyTrendingBooks?.filter((x) => x?.title.includes(e.target.id));
     setIsAdded(true);
-    setReceiveBookName(e.target.id);
-    // setShowBookClubName;
     setSelectedBook({
       added_by: username,
       title: weeksBooks[0]?.title,

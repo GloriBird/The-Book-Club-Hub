@@ -11,16 +11,15 @@ export const CardGrid = styled.div`
 `;
 
 export const ChatForm = styled.div`
-  border: 5px solid #f9ebc8;
-  height: 85vh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+
   width: 100%;
   grid-area: ChatArea;
   overflow: auto;
   height: 80vh;
-  background-color: white;
+  border: ${(props) => (props.joined ? "5px solid #f9ebc8" : "#FEFBE7")};
+  background-color: ${(props) => (props.joined ? "white" : "#FEFBE7")};
   border-radius: 10px;
 `;
 
@@ -43,22 +42,28 @@ export const MessageBox = styled.textarea`
 
 export const SendButton = styled.button`
   border: none;
-  background-color: lightgreen;
   border-radius: 5px;
   width: 10%;
+  padding: 7px 0;
+  background-color: ${(props) => (props.disabled ? "#dcdcdc" : "#90c8ac")};
+  box-shadow: ${(props) => (props.disabled ? "0px -4px 7px #dcdcdc inset" : "0px -6px 7px #73a9ad inset")};
+
+  p {
+    font-weight: bold;
+    color: white;
+  }
 `;
 
 export const CurrentUser = styled.div`
   border-radius: 5px;
   text-align: right;
-  /* width: 200px; */
+
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
 `;
 
 export const OtherUser = styled.div`
-  /* background-color: green; */
   width: fit-content;
   margin-right: 17%;
   text-align: left;
@@ -155,4 +160,24 @@ export const OtherProfileTime = styled.div`
     text-align: center;
     margin-right: 20px;
   }
+`;
+
+export const BookArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const JoinButton = styled.button`
+  display: flex;
+  border: none;
+  position: relative;
+  margin: auto;
+  font-size: 2rem;
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
+  padding: 10px 25px;
+  background-color: #a1cf8b;
+  box-shadow: 0px -4px 7px #68a033 inset;
 `;

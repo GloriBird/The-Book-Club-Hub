@@ -83,7 +83,7 @@ const MemberArea = styled.div`
     width: 300px;
     height: 30px;
     text-align: center;
-    border: 2px solid grey;
+    border: 2px solid #554994;
     margin: 2px 0;
   }
 `;
