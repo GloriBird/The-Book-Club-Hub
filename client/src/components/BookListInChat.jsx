@@ -17,17 +17,17 @@ const BookListInChat = (props) => {
     },
   ];
 
-  const handleRemoveBook = (e) => {
-    // if (isAdded === false) {
-    //   fetch("/remove-books", {
-    //     method: "PATCH",
-    //     headers: { "Content-type": "application/json" },
-    //     body: JSON.stringify({ ...selectedBook, bookClubName: e.target.innerHTML }),
-    //   }).then((response) => {
-    //     return response.json();
-    //   });
-    // }
-  };
+  // const handleRemoveBook = (e) => {
+  //   if (isAdded === false) {
+  //     fetch("/remove-books", {
+  //       method: "PATCH",
+  //       headers: { "Content-type": "application/json" },
+  //       body: JSON.stringify({ ...selectedBook, bookClubName: e.target.innerHTML }),
+  //     }).then((response) => {
+  //       return response.json();
+  //     });
+  //   }
+  // };
 
   return (
     <Wrapper>
