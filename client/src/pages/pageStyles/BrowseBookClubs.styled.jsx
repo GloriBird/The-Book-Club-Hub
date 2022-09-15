@@ -45,17 +45,57 @@ export const BookClubInfo = styled.div`
   padding: 0 20px;
 `;
 
-export const AddRemoveButtons = styled.button`
+export const AddButton = styled.button`
   list-style: none;
   text-align: center;
-  background-color: #dae5d0;
-  box-shadow: 0px -4px 7px #afc39e inset;
+  background-color: ${(props) => (props.disabled ? "#dcdcdc" : "#a1cf8b")};
+  box-shadow: ${(props) => (props.disabled ? "0px -4px 7px #dcdcdc inset" : "0px -4px 7px #68a033 inset")};
+
   border: none;
   border-radius: 5px;
   height: 30px;
   width: 30px;
+  color: white;
+  font-weight: bolder;
+  font-size: 1rem;
 
   &:hover {
-    cursor: pointer;
+    cursor: ${(props) => (props.disabled ? "default" : "pointer")};
+  }
+
+  &:focus {
+    background-color: green;
+  }
+`;
+
+export const RemoveButton = styled.button`
+  list-style: none;
+  text-align: center;
+  background-color: ${(props) => (props.disabled ? "#dcdcdc" : "#de5151")};
+  box-shadow: ${(props) => (props.disabled ? "0px -4px 7px #dcdcdc inset" : "0px -4px 7px #b01818 inset")};
+  border: none;
+  border-radius: 5px;
+  height: 30px;
+  width: 30px;
+  color: white;
+  font-weight: bolder;
+  font-size: 1rem;
+
+  &:hover {
+    cursor: ${(props) => (props.disabled ? "default" : "pointer")};
+  }
+
+  &:focus {
+    background-color: darkred;
+  }
+`;
+
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+
+  p {
+    font-size: 2rem;
+    font-weight: bold;
   }
 `;

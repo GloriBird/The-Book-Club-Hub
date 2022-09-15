@@ -1,4 +1,4 @@
-import { Container, List, Add, Minus, Wrapper } from "./pageStyles/BrowseBookClubs.styled";
+import { Container, List, Wrapper, ModalArea } from "./pageStyles/BrowseBookClubs.styled";
 import React, { useEffect, useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { GlobalContext } from "../context/GlobalContext";
@@ -87,7 +87,6 @@ const SearchForMembers = () => {
           </Wrapper>
         </List>
       ))}
-
       <PopUpModal trigger={toggleModal} setTrigger={setToggleModal}>
         {hostingBookClubs?.map((x) => (
           <button onClick={handleSelection}>{x?.bookClubName}</button>

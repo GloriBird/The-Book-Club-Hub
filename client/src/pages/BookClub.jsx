@@ -4,13 +4,15 @@ import { CurrentUserContext } from "../context/CurrentUserContext";
 import { Navigate, useNavigate, useParams, Link } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 import BookList from "../components/BookList";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Loading } from "../components/styles/Loading.styled";
 const BookClubPage = () => {
   const userData = useContext(CurrentUserContext);
   const navigate = useNavigate();
   const { bookClubID } = useParams();
   const [pending, setPending] = useState(false);
-  const [getId, setGetId] = useState();
   const { allBookClub, sub } = useContext(GlobalContext);
+  const { isLoading } = useAuth0();
 
   const {
     state: { _id, username, email, bookClubs, hostingBookClubs, bookClubsToJoinPending, bookClubInvites, joinedDate },
@@ -34,8 +36,6 @@ const BookClubPage = () => {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
-        _id: bookGroup[0]?._id,
-        host: bookGroup[0]?.host,
         bookClubName: bookGroup[0]?.bookClubName,
         member: currentUser,
       }),
@@ -74,55 +74,59 @@ const BookClubPage = () => {
     hostingBookClubs?.some((x) => x?.bookClubName === bookGroup[0]?.bookClubName);
 
   const handleAcceptUser = (e) => {
-    bookGroup[0]?.joinRequestFromUsers.splice(e.target.id, 1);
+    const idxToRemove = e.target.className.lastIndexOf(" ");
+    const finalUserId = e.target.className.substring(idxToRemove + 1);
     fetch("/accept-reject-user-request", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
-        _id: e.target.className,
+        _id: finalUserId,
         username: e.target.id,
         bookClubName: bookGroup[0]?.bookClubName,
         accept: true,
         reject: false,
       }),
     });
-    navigate(0);
+    window.location.reload();
   };
 
   const handleDenyUser = (e) => {
-    bookGroup[0]?.joinRequestFromUsers.splice(e.target.id, 1);
+    const idxToRemove = e.target.className.lastIndexOf(" ");
+    const finalUserId = e.target.className.substring(idxToRemove + 1);
     fetch("/accept-reject-user-request", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
-        _id: e.target.className,
+        _id: finalUserId,
         username: e.target.id,
         bookClubName: bookGroup[0]?.bookClubName,
         accept: false,
         reject: true,
       }),
     });
-    navigate(0);
+    window.location.reload();
   };
 
   const handleRemoveMember = (e) => {
-    e.preventDefault();
-    navigate(0);
+    const idxToRemove = e.target.className.lastIndexOf(" ");
+    const finalUserId = e.target.className.substring(idxToRemove + 1);
+
     fetch("/remove-member", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
-        _id: bookGroup[0]?._id,
         bookClubName: bookGroup[0]?.bookClubName,
-        host: bookGroup[0]?.host,
-        member: [{ username: e.target.id, _id: e.target.className }],
+        member: [{ username: e.target.id, _id: finalUserId }],
       }),
     });
+    navigate(0);
   };
+
+  console.log(`bookGroup:`, bookGroup[0]?.readingList.length < 1);
 
   return (
     <>
-      {username !== null ? (
+      {username !== null && isLoading === false ? (
         <Wrapper>
           <BookClubInfo>
             {bookGroup !== undefined && hostingBookClubs !== null && (
@@ -131,7 +135,6 @@ const BookClubPage = () => {
                   <h1>{bookGroup[0]?.bookClubName}</h1>
                   <p>Hosted by {bookGroup[0]?.host}</p>
                 </SpaceAreas>
-                {/* <h2>Reading List{bookGroup[0]?.ReadingList}:</h2> */}
                 <SpaceAreas>
                   <div>
                     <MemberList>
@@ -210,8 +213,8 @@ const BookClubPage = () => {
                     )}
                     <ChatArea>
                       <h3>Chat</h3>
-                      <Link to={`/BookClubConversation/${bookGroup[0]?._id}`}>
-                        <Buttons> Join Book Club Chat</Buttons>
+                      <Link reloadDocument to={`/BookClubConversation/${bookGroup[0]?._id}`}>
+                        <Buttons> Join Chat</Buttons>
                       </Link>
                     </ChatArea>
                   </>
@@ -239,10 +242,12 @@ const BookClubPage = () => {
               </>
             )}
           </BookClubInfo>
-          <BookList />
+          {bookGroup[0]?.readingList.length > 1 && <BookList />}
         </Wrapper>
       ) : (
-        <Landing>Loading...</Landing>
+        <Loading>
+          <p>Loading...</p>
+        </Loading>
       )}
     </>
   );
@@ -252,8 +257,7 @@ export default BookClubPage;
 
 const Wrapper = styled.div`
   display: grid;
-  border: 10px solid red;
-  /* padding-left: 50px; */
+  /* border: 10px solid red; */
   grid-template-columns: 0.6fr 1fr;
   grid-template-rows: 1fr;
   gap: 0px 0px;
@@ -268,13 +272,6 @@ const Wrapper = styled.div`
 
 const List = styled.li`
   list-style: none;
-`;
-
-const Landing = styled.p`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
 const DenyButton = styled.button`
@@ -316,6 +313,7 @@ const MembersArea = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  line-height: 40px;
 `;
 
 const RemoveMemberButton = styled.button`
@@ -385,17 +383,14 @@ const JoinBookClubButton = styled.button`
 
 const Buttons = styled.button`
   margin: 0 10px 0px 10px;
-  /* display: flex;
-  flex-direction: row;
-  justify-content: center; */
   padding: 0 20px;
-  background-color: #f1a661;
+  background-color: #77dd77;
   border-radius: 5px;
   border: none;
   height: 30px;
   align-items: center;
   color: white;
-  box-shadow: 0px -4px 7px #e48a37 inset;
+  box-shadow: 0px -4px 7px #188818 inset;
   font-size: 1rem;
   font-weight: 700;
 

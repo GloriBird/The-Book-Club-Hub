@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { GlobalContext } from "../context/GlobalContext";
 import { useLocation } from "react-router-dom";
+import Carousel from "react-grid-carousel";
 
 export const BookList = () => {
   const userData = useContext(CurrentUserContext);
@@ -29,17 +30,33 @@ export const BookList = () => {
     setBookClubChat(getIdFromURL);
   }, []);
 
+  const updateColumns = [
+    {
+      breakpoint: 1200,
+      cols: 4,
+    },
+    {
+      breakpoint: 990,
+      cols: 3,
+    },
+  ];
   return (
     <>
       {username !== undefined ? (
         <Wrapper>
-          {bookGroup?.[0]?.readingList?.map((x, idx) => (
-            <div key={idx}>
-              <img src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`} alt="test" />
+          <CarouselStyle cols={3} rows={2} loop showDots responsiveLayout={updateColumns}>
+            {bookGroup?.[0]?.readingList?.map((x, idx) => (
+              <Carousel.Item key={idx}>
+                <Books>
+                  <BookImgs src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`} alt="test" />
 
-              <p>{x?.title}</p>
-            </div>
-          ))}
+                  <Para>
+                    <span>{idx + 1}:</span> {x?.title}
+                  </Para>
+                </Books>
+              </Carousel.Item>
+            ))}
+          </CarouselStyle>
         </Wrapper>
       ) : (
         <p>Loading...</p>
@@ -51,33 +68,32 @@ export const BookList = () => {
 export default BookList;
 
 const Wrapper = styled.div`
+  /* border: 12px solid green; */
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  border: 2px solid green;
+  justify-content: center;
+  align-items: center;
 `;
 
-const MemberArea = styled.div`
-  display: inline;
-  flex-direction: column;
-  border: 2px solid red;
+const CarouselStyle = styled(Carousel)`
+  z-index: 5;
+`;
 
-  p {
-    display: block;
-    border: 2px solid blue;
+const Books = styled.div`
+  margin: auto;
+  text-align: center;
+`;
+const BookImgs = styled.img`
+  margin: auto;
+  border-radius: 10px;
+  filter: drop-shadow(-5px 5px 3px #f1d591);
+
+  &:hover {
+    filter: drop-shadow(-10px 10px 3px #e8c97d);
+    cursor: pointer;
   }
 `;
 
-// const BookImgs = styled.img`
-//   width: 200px;
-//   height: auto;
-//   border-radius: 10px;
-//   filter: drop-shadow(-5px 5px 3px #f1d591);
-
-//   &:hover {
-//     width: 210px;
-
-//     filter: drop-shadow(-10px 10px 3px #e8c97d);
-//     cursor: pointer;
-//   }
-// `;
+const Para = styled.p`
+  padding-top: 20px;
+`;

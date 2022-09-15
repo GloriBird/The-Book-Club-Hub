@@ -4,7 +4,9 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 import { SideBar } from "../components/SideBar";
 import io from "socket.io-client";
-// import ScrollToBottom from "react-scroll-to-bottom";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Loading } from "../components/styles/Loading.styled";
+import BookListInChat from "../components/BookListInChat";
 import {
   CardGrid,
   ChatForm,
@@ -15,6 +17,14 @@ import {
   OtherUser,
   Wrapper,
   Scrolling,
+  ProfileImg,
+  ProfileTime,
+  FriendMsg,
+  MsgArea,
+  OtherMemberMsgArea,
+  OtherProfileImg,
+  JoinButton,
+  OtherProfileTime,
 } from "./pageStyles/BookClubConversation.styled";
 const moment = require("moment");
 
@@ -27,6 +37,7 @@ const BookClubConversation = () => {
   const [isOnline, setIsOnline] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [onlineMembers, setOnlineMembers] = useState([]);
+  const { isLoading, isAuthenticated } = useAuth0();
 
   const { bookClubID } = useParams();
 
@@ -36,7 +47,6 @@ const BookClubConversation = () => {
   } = userData;
 
   const bookGroup = hostingBookClubs !== null && allBookClub?.filter((x) => x?._id === bookClubID);
-
   const joinBookClubChat = (e) => {
     setIsOnline(true);
     receiveUserOnline(true);
@@ -47,13 +57,13 @@ const BookClubConversation = () => {
     }
   };
 
-  console.log(`onlineMembers:`, onlineMembers);
-
   const sendMessage = () => {
-    const msgData = { sender: username, message: userMessage, time: moment().calendar(), bookClubChat };
-    socket.emit("send_message", msgData);
-    setChatMessages((msgList) => [...msgList, msgData]);
-    setUserMessage("");
+    if (userMessage.replace(/\s+/g, "").trim().length > 0) {
+      const msgData = { sender: username, message: userMessage, time: moment().calendar(), bookClubChat };
+      socket.emit("send_message", msgData);
+      setChatMessages((msgList) => [...msgList, msgData]);
+      setUserMessage("");
+    }
   };
 
   useEffect(() => {
@@ -69,57 +79,85 @@ const BookClubConversation = () => {
     }
   };
 
+  const isUserInBookClub = bookGroup[0]?.members?.some((user) => username?.includes(user?.username));
+
+  console.log(`isUserInBookClub:`, isUserInBookClub);
   return (
     <>
-      {allBookClub !== undefined && (
-        <CardGrid>
-          <>
-            <p>{bookGroup[0]?.bookClubName}</p>
-            <ChatForm>
-              <Scrolling>
-                {chatMessages.map((msg, idx) => (
-                  <Wrapper key={idx}>
-                    {username === msg.sender ? (
-                      <CurrentUser>
-                        <p>
-                          {msg.sender}: {msg.message}
-                        </p>
-                        <p>{msg.time}</p>
-                      </CurrentUser>
-                    ) : (
-                      <OtherUser>
-                        <p>
-                          {msg.sender}: {msg.message}
-                        </p>
-                        <p>{msg.time}</p>
-                      </OtherUser>
-                    )}
-                  </Wrapper>
-                ))}
-              </Scrolling>
-              <InputAndButtonWrapper>
+      {isLoading === false ? (
+        <>
+          {allBookClub !== undefined && (
+            <CardGrid>
+              <>
+                <BookListInChat currentBookClub={bookGroup[0]?.bookClubName} readingList={bookGroup[0]?.readingList} />
                 {isOnline ? (
                   <>
-                    <MessageBox
-                      type="text"
-                      value={userMessage}
-                      onChange={(e) => setUserMessage(e.target.value)}
-                      onKeyPress={handleKeyPress}
-                    />
-                    <SendButton onClick={sendMessage}>
-                      <p>Send</p>
-                    </SendButton>
+                    <ChatForm joined={isOnline}>
+                      <Scrolling>
+                        {chatMessages.map((msg, idx) => (
+                          <Wrapper key={idx}>
+                            {username === msg.sender ? (
+                              <CurrentUser>
+                                <MsgArea>
+                                  <p>{msg.message}</p>
+                                </MsgArea>
+                                <ProfileTime>
+                                  <ProfileImg
+                                    src={`https://avatars.dicebear.com/api/avataaars/${msg?.sender}.svg`}
+                                    alt=""
+                                  />
+                                  <p>{msg.time}</p>
+                                </ProfileTime>
+                              </CurrentUser>
+                            ) : (
+                              <OtherUser>
+                                <OtherProfileTime>
+                                  <OtherProfileImg
+                                    src={`https://avatars.dicebear.com/api/avataaars/${msg?.sender}.svg`}
+                                    alt=""
+                                  />
+                                  <p>{msg.time}</p>
+                                </OtherProfileTime>
+                                <OtherMemberMsgArea>
+                                  <FriendMsg>{msg.message}</FriendMsg>
+                                </OtherMemberMsgArea>
+                              </OtherUser>
+                            )}
+                          </Wrapper>
+                        ))}
+                      </Scrolling>
+                      <InputAndButtonWrapper>
+                        <MessageBox
+                          type="text"
+                          value={userMessage}
+                          onChange={(e) => setUserMessage(e.target.value)}
+                          onKeyPress={handleKeyPress}
+                        />
+                        <SendButton onClick={sendMessage} disabled={userMessage.replace(/\s+/g, "").trim().length < 1}>
+                          <p>Send</p>
+                        </SendButton>
+                      </InputAndButtonWrapper>
+                    </ChatForm>
                   </>
                 ) : (
-                  <button id={bookGroup[0]?._id} className={username} onClick={joinBookClubChat}>
+                  <JoinButton
+                    id={bookGroup[0]?._id}
+                    disabled={isUserInBookClub === undefined || isUserInBookClub === false}
+                    className={username}
+                    onClick={joinBookClubChat}
+                  >
                     Click to Join
-                  </button>
+                  </JoinButton>
                 )}
-              </InputAndButtonWrapper>
-            </ChatForm>
-            <SideBar />
-          </>
-        </CardGrid>
+                <SideBar />
+              </>
+            </CardGrid>
+          )}
+        </>
+      ) : (
+        <Loading>
+          <p>Loading...</p>
+        </Loading>
       )}
     </>
   );
