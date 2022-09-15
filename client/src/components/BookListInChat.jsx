@@ -17,17 +17,17 @@ const BookListInChat = (props) => {
     },
   ];
 
-  const handleRemoveBook = (e) => {
-    // if (isAdded === false) {
-    //   fetch("/remove-books", {
-    //     method: "PATCH",
-    //     headers: { "Content-type": "application/json" },
-    //     body: JSON.stringify({ ...selectedBook, bookClubName: e.target.innerHTML }),
-    //   }).then((response) => {
-    //     return response.json();
-    //   });
-    // }
-  };
+  // const handleRemoveBook = (e) => {
+  //   if (isAdded === false) {
+  //     fetch("/remove-books", {
+  //       method: "PATCH",
+  //       headers: { "Content-type": "application/json" },
+  //       body: JSON.stringify({ ...selectedBook, bookClubName: e.target.innerHTML }),
+  //     }).then((response) => {
+  //       return response.json();
+  //     });
+  //   }
+  // };
 
   return (
     <Wrapper>
@@ -36,7 +36,9 @@ const BookListInChat = (props) => {
         {props?.readingList?.map((x, idx) => (
           <Carousel.Item key={idx}>
             <Books>
-              <RemoveBook onClick={handleRemoveBook} id={} />
+              <RemoveBook
+              // onClick={handleRemoveBook} id={}
+              />
               <BookImgs src={`https://covers.openlibrary.org/b/olid/${x?.cover}-L.jpg`} alt="book Covers" />
               <div>
                 <p>{x?.title}</p>
