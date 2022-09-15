@@ -5,7 +5,7 @@ import { GlobalContext } from "../context/GlobalContext";
 import { SideBar } from "../components/SideBar";
 import io from "socket.io-client";
 import { useAuth0 } from "@auth0/auth0-react";
-
+import { Loading } from "../components/styles/Loading.styled";
 import BookListInChat from "../components/BookListInChat";
 import {
   CardGrid,
@@ -90,43 +90,43 @@ const BookClubConversation = () => {
             <CardGrid>
               <>
                 <BookListInChat currentBookClub={bookGroup[0]?.bookClubName} readingList={bookGroup[0]?.readingList} />
-                <ChatForm joined={isOnline}>
-                  <Scrolling>
-                    {chatMessages.map((msg, idx) => (
-                      <Wrapper key={idx}>
-                        {username === msg.sender ? (
-                          <CurrentUser>
-                            <MsgArea>
-                              <p>{msg.message}</p>
-                            </MsgArea>
-                            <ProfileTime>
-                              <ProfileImg
-                                src={`https://avatars.dicebear.com/api/avataaars/${msg?.sender}.svg`}
-                                alt=""
-                              />
-                              <p>{msg.time}</p>
-                            </ProfileTime>
-                          </CurrentUser>
-                        ) : (
-                          <OtherUser>
-                            <OtherProfileTime>
-                              <OtherProfileImg
-                                src={`https://avatars.dicebear.com/api/avataaars/${msg?.sender}.svg`}
-                                alt=""
-                              />
-                              <p>{msg.time}</p>
-                            </OtherProfileTime>
-                            <OtherMemberMsgArea>
-                              <FriendMsg>{msg.message}</FriendMsg>
-                            </OtherMemberMsgArea>
-                          </OtherUser>
-                        )}
-                      </Wrapper>
-                    ))}
-                  </Scrolling>
-                  <InputAndButtonWrapper>
-                    {isOnline ? (
-                      <>
+                {isOnline ? (
+                  <>
+                    <ChatForm joined={isOnline}>
+                      <Scrolling>
+                        {chatMessages.map((msg, idx) => (
+                          <Wrapper key={idx}>
+                            {username === msg.sender ? (
+                              <CurrentUser>
+                                <MsgArea>
+                                  <p>{msg.message}</p>
+                                </MsgArea>
+                                <ProfileTime>
+                                  <ProfileImg
+                                    src={`https://avatars.dicebear.com/api/avataaars/${msg?.sender}.svg`}
+                                    alt=""
+                                  />
+                                  <p>{msg.time}</p>
+                                </ProfileTime>
+                              </CurrentUser>
+                            ) : (
+                              <OtherUser>
+                                <OtherProfileTime>
+                                  <OtherProfileImg
+                                    src={`https://avatars.dicebear.com/api/avataaars/${msg?.sender}.svg`}
+                                    alt=""
+                                  />
+                                  <p>{msg.time}</p>
+                                </OtherProfileTime>
+                                <OtherMemberMsgArea>
+                                  <FriendMsg>{msg.message}</FriendMsg>
+                                </OtherMemberMsgArea>
+                              </OtherUser>
+                            )}
+                          </Wrapper>
+                        ))}
+                      </Scrolling>
+                      <InputAndButtonWrapper>
                         <MessageBox
                           type="text"
                           value={userMessage}
@@ -136,26 +136,28 @@ const BookClubConversation = () => {
                         <SendButton onClick={sendMessage} disabled={userMessage.replace(/\s+/g, "").trim().length < 1}>
                           <p>Send</p>
                         </SendButton>
-                      </>
-                    ) : (
-                      <JoinButton
-                        id={bookGroup[0]?._id}
-                        disabled={isUserInBookClub === undefined || isUserInBookClub === false}
-                        className={username}
-                        onClick={joinBookClubChat}
-                      >
-                        Click to Join
-                      </JoinButton>
-                    )}
-                  </InputAndButtonWrapper>
-                </ChatForm>
+                      </InputAndButtonWrapper>
+                    </ChatForm>
+                  </>
+                ) : (
+                  <JoinButton
+                    id={bookGroup[0]?._id}
+                    disabled={isUserInBookClub === undefined || isUserInBookClub === false}
+                    className={username}
+                    onClick={joinBookClubChat}
+                  >
+                    Click to Join
+                  </JoinButton>
+                )}
                 <SideBar />
               </>
             </CardGrid>
           )}
         </>
       ) : (
-        <p>Loading...</p>
+        <Loading>
+          <p>Loading...</p>
+        </Loading>
       )}
     </>
   );

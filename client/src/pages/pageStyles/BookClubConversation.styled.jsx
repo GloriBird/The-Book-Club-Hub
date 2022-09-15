@@ -13,7 +13,6 @@ export const CardGrid = styled.div`
 export const ChatForm = styled.div`
   display: flex;
   flex-direction: column;
-
   width: 100%;
   grid-area: ChatArea;
   overflow: auto;
@@ -27,7 +26,7 @@ export const InputAndButtonWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  height: 10%;
+  height: 12%;
   margin-bottom: 10px;
 `;
 
@@ -90,9 +89,7 @@ export const Scrolling = styled(ScrollToBottom)`
 `;
 
 export const ProfileImg = styled.img`
-  /* height: 60px; */
   width: 80px;
-  /* height: 80px; */
   background-color: #abd9ff;
   border: 3px solid #abd9ff;
   border-radius: 50px;
@@ -173,14 +170,13 @@ export const BookArea = styled.div`
 `;
 
 export const JoinButton = styled.button`
-  display: flex;
   border: none;
-  position: relative;
-  margin: auto;
   font-size: 2rem;
   border-radius: 5px;
   font-weight: bold;
   color: white;
+
+  margin: auto;
   padding: 10px 25px;
   background-color: ${(props) => (props.disabled ? "#dcdcdc" : "#a1cf8b")};
   box-shadow: ${(props) => (props.disabled ? "0px -4px 7px #dcdcdc inset" : "0px -4px 7px #68a033 inset")};

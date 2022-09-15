@@ -71,7 +71,6 @@ const Books = styled.div`
 
 const BookImgs = styled.img`
   margin: 0 auto;
-  height: auto;
   border-radius: 10px;
   filter: drop-shadow(-5px 5px 3px #f1d591);
 
