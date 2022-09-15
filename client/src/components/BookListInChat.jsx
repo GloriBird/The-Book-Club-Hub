@@ -36,7 +36,9 @@ const BookListInChat = (props) => {
         {props?.readingList?.map((x, idx) => (
           <Carousel.Item key={idx}>
             <Books>
-              <RemoveBook onClick={handleRemoveBook} id={} />
+              <RemoveBook
+              // onClick={handleRemoveBook} id={}
+              />
               <BookImgs src={`https://covers.openlibrary.org/b/olid/${x?.cover}-L.jpg`} alt="book Covers" />
               <div>
                 <p>{x?.title}</p>
