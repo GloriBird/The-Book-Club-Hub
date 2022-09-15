@@ -15,7 +15,6 @@ const BookListInChat = (props) => {
     },
   ];
 
-  console.log(`props.readingList:`, props?.readingList);
   return (
     <Wrapper>
       <Title>{props?.currentBookClub}</Title>

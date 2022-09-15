@@ -80,7 +80,7 @@ const MemberArea = styled.div`
     justify-content: center;
     background-color: white;
     border-radius: 5px;
-    width: 300px;
+    width: 90%;
     height: 30px;
     text-align: center;
     border: 2px solid #554994;

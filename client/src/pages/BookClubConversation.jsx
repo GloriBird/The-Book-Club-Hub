@@ -4,6 +4,8 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 import { SideBar } from "../components/SideBar";
 import io from "socket.io-client";
+import { useAuth0 } from "@auth0/auth0-react";
+
 import BookListInChat from "../components/BookListInChat";
 import {
   CardGrid,
@@ -35,6 +37,7 @@ const BookClubConversation = () => {
   const [isOnline, setIsOnline] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [onlineMembers, setOnlineMembers] = useState([]);
+  const { isLoading, isAuthenticated } = useAuth0();
 
   const { bookClubID } = useParams();
 
@@ -76,66 +79,83 @@ const BookClubConversation = () => {
     }
   };
 
+  const isUserInBookClub = bookGroup[0]?.members?.some((user) => username?.includes(user?.username));
+
+  console.log(`isUserInBookClub:`, isUserInBookClub);
   return (
     <>
-      {allBookClub !== undefined && (
-        <CardGrid>
-          <>
-            <BookListInChat currentBookClub={bookGroup[0]?.bookClubName} readingList={bookGroup[0]?.readingList} />
-            <ChatForm joined={isOnline}>
-              <Scrolling>
-                {chatMessages.map((msg, idx) => (
-                  <Wrapper key={idx}>
-                    {username === msg.sender ? (
-                      <CurrentUser>
-                        <MsgArea>
-                          <p>{msg.message}</p>
-                        </MsgArea>
-                        <ProfileTime>
-                          <ProfileImg src={`https://avatars.dicebear.com/api/avataaars/${msg?.sender}.svg`} alt="" />
-                          <p>{msg.time}</p>
-                        </ProfileTime>
-                      </CurrentUser>
+      {isLoading === false ? (
+        <>
+          {allBookClub !== undefined && (
+            <CardGrid>
+              <>
+                <BookListInChat currentBookClub={bookGroup[0]?.bookClubName} readingList={bookGroup[0]?.readingList} />
+                <ChatForm joined={isOnline}>
+                  <Scrolling>
+                    {chatMessages.map((msg, idx) => (
+                      <Wrapper key={idx}>
+                        {username === msg.sender ? (
+                          <CurrentUser>
+                            <MsgArea>
+                              <p>{msg.message}</p>
+                            </MsgArea>
+                            <ProfileTime>
+                              <ProfileImg
+                                src={`https://avatars.dicebear.com/api/avataaars/${msg?.sender}.svg`}
+                                alt=""
+                              />
+                              <p>{msg.time}</p>
+                            </ProfileTime>
+                          </CurrentUser>
+                        ) : (
+                          <OtherUser>
+                            <OtherProfileTime>
+                              <OtherProfileImg
+                                src={`https://avatars.dicebear.com/api/avataaars/${msg?.sender}.svg`}
+                                alt=""
+                              />
+                              <p>{msg.time}</p>
+                            </OtherProfileTime>
+                            <OtherMemberMsgArea>
+                              <FriendMsg>{msg.message}</FriendMsg>
+                            </OtherMemberMsgArea>
+                          </OtherUser>
+                        )}
+                      </Wrapper>
+                    ))}
+                  </Scrolling>
+                  <InputAndButtonWrapper>
+                    {isOnline ? (
+                      <>
+                        <MessageBox
+                          type="text"
+                          value={userMessage}
+                          onChange={(e) => setUserMessage(e.target.value)}
+                          onKeyPress={handleKeyPress}
+                        />
+                        <SendButton onClick={sendMessage} disabled={userMessage.replace(/\s+/g, "").trim().length < 1}>
+                          <p>Send</p>
+                        </SendButton>
+                      </>
                     ) : (
-                      <OtherUser>
-                        <OtherProfileTime>
-                          <OtherProfileImg
-                            src={`https://avatars.dicebear.com/api/avataaars/${msg?.sender}.svg`}
-                            alt=""
-                          />
-                          <p>{msg.time}</p>
-                        </OtherProfileTime>
-                        <OtherMemberMsgArea>
-                          <FriendMsg>{msg.message}</FriendMsg>
-                        </OtherMemberMsgArea>
-                      </OtherUser>
+                      <JoinButton
+                        id={bookGroup[0]?._id}
+                        disabled={isUserInBookClub === undefined || isUserInBookClub === false}
+                        className={username}
+                        onClick={joinBookClubChat}
+                      >
+                        Click to Join
+                      </JoinButton>
                     )}
-                  </Wrapper>
-                ))}
-              </Scrolling>
-              <InputAndButtonWrapper>
-                {isOnline ? (
-                  <>
-                    <MessageBox
-                      type="text"
-                      value={userMessage}
-                      onChange={(e) => setUserMessage(e.target.value)}
-                      onKeyPress={handleKeyPress}
-                    />
-                    <SendButton onClick={sendMessage} disabled={userMessage.replace(/\s+/g, "").trim().length < 1}>
-                      <p>Send</p>
-                    </SendButton>
-                  </>
-                ) : (
-                  <JoinButton id={bookGroup[0]?._id} className={username} onClick={joinBookClubChat}>
-                    Click to Join
-                  </JoinButton>
-                )}
-              </InputAndButtonWrapper>
-            </ChatForm>
-            <SideBar />
-          </>
-        </CardGrid>
+                  </InputAndButtonWrapper>
+                </ChatForm>
+                <SideBar />
+              </>
+            </CardGrid>
+          )}
+        </>
+      ) : (
+        <p>Loading...</p>
       )}
     </>
   );

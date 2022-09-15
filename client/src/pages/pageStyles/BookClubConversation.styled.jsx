@@ -52,6 +52,10 @@ export const SendButton = styled.button`
     font-weight: bold;
     color: white;
   }
+
+  &:hover {
+    cursor: ${(props) => (props.disabled ? "default" : "pointer")};
+  }
 `;
 
 export const CurrentUser = styled.div`
@@ -178,6 +182,10 @@ export const JoinButton = styled.button`
   font-weight: bold;
   color: white;
   padding: 10px 25px;
-  background-color: #a1cf8b;
-  box-shadow: 0px -4px 7px #68a033 inset;
+  background-color: ${(props) => (props.disabled ? "#dcdcdc" : "#a1cf8b")};
+  box-shadow: ${(props) => (props.disabled ? "0px -4px 7px #dcdcdc inset" : "0px -4px 7px #68a033 inset")};
+
+  &:hover {
+    cursor: ${(props) => (props.disabled ? "default" : "pointer")};
+  }
 `;
