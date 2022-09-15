@@ -19,6 +19,9 @@ import {
   ProfileTime,
   FriendMsg,
   MsgArea,
+  OtherMemberMsgArea,
+  OtherProfileImg,
+  OtherProfileTime,
 } from "./pageStyles/BookClubConversation.styled";
 const moment = require("moment");
 
@@ -96,13 +99,16 @@ const BookClubConversation = () => {
                       </CurrentUser>
                     ) : (
                       <OtherUser>
-                        <MsgArea>
+                        <OtherProfileTime>
+                          <OtherProfileImg
+                            src={`https://avatars.dicebear.com/api/avataaars/${msg?.sender}.svg`}
+                            alt=""
+                          />
+                          <p>{msg.time}</p>
+                        </OtherProfileTime>
+                        <OtherMemberMsgArea>
                           <FriendMsg>{msg.message}</FriendMsg>
-                        </MsgArea>
-                        {/* <p>
-                          {msg.sender}: {msg.message}
-                        </p>
-                        <p>{msg.time}</p> */}
+                        </OtherMemberMsgArea>
                       </OtherUser>
                     )}
                   </Wrapper>

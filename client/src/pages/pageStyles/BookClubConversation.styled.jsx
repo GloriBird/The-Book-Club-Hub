@@ -11,7 +11,7 @@ export const CardGrid = styled.div`
 `;
 
 export const ChatForm = styled.div`
-  /* border: 12px solid blue; */
+  border: 5px solid #f9ebc8;
   height: 85vh;
   display: flex;
   flex-direction: column;
@@ -62,10 +62,12 @@ export const OtherUser = styled.div`
   width: fit-content;
   margin-right: 17%;
   text-align: left;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 `;
 
 export const Wrapper = styled.div`
-  /* border: 2px solid red; */
   text-align: left;
   margin: 10px 0;
   display: flex;
@@ -82,7 +84,7 @@ export const ProfileImg = styled.img`
   /* height: 60px; */
   width: 80px;
   /* height: 80px; */
-  background-color: white;
+  background-color: #abd9ff;
   border: 3px solid #abd9ff;
   border-radius: 50px;
 `;
@@ -109,11 +111,48 @@ export const MsgArea = styled.div`
   padding: 10px 10px;
   background-color: #abd9ff;
   width: fit-content;
-  /* width: 300px; */
+
+  justify-content: center;
+  margin: auto 0 auto 120px;
+
+  p {
+    /* width: 420px; */
+    text-align: left;
+  }
+`;
+
+export const OtherMemberMsgArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  border-radius: 5px;
+  padding: 10px 10px;
+  background-color: #c2ded1;
+  width: fit-content;
   justify-content: center;
   margin: auto 0;
 `;
 
 export const FriendMsg = styled.p`
   background-color: #c2ded1;
+`;
+
+export const OtherProfileImg = styled.img`
+  width: 80px;
+  background-color: #c2ded1;
+  border: 4px solid #c2ded1;
+  border-radius: 50px;
+`;
+
+export const OtherProfileTime = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 20px;
+
+  p {
+    font-size: 0.6rem;
+    text-align: center;
+    margin-right: 20px;
+  }
 `;
