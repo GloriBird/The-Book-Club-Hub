@@ -61,7 +61,7 @@ const removeBooks = async (req, res) => {
         $pull: {
           "hostingBookClubs.$.readingList": profile?.hostingBookClubs[0]?.readingList[idxOfBookToRemoveFromHost],
         },
-        $inc: { bookCount: -1 },
+        $inc: { "hostingBookClubs.$.bookCount": -1 },
       }
     );
 
