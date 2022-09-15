@@ -40,8 +40,6 @@ export const BookList = () => {
       cols: 3,
     },
   ];
-
-  //test
   return (
     <>
       {username !== undefined ? (
@@ -89,7 +87,6 @@ const BookImgs = styled.img`
   margin: auto;
   border-radius: 10px;
   filter: drop-shadow(-5px 5px 3px #f1d591);
-
   &:hover {
     filter: drop-shadow(-10px 10px 3px #e8c97d);
     cursor: pointer;
