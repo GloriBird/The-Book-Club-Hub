@@ -15,10 +15,13 @@ const CarouselTrendingBooks = () => {
   const [selectedBook, setSelectedBook] = useState();
   const [receiveBookName, setReceiveBookName] = useState();
   const [showBookClubName, setShowBookClubName] = useState();
+  const { user, isLoading, isAuthenticated } = useAuth0();
 
   const {
     state: { _id, username, email, hostingBookClubs },
   } = userData;
+
+  console.log(`hostingBookClubs:`, hostingBookClubs);
 
   const updateColumns = [
     {
@@ -76,66 +79,52 @@ const CarouselTrendingBooks = () => {
     }
   };
 
-  // const bookAdded =
-  //   receiveBookName !== undefined && hostingBookClubs?.[0]?.readingList?.some((x) => x?.title === receiveBookName);
-  // const filterBooks = receiveBookName !== undefined && hostingBookClubs?.[0]?.readingList?.filter((x) => x?.title);
-  // const titles = receiveBookName !== undefined && hostingBookClubs?.[0]?.readingList?.map(({ bookClubName }) => bookClubName);
-  // const test = receiveBookName !== undefined && hostingBookClubs?.[0]?.readingList?.map((x) => x);
-
-  // const test = titles?.map((y) => (y === "It Ends With Us" ? true : false));
-  const test = () => {
-    if (receiveBookName !== undefined) {
-      hostingBookClubs?.forEach((x) => {
-        x?.readingList?.forEach((y) => {
-          console.log("titles:", y?.title);
-        });
-      });
-    }
-  };
-  console.log(`test:`, test());
-
   return (
-    <Wrapper>
-      <CarouselStyle cols={5} rows={3} gap={10} loop showDots responsiveLayout={updateColumns}>
-        {weeklyTrendingBooks?.map(
-          (x, idx) =>
-            x?.cover !== undefined && (
-              <Carousel.Item key={idx}>
-                <Books>
-                  <BookImgs
-                    src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`}
-                    alt={"book Covers"}
-                    isClicked={isAdded}
-                  />
-                  <p>{x?.title}</p>
-                  <p>{x?.author}</p>
-                  <AddBookButton
-                    disabled={hostingBookClubs === undefined}
-                    id={x?.title}
-                    onClick={handleAddBook}
-                    isClicked={isAdded}
-                  >
-                    Add Book
-                  </AddBookButton>
-                </Books>
-              </Carousel.Item>
-            )
-        )}
-      </CarouselStyle>
-      <PopUpModal trigger={toggleModal} setTrigger={setToggleModal}>
-        {hostingBookClubs?.map((x, idx) => (
-          // <button key={idx} disabled={bookAdded && x?.bookClubName === "Toaster Book Club"} onClick={handleSelection}>
-          <button key={idx} onClick={handleSelection}>
-            {/* <button
-            key={idx}
-            disabled={titles?.map((y) => (y === x?.bookClubName ? true : false))}
-            onClick={handleSelection}
-          > */}
-            {x?.bookClubName}
-          </button>
-        ))}
-      </PopUpModal>
-    </Wrapper>
+    <>
+      {isLoading === false ? (
+        <Wrapper>
+          <CarouselStyle cols={5} rows={3} gap={10} loop showDots responsiveLayout={updateColumns}>
+            {weeklyTrendingBooks?.map(
+              (x, idx) =>
+                x?.cover !== undefined && (
+                  <Carousel.Item key={idx}>
+                    <Books>
+                      <BookImgs
+                        src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`}
+                        alt={"book Covers"}
+                        isClicked={isAdded}
+                      />
+                      <p>{x?.title}</p>
+                      <p>{x?.author}</p>
+                      <AddBookButton
+                        disabled={
+                          hostingBookClubs === undefined || hostingBookClubs === null || isAuthenticated === false
+                        }
+                        id={x?.title}
+                        onClick={handleAddBook}
+                        isClicked={isAdded}
+                      >
+                        Add Book
+                      </AddBookButton>
+                    </Books>
+                  </Carousel.Item>
+                )
+            )}
+          </CarouselStyle>
+          <PopUpModal trigger={toggleModal} setTrigger={setToggleModal}>
+            {hostingBookClubs?.map((x, idx) => (
+              <button disabled={isAuthenticated === false} key={idx} onClick={handleSelection}>
+                {x?.bookClubName}
+              </button>
+            ))}
+          </PopUpModal>
+        </Wrapper>
+      ) : (
+        <Loading>
+          <p>Loading...</p>
+        </Loading>
+      )}
+    </>
   );
 };
 
@@ -156,7 +145,7 @@ const Wrapper = styled.div`
 const Books = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
   text-align: center;
   height: 100%;
 `;
@@ -172,8 +161,8 @@ const AddBookButton = styled.button`
   align-items: center;
   font-size: 1rem;
   font-weight: 700;
-  box-shadow: ${(props) => (props.disabled ? "#eeeeee" : "0px -4px 7px #afc39e inset")};
-  background-color: ${(props) => (props.disabled ? "#eeeeee" : "#dae5d0")};
+  box-shadow: ${(props) => (props.disabled ? "#dcdcdc" : "0px -4px 7px #afc39e inset")};
+  background-color: ${(props) => (props.disabled ? "#dcdcdc" : "#dae5d0")};
   color: ${(props) => (props.disabled ? "white" : "#3b3b3b")};
 
   &:hover {
@@ -183,15 +172,24 @@ const AddBookButton = styled.button`
 
 const BookImgs = styled.img`
   width: 200px;
-  margin: 10px auto;
+  margin: 0 auto;
   height: auto;
   border-radius: 10px;
   filter: drop-shadow(-5px 5px 3px #f1d591);
 
   &:hover {
-    width: 210px;
-
     filter: drop-shadow(-10px 10px 3px #e8c97d);
     cursor: pointer;
+  }
+`;
+
+const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    font-size: 2rem;
+    font-weight: bold;
   }
 `;

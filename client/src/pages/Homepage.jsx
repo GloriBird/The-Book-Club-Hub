@@ -114,8 +114,8 @@ const Homepage = () => {
           <h1>Assign Username</h1>
           <NewUserForm onSubmit={handleUsername}>
             <label>
-              <p>Let us know your username, if you decide to skip we'll assign you one.</p>
-              <em>Make sure there are no space in between the characters</em>
+              <p>Pick your username below.</p>
+              <p>Ensure no spaces are between the characters.</p>
               <input
                 type="text"
                 name="ClubName"

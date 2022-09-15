@@ -15,36 +15,76 @@ import Footer from "../components/Footer";
 import SearchForMembers from "../pages/SearchForMembers";
 import SearchBooks from "../pages/SearchBooks";
 import styled from "styled-components";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const App = () => {
+  const { user, isLoading, isAuthenticated } = useAuth0();
+  console.log(`isLoading:`, isLoading);
+
+  console.log(`isAuthenticated:`, isAuthenticated);
   return (
     <>
-      <GlobalStyles />
-      <BrowserRouter>
-        <Wrapper>
-          <NavMenu />
-          <Routes>
-            <Route reloadDocument path="/" element={<Homepage />}></Route>
-            <Route exact reloadDocument path="/WeeklyTrendingBooks" element={<WeeklyTrendingBooks />}></Route>
-            <Route exact reloadDocument path="/BrowseBookClubs" element={<BrowseBookClubs />}></Route>
-            <Route exact reloadDocument path="/SearchForMembers" element={<SearchForMembers />}></Route>
-            <Route exact reloadDocument path="/MyBookClubs" element={<MyBookClubs />}></Route>
-            {/* <Route exact path="/Chat" element={hasLoaded ? <Chat /> : <Navigate to="/" />}></Route> */}
-            <Route exact reloadDocument path="/BookClub/:bookClubID" element={<BookClub />}></Route>R{" "}
-            <Route exact reloadDocument path="/SearchBooks" element={<SearchBooks />}></Route>
-            <Route
-              exact
-              reloadDocument
-              path="/BookClubConversation/:bookClubID"
-              element={<BookClubConversation />}
-            ></Route>
-            <Route exact reloadDocument path="/Login" element={<Login />}></Route>
-            <Route exact reloadDocument path="/SignUp" element={<SignUp />}></Route>
-            <Route exact reloadDocument path="/Profile" element={<Profile />}></Route>
-          </Routes>
-          <Footer />
-        </Wrapper>
-      </BrowserRouter>
+      {isLoading === false ? (
+        <>
+          <GlobalStyles />
+          <BrowserRouter>
+            <Wrapper>
+              <NavMenu />
+              <Routes>
+                <Route reloadDocument path="/" element={<Homepage />}></Route>
+                <Route exact reloadDocument path="/WeeklyTrendingBooks" element={<WeeklyTrendingBooks />}></Route>
+                <Route exact reloadDocument path="/BrowseBookClubs" element={<BrowseBookClubs />}></Route>
+                <Route
+                  exact
+                  reloadDocument
+                  path="/SearchForMembers"
+                  element={isAuthenticated ? <SearchForMembers /> : <Navigate to="/" />}
+                ></Route>
+                <Route
+                  exact
+                  reloadDocument
+                  path="/MyBookClubs"
+                  element={isAuthenticated ? <MyBookClubs /> : <Navigate to="/" />}
+                ></Route>
+                <Route
+                  exact
+                  reloadDocument
+                  path="/BookClub/:bookClubID"
+                  element={isAuthenticated ? <BookClub /> : <Navigate to="/" />}
+                ></Route>
+                <Route exact reloadDocument path="/SearchBooks" element={<SearchBooks />}></Route>a
+                <Route
+                  exact
+                  reloadDocument
+                  path="/BookClubConversation/:bookClubID"
+                  element={isAuthenticated ? <BookClubConversation /> : <Navigate to="/" />}
+                ></Route>
+                <Route
+                  exact
+                  reloadDocument
+                  path="/Login"
+                  element={isAuthenticated ? <Navigate to="/" /> : <Login />}
+                ></Route>
+                <Route
+                  exact
+                  reloadDocument
+                  path="/SignUp"
+                  element={isAuthenticated ? <Navigate to="/" /> : <SignUp />}
+                ></Route>
+                <Route
+                  exact
+                  reloadDocument
+                  path="/Profile"
+                  element={isAuthenticated ? <Profile /> : <Navigate to="/" />}
+                ></Route>
+              </Routes>
+              <Footer />
+            </Wrapper>
+          </BrowserRouter>
+        </>
+      ) : (
+        <p>Loading...</p>
+      )}
     </>
   );
 };

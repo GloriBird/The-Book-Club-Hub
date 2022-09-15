@@ -45,12 +45,10 @@ export const SideBar = () => {
     <Wrapper>
       <h3>Contacts</h3>
       <MemberArea>
-        {/* {allBookClub !== undefined &&
+        {allBookClub !== undefined &&
           currentMembers.map((x, idx) => {
             return <p key={idx}>{x}</p>;
-          })} */}
-        {allBookClub !== undefined &&
-          currentMembers.map((x) => (x === username && onChat ? <p>{x} Online</p> : <p>{x} Offline</p>))}
+          })}
       </MemberArea>
     </Wrapper>
   );

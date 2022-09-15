@@ -12,12 +12,13 @@ export const GlobalProvider = ({ children }) => {
   const [weeklyTrendingBooks, setWeeklyTrendingBooks] = useState();
   const [allBookClubNames, setAllBookClubNames] = useState();
   const [onlineUsers, setOnlineUsers] = useState([]);
-
   const [isAllUsersLoading, setIsAllUsersLoading] = useState(true);
+  const [hasLoaded, setHasLoaded] = useState(false);
   const { user } = useAuth0();
 
   useEffect(() => {
     const getWeeklyBooks = async () => {
+      setHasLoaded(false);
       const thisWeeksBooks = await fetch("https://openlibrary.org/trending/weekly.json");
       const listOfUser = await thisWeeksBooks.json();
       const currentWeeksBooks = await listOfUser?.works?.map((x) => {
@@ -31,6 +32,7 @@ export const GlobalProvider = ({ children }) => {
         return weeklyBooks;
       });
       setWeeklyTrendingBooks(currentWeeksBooks);
+      setHasLoaded(true);
     };
     getWeeklyBooks();
   }, []);
@@ -76,6 +78,7 @@ export const GlobalProvider = ({ children }) => {
         setBookClubChat,
         onlineUsers,
         setOnlineUsers,
+        hasLoaded,
       }}
     >
       {children}

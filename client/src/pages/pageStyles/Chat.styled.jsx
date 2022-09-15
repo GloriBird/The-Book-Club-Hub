@@ -106,21 +106,3 @@ export const ChatBox = styled.div`
 export const ChatOnline = styled.div`
   flex: 3;
 `;
-
-/* @media screen and (max-width: 768px) {
-    .chatMenu {
-      flex: 1;
-    }
-  
-    .chatMenuInput {
-      display: none;
-    }
-  
-    .chatBox{
-      flex: 10;
-    }
-  
-    .chatOnline{
-      flex: 1px;
-    }
-} */

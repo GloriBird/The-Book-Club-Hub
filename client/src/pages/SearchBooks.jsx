@@ -5,6 +5,7 @@ import Carousel from "react-grid-carousel";
 import PopUpModal from "../components/PopUpModal";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { BiSearchAlt } from "react-icons/bi";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const moment = require("moment");
 
@@ -17,6 +18,7 @@ const SearchBooks = () => {
   const [isAdded, setIsAdded] = useState(false);
   const [selectedBook, setSelectedBook] = useState();
   const [receiveBookName, setReceiveBookName] = useState();
+  const { isAuthenticated, isLoading } = useAuth0();
 
   const {
     state: { _id, username, email, hostingBookClubs },
@@ -101,58 +103,69 @@ const SearchBooks = () => {
 
   return (
     <>
-      <SearchArea>
-        <h2>
-          Start your search <BiSearchAlt style={{ marginLeft: 10 }} />
-        </h2>
-        <SearchInput
-          type="text"
-          className="Search"
-          placeholder="Seach book title"
-          onChange={(e) => setSearchResult(e.target.value)}
-        />
-      </SearchArea>
-      <Wrapper>
-        <CarouselStyle cols={6} rows={2} loop showDots responsiveLayout={updateColumns}>
-          {showSearch?.length > 0 &&
-            showSearch?.map(
-              (x, idx) =>
-                x?.cover !== undefined && (
-                  <Carousel.Item key={idx}>
-                    <Books>
-                      <BookImgs src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`} alt={"book Covers"} />
-                      <div>
-                        <p>
-                          <span>Title:</span> {x?.title}
-                        </p>
-                        <p>
-                          <span>Author:</span> {x?.author?.[0]}
-                        </p>
-                        <p>
-                          <span>First published:</span> {x?.first_published}
-                        </p>
-                        <AddBookButton
-                          disabled={hostingBookClubs === undefined}
-                          id={x?.title}
-                          onClick={handleAddBook}
-                          isClicked={isAdded}
-                        >
-                          Add Book
-                        </AddBookButton>
-                      </div>
-                    </Books>
-                  </Carousel.Item>
-                )
-            )}
-        </CarouselStyle>
-        <PopUpModal trigger={toggleModal} setTrigger={setToggleModal}>
-          {hostingBookClubs?.map((x, idx) => (
-            <button key={idx} onClick={handleSelection}>
-              {x?.bookClubName}
-            </button>
-          ))}
-        </PopUpModal>
-      </Wrapper>
+      {isLoading === false ? (
+        <>
+          <SearchArea>
+            <h2>
+              Start your search <BiSearchAlt style={{ marginLeft: 10 }} />
+            </h2>
+            <SearchInput
+              type="text"
+              className="Search"
+              placeholder="Seach book title"
+              onChange={(e) => setSearchResult(e.target.value)}
+            />
+          </SearchArea>
+          <Wrapper>
+            <CarouselStyle cols={6} rows={2} loop showDots responsiveLayout={updateColumns}>
+              {showSearch?.length > 0 &&
+                showSearch?.map(
+                  (x, idx) =>
+                    x?.cover !== undefined && (
+                      <Carousel.Item key={idx}>
+                        <Books>
+                          <BookImgs
+                            src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`}
+                            alt={"book Covers"}
+                          />
+                          <div>
+                            <p>
+                              <span>Title:</span> {x?.title}
+                            </p>
+                            <p>
+                              <span>Author:</span> {x?.author?.[0]}
+                            </p>
+                            <p>
+                              <span>First published:</span> {x?.first_published}
+                            </p>
+                            <AddBookButton
+                              disabled={
+                                hostingBookClubs === undefined || hostingBookClubs === null || isAuthenticated === false
+                              }
+                              id={x?.title}
+                              onClick={handleAddBook}
+                              isClicked={isAdded}
+                            >
+                              Add Book
+                            </AddBookButton>
+                          </div>
+                        </Books>
+                      </Carousel.Item>
+                    )
+                )}
+            </CarouselStyle>
+            <PopUpModal trigger={toggleModal} setTrigger={setToggleModal}>
+              {hostingBookClubs?.map((x, idx) => (
+                <button key={idx} onClick={handleSelection}>
+                  {x?.bookClubName}
+                </button>
+              ))}
+            </PopUpModal>
+          </Wrapper>
+        </>
+      ) : (
+        <p>Loading...</p>
+      )}
     </>
   );
 };
@@ -237,16 +250,19 @@ const AddBookButton = styled.button`
   justify-content: center;
   margin: 10px auto;
   width: 60%;
-  background-color: #dae5d0;
+  /* background-color: #dae5d0; */
   border-radius: 5px;
   border: none;
   height: 30px;
   align-items: center;
-  box-shadow: 0px -4px 7px #afc39e inset;
+  /* box-shadow: 0px -4px 7px #afc39e inset; */
   font-size: 1rem;
   font-weight: 700;
+  box-shadow: ${(props) => (props.disabled ? "#dcdcdc" : "0px -4px 7px #afc39e inset")};
+  background-color: ${(props) => (props.disabled ? "#dcdcdc" : "#dae5d0")};
+  color: ${(props) => (props.disabled ? "white" : "#3b3b3b")};
 
   &:hover {
-    cursor: pointer;
+    cursor: ${(props) => (props.disabled ? "default" : "cursor")};
   }
 `;

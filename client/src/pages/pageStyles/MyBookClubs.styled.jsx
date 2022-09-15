@@ -13,7 +13,8 @@ export const Container = styled.div`
 export const CreateClubButton = styled.button`
   border: none;
   cursor: pointer;
-  background-color: #a0bcc2;
+  background-color: #a1cf8b;
+  color: white;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -22,7 +23,7 @@ export const CreateClubButton = styled.button`
   font-size: 1rem;
   margin-top: 50px;
   font-weight: bolder;
-  box-shadow: 0px -4px 7px #6298a4 inset;
+  box-shadow: 0px -4px 7px #68a033 inset;
 
   &:hover {
     cursor: pointer;

@@ -4,12 +4,12 @@ import { CurrentUserContext } from "../context/CurrentUserContext";
 import { Navigate, useNavigate, useParams, Link } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 import BookList from "../components/BookList";
+
 const BookClubPage = () => {
   const userData = useContext(CurrentUserContext);
   const navigate = useNavigate();
   const { bookClubID } = useParams();
   const [pending, setPending] = useState(false);
-  const [getId, setGetId] = useState();
   const { allBookClub, sub } = useContext(GlobalContext);
 
   const {
@@ -131,7 +131,6 @@ const BookClubPage = () => {
                   <h1>{bookGroup[0]?.bookClubName}</h1>
                   <p>Hosted by {bookGroup[0]?.host}</p>
                 </SpaceAreas>
-                {/* <h2>Reading List{bookGroup[0]?.ReadingList}:</h2> */}
                 <SpaceAreas>
                   <div>
                     <MemberList>
@@ -210,7 +209,7 @@ const BookClubPage = () => {
                     )}
                     <ChatArea>
                       <h3>Chat</h3>
-                      <Link to={`/BookClubConversation/${bookGroup[0]?._id}`}>
+                      <Link reloadDocument to={`/BookClubConversation/${bookGroup[0]?._id}`}>
                         <Buttons> Join Book Club Chat</Buttons>
                       </Link>
                     </ChatArea>
@@ -252,8 +251,7 @@ export default BookClubPage;
 
 const Wrapper = styled.div`
   display: grid;
-  border: 10px solid red;
-  /* padding-left: 50px; */
+  /* border: 10px solid red; */
   grid-template-columns: 0.6fr 1fr;
   grid-template-rows: 1fr;
   gap: 0px 0px;
@@ -316,6 +314,7 @@ const MembersArea = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  line-height: 40px;
 `;
 
 const RemoveMemberButton = styled.button`
@@ -385,17 +384,14 @@ const JoinBookClubButton = styled.button`
 
 const Buttons = styled.button`
   margin: 0 10px 0px 10px;
-  /* display: flex;
-  flex-direction: row;
-  justify-content: center; */
   padding: 0 20px;
-  background-color: #f1a661;
+  background-color: #77dd77;
   border-radius: 5px;
   border: none;
   height: 30px;
   align-items: center;
   color: white;
-  box-shadow: 0px -4px 7px #e48a37 inset;
+  box-shadow: 0px -4px 7px #188818 inset;
   font-size: 1rem;
   font-weight: 700;
 

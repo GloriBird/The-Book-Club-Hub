@@ -86,7 +86,10 @@ const MyBookClubs = () => {
           <CreateButton
             type="submit"
             value="Create"
-            changeOpacity={currentBookClubName?.replace(/\s+/g, "").trim().length > 1}
+            changeOpacity={
+              currentBookClubName.replace(/\s+/g, "").trim().length < 2 ||
+              allBookClubNamesLowerCased?.includes(typedBookClubNamesLowerCased)
+            }
             onClick={() =>
               setTimeout(() => {
                 setToggleModal(false);
@@ -102,7 +105,6 @@ const MyBookClubs = () => {
         </BookForm>
       </PopUpModal>
       <UsersBookClubs />
-      {/* <BookClubPage /> */}
     </Container>
   );
 };
@@ -118,6 +120,8 @@ const BookForm = styled.form`
   input[type="text"] {
     margin: 10px 0;
     width: 300px;
+    border-radius: 5px;
+    height: 40px;
     text-align: center;
   }
 `;
@@ -131,8 +135,11 @@ const CreateButton = styled.button`
   border: none;
   padding: 2% 7%;
   margin-top: 40px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 5px;
   width: 100px;
   background-color: var(--color-pale-forest-green);
-  opacity: ${(props) => (props.changeOpacity ? 1 : 0.3)};
+  opacity: ${(props) => (props.changeOpacity ? 0.3 : 1)};
   cursor: ${(props) => (props.disabled ? "default" : "pointer")};
 `;
