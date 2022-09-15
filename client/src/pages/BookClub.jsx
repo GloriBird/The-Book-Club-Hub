@@ -4,13 +4,15 @@ import { CurrentUserContext } from "../context/CurrentUserContext";
 import { Navigate, useNavigate, useParams, Link } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 import BookList from "../components/BookList";
-
+import { useAuth0 } from "@auth0/auth0-react";
+import { Loading } from "../components/styles/Loading.styled";
 const BookClubPage = () => {
   const userData = useContext(CurrentUserContext);
   const navigate = useNavigate();
   const { bookClubID } = useParams();
   const [pending, setPending] = useState(false);
   const { allBookClub, sub } = useContext(GlobalContext);
+  const { isLoading } = useAuth0();
 
   const {
     state: { _id, username, email, bookClubs, hostingBookClubs, bookClubsToJoinPending, bookClubInvites, joinedDate },
@@ -120,9 +122,11 @@ const BookClubPage = () => {
     });
   };
 
+  console.log(`bookGroup:`, bookGroup[0]?.readingList.length < 1);
+
   return (
     <>
-      {username !== null ? (
+      {username !== null && isLoading === false ? (
         <Wrapper>
           <BookClubInfo>
             {bookGroup !== undefined && hostingBookClubs !== null && (
@@ -238,10 +242,12 @@ const BookClubPage = () => {
               </>
             )}
           </BookClubInfo>
-          <BookList />
+          {bookGroup[0]?.readingList.length > 1 && <BookList />}
         </Wrapper>
       ) : (
-        <Landing>Loading...</Landing>
+        <Loading>
+          <p>Loading...</p>
+        </Loading>
       )}
     </>
   );
@@ -266,13 +272,6 @@ const Wrapper = styled.div`
 
 const List = styled.li`
   list-style: none;
-`;
-
-const Landing = styled.p`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
 const DenyButton = styled.button`

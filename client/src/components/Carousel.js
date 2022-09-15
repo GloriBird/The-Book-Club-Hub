@@ -54,6 +54,7 @@ const CarouselTrendingBooks = () => {
   console.log(`selectedBook:`, selectedBook);
 
   const handleSelection = (e) => {
+    console.log(`e.target.innerHTML:`, e.target.innerHTML);
     if (isAdded === true) {
       fetch("/add-books", {
         method: "PATCH",
@@ -65,24 +66,29 @@ const CarouselTrendingBooks = () => {
         }, 200);
         return response.json();
       });
-    } else if (isAdded === false) {
-      fetch("/remove-books", {
-        method: "PATCH",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify({ ...selectedBook, bookClubName: e.target.innerHTML }),
-      }).then((response) => {
-        setTimeout(() => {
-          setToggleModal(false);
-        }, 200);
-        return response.json();
-      });
     }
+    // } else if (isAdded === false) {
+    //   fetch("/remove-books", {
+    //     method: "PATCH",
+    //     headers: { "Content-type": "application/json" },
+    //     body: JSON.stringify({ ...selectedBook, bookClubName: e.target.innerHTML }),
+    //   }).then((response) => {
+    //     setTimeout(() => {
+    //       setToggleModal(false);
+    //     }, 200);
+    //     return response.json();
+    //   });
+    // }
   };
 
+  console.log(`hostingBookClubs:`, hostingBookClubs);
   return (
     <>
       {isLoading === false ? (
         <Wrapper>
+          <Title>
+            <h1>This Week's Trending Books</h1>
+          </Title>
           <CarouselStyle cols={5} rows={3} gap={10} loop showDots responsiveLayout={updateColumns}>
             {weeklyTrendingBooks?.map(
               (x, idx) =>
@@ -138,7 +144,7 @@ const Wrapper = styled.div`
   height: auto;
   display: flex;
   flex-direction: column;
-  padding: 2% 0;
+  padding-bottom: 2%;
   background-color: var(--main-background-color);
 `;
 
@@ -166,7 +172,7 @@ const AddBookButton = styled.button`
   color: ${(props) => (props.disabled ? "white" : "#3b3b3b")};
 
   &:hover {
-    cursor: ${(props) => (props.disabled ? "default" : "cursor")};
+    cursor: ${(props) => (props.disabled ? "default" : "pointer")};
   }
 `;
 
@@ -192,4 +198,11 @@ const Loading = styled.div`
     font-size: 2rem;
     font-weight: bold;
   }
+`;
+
+const Title = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-top: 50px;
 `;

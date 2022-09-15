@@ -83,7 +83,13 @@ const App = () => {
           </BrowserRouter>
         </>
       ) : (
-        <p>Loading...</p>
+        <Container>
+          <GlobalStyles />
+
+          <Loading>
+            <p>Loading...</p>
+          </Loading>
+        </Container>
       )}
     </>
   );
@@ -97,4 +103,23 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   background-color: var(--main-background-color);
+`;
+
+const Container = styled.div`
+  height: 100vh;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--main-background-color);
+`;
+
+const Loading = styled.div`
+  margin: auto;
+
+  p {
+    font-size: 2rem;
+    font-weight: bold;
+  }
 `;
