@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   Container,
   List,
@@ -48,8 +49,9 @@ const BrowseBookClubs = () => {
     <Container>
       {allBookClub?.map((x, idx) => (
         <List key={idx}>
-          <img src={`https://avatars.dicebear.com/api/initials/${x?.bookClubName}.svg`} alt="" />
-
+          <Link style={{ textDecoration: "none" }} reloadDocument to={`/BookClub/${x?._id}`}>
+            <img src={`https://avatars.dicebear.com/api/initials/${x?.bookClubName}.svg`} alt="" />
+          </Link>
           <Wrapper>
             <AddRemoveButtons id={x?.bookClubName} onClick={handleRemoveRequest}>
               -

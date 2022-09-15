@@ -44,7 +44,7 @@ const CarouselTrendingBooks = () => {
       title: weeksBooks[0]?.title,
       author: weeksBooks[0]?.author[0],
       first_published: weeksBooks[0]?.first_published,
-      book_img: `https://covers.openlibrary.org/b/olid/${weeksBooks[0]?.cover}-M.jpg`,
+      cover: weeksBooks[0]?.cover,
       date_added: moment().format("LL"),
     });
   };
@@ -166,17 +166,18 @@ const AddBookButton = styled.button`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  background-color: #dae5d0;
   border-radius: 5px;
   border: none;
   height: 30px;
   align-items: center;
-  box-shadow: 0px -4px 7px #afc39e inset;
   font-size: 1rem;
   font-weight: 700;
+  box-shadow: ${(props) => (props.disabled ? "#eeeeee" : "0px -4px 7px #afc39e inset")};
+  background-color: ${(props) => (props.disabled ? "#eeeeee" : "#dae5d0")};
+  color: ${(props) => (props.disabled ? "white" : "#3b3b3b")};
 
   &:hover {
-    cursor: pointer;
+    cursor: ${(props) => (props.disabled ? "default" : "cursor")};
   }
 `;
 

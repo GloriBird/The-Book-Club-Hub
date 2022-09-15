@@ -59,7 +59,6 @@ export const GlobalProvider = ({ children }) => {
   }, []);
 
   const userInData = allUsers?.some((existingUser) => existingUser?.sub.includes(user?.sub));
-  console.log(`onlineUsers:`, onlineUsers);
 
   return (
     <GlobalContext.Provider
