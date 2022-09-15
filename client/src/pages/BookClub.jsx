@@ -76,12 +76,13 @@ const BookClubPage = () => {
     hostingBookClubs?.some((x) => x?.bookClubName === bookGroup[0]?.bookClubName);
 
   const handleAcceptUser = (e) => {
-    bookGroup[0]?.joinRequestFromUsers.splice(e.target.id, 1);
+    const idxToRemove = e.target.className.lastIndexOf(" ");
+    const finalUserId = e.target.className.substring(idxToRemove + 1);
     fetch("/accept-reject-user-request", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
-        _id: e.target.className,
+        _id: finalUserId,
         username: e.target.id,
         bookClubName: bookGroup[0]?.bookClubName,
         accept: true,
@@ -92,34 +93,35 @@ const BookClubPage = () => {
   };
 
   const handleDenyUser = (e) => {
-    bookGroup[0]?.joinRequestFromUsers.splice(e.target.id, 1);
+    const idxToRemove = e.target.className.lastIndexOf(" ");
+    const finalUserId = e.target.className.substring(idxToRemove + 1);
     fetch("/accept-reject-user-request", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
-        _id: e.target.className,
+        _id: finalUserId,
         username: e.target.id,
         bookClubName: bookGroup[0]?.bookClubName,
         accept: false,
         reject: true,
       }),
     });
-    navigate(0);
+    // navigate(0);
   };
 
   const handleRemoveMember = (e) => {
-    e.preventDefault();
-    navigate(0);
+    const idxToRemove = e.target.className.lastIndexOf(" ");
+    const finalUserId = e.target.className.substring(idxToRemove + 1);
+
     fetch("/remove-member", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
-        _id: bookGroup[0]?._id,
         bookClubName: bookGroup[0]?.bookClubName,
-        host: bookGroup[0]?.host,
-        member: [{ username: e.target.id, _id: e.target.className }],
+        member: [{ username: e.target.id, _id: finalUserId }],
       }),
     });
+    navigate(0);
   };
 
   console.log(`bookGroup:`, bookGroup[0]?.readingList.length < 1);
@@ -214,7 +216,7 @@ const BookClubPage = () => {
                     <ChatArea>
                       <h3>Chat</h3>
                       <Link reloadDocument to={`/BookClubConversation/${bookGroup[0]?._id}`}>
-                        <Buttons> Join Book Club Chat</Buttons>
+                        <Buttons> Join Chat</Buttons>
                       </Link>
                     </ChatArea>
                   </>

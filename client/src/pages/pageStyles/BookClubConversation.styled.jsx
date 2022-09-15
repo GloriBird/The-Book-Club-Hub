@@ -11,15 +11,17 @@ export const CardGrid = styled.div`
 `;
 
 export const ChatForm = styled.div`
-  border: 12px solid blue;
+  /* border: 12px solid blue; */
   height: 85vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   width: 100%;
   grid-area: ChatArea;
-  /* overflow: auto; */
+  overflow: auto;
   height: 80vh;
+  background-color: white;
+  border-radius: 10px;
 `;
 
 export const InputAndButtonWrapper = styled.div`
@@ -31,7 +33,7 @@ export const InputAndButtonWrapper = styled.div`
 `;
 
 export const MessageBox = styled.textarea`
-  background-color: lightblue;
+  background-color: #f4f4f4;
   width: 85%;
   resize: none;
   outline: none;
@@ -48,27 +50,70 @@ export const SendButton = styled.button`
 
 export const CurrentUser = styled.div`
   border-radius: 5px;
+  text-align: right;
+  /* width: 200px; */
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 `;
 
 export const OtherUser = styled.div`
-  background-color: green;
+  /* background-color: green; */
   width: fit-content;
-  text-align: end;
+  margin-right: 17%;
+  text-align: left;
 `;
 
 export const Wrapper = styled.div`
-  border: 2px solid red;
+  /* border: 2px solid red; */
   text-align: left;
-
-  ${CurrentUser} {
-    text-align: right;
-    width: auto;
-    background-color: orange;
-  }
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const Scrolling = styled(ScrollToBottom)`
   width: 100%;
   height: 100%;
   overflow-x: hidden;
+`;
+
+export const ProfileImg = styled.img`
+  /* height: 60px; */
+  width: 80px;
+  /* height: 80px; */
+  background-color: white;
+  border: 3px solid #abd9ff;
+  border-radius: 50px;
+`;
+
+export const ProfileTime = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 20px;
+
+  p {
+    font-size: 0.6rem;
+    text-align: center;
+    margin-right: 20px;
+  }
+`;
+
+export const MsgArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  /* border: 5px solid #abd9ff; */
+  height: fit-content;
+  border-radius: 5px;
+  padding: 10px 10px;
+  background-color: #abd9ff;
+  width: fit-content;
+  /* width: 300px; */
+  justify-content: center;
+  margin: auto 0;
+`;
+
+export const FriendMsg = styled.p`
+  background-color: #c2ded1;
 `;

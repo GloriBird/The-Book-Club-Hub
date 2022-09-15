@@ -61,26 +61,14 @@ const BrowseBookClubs = () => {
                   <img src={`https://avatars.dicebear.com/api/initials/${x?.bookClubName}.svg`} alt="" />
                 </Link>
                 <Wrapper>
-                  <RemoveButton
-                    disabled={
-                      isAuthenticated === false || hostingBookClubs === undefined || hostingBookClubs === undefined
-                    }
-                    id={x?.bookClubName}
-                    onClick={handleRemoveRequest}
-                  >
+                  <RemoveButton disabled={isAuthenticated === false} id={x?.bookClubName} onClick={handleRemoveRequest}>
                     -
                   </RemoveButton>
                   <BookClubInfo>
                     <p>{x?.bookClubName}</p>
                     <p>Hosted by {x?.host}</p>
                   </BookClubInfo>
-                  <AddButton
-                    disabled={
-                      isAuthenticated === false || hostingBookClubs === undefined || hostingBookClubs === undefined
-                    }
-                    id={x?.bookClubName}
-                    onClick={handleAddRequest}
-                  >
+                  <AddButton disabled={isAuthenticated === false} id={x?.bookClubName} onClick={handleAddRequest}>
                     +
                   </AddButton>
                 </Wrapper>

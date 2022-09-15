@@ -15,6 +15,10 @@ import {
   OtherUser,
   Wrapper,
   Scrolling,
+  ProfileImg,
+  ProfileTime,
+  FriendMsg,
+  MsgArea,
 } from "./pageStyles/BookClubConversation.styled";
 const moment = require("moment");
 
@@ -69,6 +73,7 @@ const BookClubConversation = () => {
     }
   };
 
+  console.log(`chatMsg`, chatMessages);
   return (
     <>
       {allBookClub !== undefined && (
@@ -81,17 +86,23 @@ const BookClubConversation = () => {
                   <Wrapper key={idx}>
                     {username === msg.sender ? (
                       <CurrentUser>
-                        <p>
-                          {msg.sender}: {msg.message}
-                        </p>
-                        <p>{msg.time}</p>
+                        <MsgArea>
+                          <p>{msg.message}</p>
+                        </MsgArea>
+                        <ProfileTime>
+                          <ProfileImg src={`https://avatars.dicebear.com/api/avataaars/${msg?.sender}.svg`} alt="" />
+                          <p>{msg.time}</p>
+                        </ProfileTime>
                       </CurrentUser>
                     ) : (
                       <OtherUser>
-                        <p>
+                        <MsgArea>
+                          <FriendMsg>{msg.message}</FriendMsg>
+                        </MsgArea>
+                        {/* <p>
                           {msg.sender}: {msg.message}
                         </p>
-                        <p>{msg.time}</p>
+                        <p>{msg.time}</p> */}
                       </OtherUser>
                     )}
                   </Wrapper>
