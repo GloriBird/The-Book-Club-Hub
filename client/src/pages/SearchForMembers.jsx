@@ -1,5 +1,5 @@
-import { Container, List, Wrapper, ModalArea } from "./pageStyles/BrowseBookClubs.styled";
-import React, { useEffect, useState, useContext } from "react";
+import { Container, List, Wrapper } from "./pageStyles/BrowseBookClubs.styled";
+import React, { useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { GlobalContext } from "../context/GlobalContext";
 import PopUpModal from "../components/PopUpModal";

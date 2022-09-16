@@ -4,11 +4,12 @@ import { GlobalContext } from "../context/GlobalContext";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import Carousel from "react-grid-carousel";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import PopUpModal from "../components/PopUpModal";
 const moment = require("moment");
 
 const CarouselTrendingBooks = () => {
-  const { weeklyTrendingBooks, allUsers, allBookClub } = useContext(GlobalContext);
+  const { weeklyTrendingBooks } = useContext(GlobalContext);
   const userData = useContext(CurrentUserContext);
   const [toggleModal, setToggleModal] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
@@ -16,10 +17,8 @@ const CarouselTrendingBooks = () => {
   const { isLoading, isAuthenticated } = useAuth0();
 
   const {
-    state: { _id, username, email, hostingBookClubs },
+    state: { username, hostingBookClubs },
   } = userData;
-
-  console.log(`hostingBookClubs:`, hostingBookClubs);
 
   const updateColumns = [
     {
@@ -47,10 +46,8 @@ const CarouselTrendingBooks = () => {
       date_added: moment().format("LL"),
     });
   };
-  console.log(`selectedBook:`, selectedBook);
 
   const handleSelection = (e) => {
-    console.log(`e.target.innerHTML:`, e.target.innerHTML);
     if (isAdded === true) {
       fetch("/add-books", {
         method: "PATCH",
@@ -65,7 +62,6 @@ const CarouselTrendingBooks = () => {
     }
   };
 
-  console.log(`hostingBookClubs:`, hostingBookClubs);
   return (
     <>
       {isLoading === false ? (
@@ -80,11 +76,13 @@ const CarouselTrendingBooks = () => {
                   x?.cover !== undefined && (
                     <Carousel.Item key={idx}>
                       <Books>
-                        <BookImgs
-                          src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`}
-                          alt={"book Covers"}
-                          isClicked={isAdded}
-                        />
+                        <Link reloadDocument to={`/BookDetails/${x?.title.replace(/\s+/g, "").trim()}`}>
+                          <BookImgs
+                            src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`}
+                            alt={"book Covers"}
+                            isClicked={isAdded}
+                          />
+                        </Link>
                         <p>{x?.title}</p>
                         <p>{x?.author}</p>
                         <AddBookButton

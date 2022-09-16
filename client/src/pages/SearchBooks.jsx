@@ -6,11 +6,11 @@ import PopUpModal from "../components/PopUpModal";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { BiSearchAlt } from "react-icons/bi";
 import { useAuth0 } from "@auth0/auth0-react";
+import { Link } from "react-router-dom";
 
 const moment = require("moment");
 
 const SearchBooks = () => {
-  // const { searchBook } = useContext(GlobalContext);
   const [searchResult, setSearchResult] = useState("");
   const [showSearch, setShowSearch] = useState("");
   const [toggleModal, setToggleModal] = useState(false);
@@ -23,6 +23,7 @@ const SearchBooks = () => {
   const {
     state: { _id, username, email, hostingBookClubs },
   } = userData;
+
   const handleAddBook = (e) => {
     e.preventDefault();
     setToggleModal(true);
@@ -40,13 +41,10 @@ const SearchBooks = () => {
     });
   };
 
-  console.log(`selectedBook:`, selectedBook);
-
   useEffect(() => {
     const getResults = async () => {
       const searched = await fetch(`http://openlibrary.org/search.json?title=${searchResult}`);
       const response = await searched.json();
-      // console.log(`response:`, response.docs);
       const loadResults = await response?.docs?.map((x) => {
         const allResults = {
           title: x?.title,
@@ -58,7 +56,6 @@ const SearchBooks = () => {
         };
         return allResults;
       });
-      // console.log(`loadResults:`, loadResults);
       setShowSearch(loadResults);
     };
     getResults();
@@ -101,6 +98,11 @@ const SearchBooks = () => {
     }
   };
 
+  const getInfo = (e) => {
+    e.preventDefault();
+    console.log(`e.target.id`, e.target.id);
+  };
+
   return (
     <>
       {isLoading === false ? (
@@ -124,17 +126,34 @@ const SearchBooks = () => {
                     x?.cover !== undefined && (
                       <Carousel.Item key={idx}>
                         <Books>
+                          {/* <Link reloadDocument to={`/BookDetails/${x?.title.replace(/\s+/g, "").trim()}`}> */}
                           <BookImgs
                             src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`}
                             alt={"book Covers"}
+                            onClick={getInfo}
+                            id={x?.cover}
                           />
+                          {/* </Link> */}
                           <div>
-                            <p>
-                              <span>Title:</span> {x?.title}
-                            </p>
-                            <p>
-                              <span>Author:</span> {x?.author?.[0]}
-                            </p>
+                            {x?.title?.length > 50 ? (
+                              <p>
+                                <span>Title:</span> {x?.title.substring(0, 50)}...
+                              </p>
+                            ) : (
+                              <p>
+                                <span>Title:</span> {x?.title}
+                              </p>
+                            )}
+
+                            {x?.author?.length > 50 ? (
+                              <p>
+                                <span>Author:</span> {x?.author?.[0]?.substring(0, 50)}...
+                              </p>
+                            ) : (
+                              <p>
+                                <span>Author:</span> {x?.author?.[0]}
+                              </p>
+                            )}
                             <p>
                               <span>First published:</span> {x?.first_published}
                             </p>
@@ -232,9 +251,10 @@ const Books = styled.div`
 `;
 
 const BookImgs = styled.img`
-  width: 200px;
   margin: auto;
-  height: auto;
+  height: 250px;
+  width: auto;
+
   border-radius: 10px;
   filter: drop-shadow(-5px 5px 3px #f1d591);
 
@@ -250,12 +270,10 @@ const AddBookButton = styled.button`
   justify-content: center;
   margin: 10px auto;
   width: 60%;
-  /* background-color: #dae5d0; */
   border-radius: 5px;
   border: none;
   height: 30px;
   align-items: center;
-  /* box-shadow: 0px -4px 7px #afc39e inset; */
   font-size: 1rem;
   font-weight: 700;
   box-shadow: ${(props) => (props.disabled ? "#dcdcdc" : "0px -4px 7px #afc39e inset")};
@@ -263,6 +281,6 @@ const AddBookButton = styled.button`
   color: ${(props) => (props.disabled ? "white" : "#3b3b3b")};
 
   &:hover {
-    cursor: ${(props) => (props.disabled ? "default" : "cursor")};
+    cursor: ${(props) => (props.disabled ? "default" : "pointer")};
   }
 `;
