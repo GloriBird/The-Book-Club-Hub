@@ -10,17 +10,15 @@ import { CurrentUserContext } from "../context/CurrentUserContext";
 import { UsersBookClubs } from "../components/UsersBookClubs";
 const MyBookClubs = () => {
   const userData = useContext(CurrentUserContext);
-  const { allUsers, allBookClubNames, allBookClub } = useContext(GlobalContext);
+  const { allBookClubNames } = useContext(GlobalContext);
   const [newBookClubLoading, setNewBookClubLoading] = useState(false);
   const [currentBookClubName, setCurrentBookClubName] = useState("");
   const [toggleModal, setToggleModal] = useState(false);
   const { isLoading } = useAuth0();
 
-  // const { state } = userData;
   const {
     state: { _id, joinedDate, username, email, sub, hostingBookClubs, bookClubsToJoinPending, bookClubInvites },
   } = userData;
-  // const host = state.username;
 
   const members = [
     {

@@ -19,9 +19,9 @@ const SearchBooks = () => {
   const [selectedBook, setSelectedBook] = useState();
   const [receiveBookName, setReceiveBookName] = useState();
   const { isAuthenticated, isLoading } = useAuth0();
-
+  const { setPickedBook } = useContext(GlobalContext);
   const {
-    state: { _id, username, email, hostingBookClubs },
+    state: { username, hostingBookClubs },
   } = userData;
 
   const handleAddBook = (e) => {
@@ -53,6 +53,7 @@ const SearchBooks = () => {
           author: x?.author_name,
           author_key: x?.author_key,
           isbn: x?.isbn,
+          works: x?.key.split("/works/")[1],
         };
         return allResults;
       });
@@ -98,11 +99,6 @@ const SearchBooks = () => {
     }
   };
 
-  const getInfo = (e) => {
-    e.preventDefault();
-    console.log(`e.target.id`, e.target.id);
-  };
-
   return (
     <>
       {isLoading === false ? (
@@ -126,14 +122,12 @@ const SearchBooks = () => {
                     x?.cover !== undefined && (
                       <Carousel.Item key={idx}>
                         <Books>
-                          {/* <Link reloadDocument to={`/BookDetails/${x?.title.replace(/\s+/g, "").trim()}`}> */}
-                          <BookImgs
-                            src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`}
-                            alt={"book Covers"}
-                            onClick={getInfo}
-                            id={x?.cover}
-                          />
-                          {/* </Link> */}
+                          <Link reloadDocument to={`/BookDetails/${x?.author}/${x?.cover}/${x?.works}`}>
+                            <BookImgs
+                              src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`}
+                              alt={"book Covers"}
+                            />
+                          </Link>
                           <div>
                             {x?.title?.length > 50 ? (
                               <p>
