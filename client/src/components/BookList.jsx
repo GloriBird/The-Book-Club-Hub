@@ -40,8 +40,6 @@ export const BookList = () => {
       cols: 3,
     },
   ];
-
-  //test
   return (
     <>
       {username !== undefined ? (
@@ -70,11 +68,13 @@ export const BookList = () => {
 export default BookList;
 
 const Wrapper = styled.div`
-  /* border: 12px solid green; */
+  border: 12px solid green;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100%;
 `;
 
 const CarouselStyle = styled(Carousel)`
@@ -89,7 +89,6 @@ const BookImgs = styled.img`
   margin: auto;
   border-radius: 10px;
   filter: drop-shadow(-5px 5px 3px #f1d591);
-
   &:hover {
     filter: drop-shadow(-10px 10px 3px #e8c97d);
     cursor: pointer;

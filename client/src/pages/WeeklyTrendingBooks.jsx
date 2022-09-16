@@ -20,9 +20,6 @@ const WeeklyTrendingBooks = () => {
     <>
       {isLoading === false ? (
         <div>
-          {/* <Title>
-            <h1>This Week's Trending Books</h1>
-          </Title> */}
           <CarouselTrendingBooks />
         </div>
       ) : (

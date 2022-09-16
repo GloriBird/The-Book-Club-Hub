@@ -9,7 +9,7 @@ import { CurrentUserContext } from "../context/CurrentUserContext";
 const BookListInChat = (props) => {
   const navigate = useNavigate();
 
-  const { allBookClub, setCurrentBookClubMembers, setBookClubChat } = useContext(GlobalContext);
+  const { allBookClub } = useContext(GlobalContext);
   const userData = useContext(CurrentUserContext);
   const location = useLocation();
   const getURL = location.pathname;

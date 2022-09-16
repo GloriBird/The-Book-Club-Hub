@@ -81,7 +81,6 @@ const BookClubConversation = () => {
 
   const isUserInBookClub = bookGroup[0]?.members?.some((user) => username?.includes(user?.username));
 
-  console.log(`bookGroup[0]?.readingList:`, bookGroup[0]?.readingList);
   return (
     <>
       {isLoading === false ? (

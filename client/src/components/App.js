@@ -30,6 +30,7 @@ const App = () => {
           <BrowserRouter>
             <Wrapper>
               <NavMenu />
+
               <Routes>
                 <Route reloadDocument path="/" element={<Homepage />}></Route>
                 <Route exact reloadDocument path="/WeeklyTrendingBooks" element={<WeeklyTrendingBooks />}></Route>
