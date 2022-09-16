@@ -13,6 +13,7 @@ import BookClub from "../pages/BookClub";
 import BookClubConversation from "../pages/BookClubConversation";
 import Footer from "../components/Footer";
 import SearchForMembers from "../pages/SearchForMembers";
+import BookDetails from "../pages/BookDetails";
 import SearchBooks from "../pages/SearchBooks";
 import styled from "styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -35,6 +36,7 @@ const App = () => {
                 <Route reloadDocument path="/" element={<Homepage />}></Route>
                 <Route exact reloadDocument path="/WeeklyTrendingBooks" element={<WeeklyTrendingBooks />}></Route>
                 <Route exact reloadDocument path="/BrowseBookClubs" element={<BrowseBookClubs />}></Route>
+                <Route exact reloadDocument path="/BookDetails/:title" element={<BookDetails />}></Route>
                 <Route
                   exact
                   reloadDocument
