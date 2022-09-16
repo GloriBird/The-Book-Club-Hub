@@ -22,9 +22,9 @@ export const UsersBookClubs = () => {
     // e.preventDefault();
     setIsAccepted(true);
     navigate(0);
-
+    console.log(`hello`);
     bookClubInvites.splice(e.target.id, 1);
-    console.log(`e.target.id:`, e.target.id);
+    // console.log(`e.target.id:`, e.target.id);
     fetch("/accept-reject-invite", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
@@ -34,7 +34,6 @@ export const UsersBookClubs = () => {
   };
 
   const handleDeny = (e) => {
-    // e.preventDefault();
     setIsAccepted(false);
     fetch("/accept-reject-invite", {
       method: "PATCH",
@@ -44,7 +43,7 @@ export const UsersBookClubs = () => {
     bookClubInvites.splice(e.target.id, 1);
   };
 
-  console.log(`bookClubs:`, bookClubs);
+  console.log(`bookClubInvites:`, bookClubInvites);
   return (
     <>
       {username !== null ? (
@@ -90,27 +89,25 @@ export const UsersBookClubs = () => {
             <>
               <Title>Book Club Invites</Title>
               <Wrapper>
-                {bookClubInvites?.map(
-                  (group, idx) => (
-                    // isAccepted !== null && (
-                    <List key={idx} id={idx}>
-                      <div>
+                {bookClubInvites?.map((group, idx) => (
+                  <List key={idx} id={idx}>
+                    <div>
+                      <Link style={{ textDecoration: "none" }} reloadDocument to={`/BookClub/${group?._id}`}>
                         <BookClubImg
                           src={`https://avatars.dicebear.com/api/initials/${group?.bookClubName}.svg`}
                           alt=""
                         />
-                        <p> {group?.bookClubName}</p>
-                        <AcceptButton id={group?.bookClubName} onClick={handleAccept}>
-                          Accept
-                        </AcceptButton>
-                        <DenyButton id={group?.bookClubName} onClick={handleDeny}>
-                          Deny
-                        </DenyButton>
-                      </div>
-                    </List>
-                  )
-                  // )
-                )}
+                      </Link>
+                      <p> {group?.bookClubName}</p>
+                      <AcceptButton id={group?.bookClubName} onClick={handleAccept}>
+                        Accept
+                      </AcceptButton>
+                      <DenyButton id={group?.bookClubName} onClick={handleDeny}>
+                        Deny
+                      </DenyButton>
+                    </div>
+                  </List>
+                ))}
               </Wrapper>
             </>
           )}

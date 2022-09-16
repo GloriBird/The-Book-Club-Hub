@@ -75,7 +75,6 @@ export const CurrentUserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(currentUserReducer, initialState);
 
   const receiveCurrentUser = (data) => {
-    console.log(`data from user Context:`, data);
     dispatch({
       type: "receive-current-user",
       ...data,
@@ -101,7 +100,6 @@ export const CurrentUserProvider = ({ children }) => {
         const getData = await fetch(`/signedInProfile/${user?.sub}`);
         const listOfUser = await getData.json();
         const signedInProfile = await listOfUser.account;
-        console.log(`signedInProfile:`, signedInProfile);
         return receiveCurrentUser(signedInProfile);
       } else {
         <></>;
@@ -118,7 +116,6 @@ export const CurrentUserProvider = ({ children }) => {
   };
 
   const receiveUserOnline = (status) => {
-    console.log(`onChat`, status);
     dispatch({
       type: "receive-user-online",
       onChat: status,

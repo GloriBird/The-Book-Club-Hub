@@ -26,6 +26,11 @@ const BookClubPage = () => {
     },
   ];
 
+  const userAlreadyInvited =
+    bookClubInvites !== null && bookClubInvites?.some((x) => x?.bookClubName === bookGroup[0]?.bookClubName);
+
+  console.log(`userAlreadyInvited:`, userAlreadyInvited);
+
   const bookClubAlreadyPending =
     bookClubsToJoinPending !== undefined &&
     bookGroup !== undefined &&
@@ -87,7 +92,7 @@ const BookClubPage = () => {
         reject: false,
       }),
     });
-    window.location.reload();
+    // window.location.reload();
   };
 
   const handleDenyUser = (e) => {
@@ -104,7 +109,7 @@ const BookClubPage = () => {
         reject: true,
       }),
     });
-    window.location.reload();
+    // window.location.reload();
   };
 
   const handleRemoveMember = (e) => {
@@ -119,10 +124,8 @@ const BookClubPage = () => {
         member: [{ username: e.target.id, _id: finalUserId }],
       }),
     });
-    navigate(0);
+    // navigate(0);
   };
-
-  console.log(`bookGroup:`, bookGroup[0]?.readingList.length < 1);
 
   return (
     <>
@@ -225,10 +228,16 @@ const BookClubPage = () => {
                     (isAMember === false ? (
                       <SpaceAreas>
                         <JoinBookClubButton
-                          disabled={bookGroup[0]?.host === username || bookClubAlreadyPending || pending}
+                          disabled={
+                            bookGroup[0]?.host === username || bookClubAlreadyPending || pending || userAlreadyInvited
+                          }
                           onClick={handleJoinRequest}
                         >
-                          {pending || bookClubAlreadyPending ? <p>Awaiting host response...</p> : <p>Join Book Club</p>}
+                          {pending || bookClubAlreadyPending || userAlreadyInvited ? (
+                            <p>Awaiting host response...</p>
+                          ) : (
+                            <p>Join Book Club</p>
+                          )}
                         </JoinBookClubButton>
                       </SpaceAreas>
                     ) : (
@@ -264,6 +273,7 @@ const Wrapper = styled.div`
   grid-template-areas: "BookClubDetails Books";
   gap: 30px;
   height: 100vh;
+  background-color: #fefbe7;
 
   h3 {
     text-align: left;
