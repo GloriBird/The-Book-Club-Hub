@@ -36,7 +36,12 @@ const App = () => {
                 <Route reloadDocument path="/" element={<Homepage />}></Route>
                 <Route exact reloadDocument path="/WeeklyTrendingBooks" element={<WeeklyTrendingBooks />}></Route>
                 <Route exact reloadDocument path="/BrowseBookClubs" element={<BrowseBookClubs />}></Route>
-                <Route exact reloadDocument path="/BookDetails/:title" element={<BookDetails />}></Route>
+                <Route
+                  exact
+                  reloadDocument
+                  path="/BookDetails/:author/:bookId/:details"
+                  element={<BookDetails />}
+                ></Route>
                 <Route
                   exact
                   reloadDocument
