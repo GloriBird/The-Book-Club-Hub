@@ -7,7 +7,7 @@ import { CurrentUserContext } from "../context/CurrentUserContext";
 import { BiSearchAlt } from "react-icons/bi";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
-
+import useBookResults from "../customHooks/useBookResults";
 const moment = require("moment");
 
 const SearchBooks = () => {
@@ -17,19 +17,20 @@ const SearchBooks = () => {
   const userData = useContext(CurrentUserContext);
   const [isAdded, setIsAdded] = useState(false);
   const [selectedBook, setSelectedBook] = useState();
-  const [receiveBookName, setReceiveBookName] = useState();
+  const [loading, setLoading] = useState(false);
   const { isAuthenticated, isLoading } = useAuth0();
-  const { setPickedBook } = useContext(GlobalContext);
+
   const {
     state: { username, hostingBookClubs },
   } = userData;
+
+  const dbResult = useBookResults(searchResult, 1000);
 
   const handleAddBook = (e) => {
     e.preventDefault();
     setToggleModal(true);
     const pickedBook = showSearch !== undefined && showSearch?.filter((x) => x?.title.includes(e.target.id));
     setIsAdded(true);
-    setReceiveBookName(e.target.id);
 
     setSelectedBook({
       added_by: username,
@@ -43,7 +44,8 @@ const SearchBooks = () => {
 
   useEffect(() => {
     const getResults = async () => {
-      const searched = await fetch(`http://openlibrary.org/search.json?title=${searchResult}`);
+      setLoading(true);
+      const searched = await fetch(`http://openlibrary.org/search.json?title=${dbResult}`);
       const response = await searched.json();
       const loadResults = await response?.docs?.map((x) => {
         const allResults = {
@@ -58,9 +60,10 @@ const SearchBooks = () => {
         return allResults;
       });
       setShowSearch(loadResults);
+      setLoading(false);
     };
-    getResults();
-  }, [searchResult]);
+    if (dbResult) getResults();
+  }, [dbResult]);
 
   const updateColumns = [
     {
@@ -87,7 +90,6 @@ const SearchBooks = () => {
       });
     }
   };
-
   return (
     <>
       {isLoading === false ? (
@@ -110,48 +112,56 @@ const SearchBooks = () => {
                   (x, idx) =>
                     x?.cover !== undefined && (
                       <Carousel.Item key={idx}>
-                        <Books>
-                          <Link reloadDocument to={`/BookDetails/${x?.author}/${x?.cover}/${x?.works}`}>
-                            <BookImgs
-                              src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`}
-                              alt={"book Covers"}
-                            />
-                          </Link>
-                          <div>
-                            {x?.title?.length > 50 ? (
-                              <p>
-                                <span>Title:</span> {x?.title.substring(0, 50)}...
-                              </p>
-                            ) : (
-                              <p>
-                                <span>Title:</span> {x?.title}
-                              </p>
-                            )}
+                        {loading === false ? (
+                          <Books>
+                            <Link reloadDocument to={`/BookDetails/${x?.author}/${x?.cover}/${x?.works}`}>
+                              <BookImgs
+                                src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`}
+                                alt={"book Covers"}
+                              />
+                            </Link>
+                            <div>
+                              {x?.title?.length > 50 ? (
+                                <p>
+                                  <span>Title:</span> {x?.title.substring(0, 50)}...
+                                </p>
+                              ) : (
+                                <p>
+                                  <span>Title:</span> {x?.title}
+                                </p>
+                              )}
 
-                            {x?.author?.length > 50 ? (
+                              {x?.author?.length > 50 ? (
+                                <p>
+                                  <span>Author:</span> {x?.author?.[0]?.substring(0, 50)}...
+                                </p>
+                              ) : (
+                                <p>
+                                  <span>Author:</span> {x?.author?.[0]}
+                                </p>
+                              )}
                               <p>
-                                <span>Author:</span> {x?.author?.[0]?.substring(0, 50)}...
+                                <span>First published:</span> {x?.first_published}
                               </p>
-                            ) : (
-                              <p>
-                                <span>Author:</span> {x?.author?.[0]}
-                              </p>
-                            )}
-                            <p>
-                              <span>First published:</span> {x?.first_published}
-                            </p>
-                            <AddBookButton
-                              disabled={
-                                hostingBookClubs === undefined || hostingBookClubs === null || isAuthenticated === false
-                              }
-                              id={x?.title}
-                              onClick={handleAddBook}
-                              isClicked={isAdded}
-                            >
-                              Add Book
-                            </AddBookButton>
-                          </div>
-                        </Books>
+                              <AddBookButton
+                                disabled={
+                                  hostingBookClubs === undefined ||
+                                  hostingBookClubs === null ||
+                                  isAuthenticated === false
+                                }
+                                id={x?.title}
+                                onClick={handleAddBook}
+                                isClicked={isAdded}
+                              >
+                                Add Book
+                              </AddBookButton>
+                            </div>
+                          </Books>
+                        ) : (
+                          <CurrentLoading>
+                            <p>Loading...</p>
+                          </CurrentLoading>
+                        )}
                       </Carousel.Item>
                     )
                 )}
@@ -178,7 +188,6 @@ const Wrapper = styled.div`
   height: 170vh;
   display: flex;
   flex-direction: column;
-
   padding: 2% 0;
   background-color: var(--main-background-color);
 `;
@@ -193,7 +202,6 @@ const SearchArea = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-
   h2 {
     display: flex;
     flex-direction: row;
@@ -223,11 +231,9 @@ const Books = styled.div`
   div {
     padding: 20px;
   }
-
   p {
     padding-top: 2px;
   }
-
   span {
     font-weight: bold;
   }
@@ -239,7 +245,6 @@ const BookImgs = styled.img`
   width: auto;
   border-radius: 10px;
   filter: drop-shadow(-5px 5px 3px #f1d591);
-
   &:hover {
     filter: drop-shadow(-10px 10px 3px #e8c97d);
     cursor: pointer;
@@ -261,8 +266,13 @@ const AddBookButton = styled.button`
   box-shadow: ${(props) => (props.disabled ? "#dcdcdc" : "0px -4px 7px #afc39e inset")};
   background-color: ${(props) => (props.disabled ? "#dcdcdc" : "#dae5d0")};
   color: ${(props) => (props.disabled ? "white" : "#3b3b3b")};
-
   &:hover {
     cursor: ${(props) => (props.disabled ? "default" : "pointer")};
+  }
+`;
+
+const CurrentLoading = styled.div`
+  p {
+    margin-top: 70%;
   }
 `;

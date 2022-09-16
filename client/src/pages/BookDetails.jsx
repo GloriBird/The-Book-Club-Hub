@@ -22,7 +22,7 @@ const BookDetails = () => {
       setIsBookLoaded(false);
       const book = await fetch(`https://openlibrary.org/works/${details}.json`);
       const selectedBook = await book.json();
-      console.log(`selectedBook:`, selectedBook?.first_publish_date);
+      console.log(`book description:`, selectedBook?.description?.value);
       const getDetails = {
         title: selectedBook?.title,
         first_published: selectedBook?.first_publish_date,
@@ -37,10 +37,6 @@ const BookDetails = () => {
 
   console.log(`bookDetails :`, bookDetails);
 
-  // const book =
-  //   weeklyTrendingBooks !== null && weeklyTrendingBooks?.filter((x) => x?.title?.replace(/\s+/g, "").trim() === title);
-  // console.log(`weeklyTrendingBooks:`, weeklyTrendingBooks);
-  // console.log(`book:`, book);
   return (
     <div>
       {bookDetails !== null && (
@@ -50,7 +46,7 @@ const BookDetails = () => {
               <img src={`https://covers.openlibrary.org/b/olid/${x?.cover}-L.jpg`} alt={"book Covers"} />
               <h3>{x?.title}</h3>
               <h3>{x?.author}</h3>
-              <p>{x?.description?.value}</p>
+              {typeof x?.description === "object" ? <p>{x?.description?.value}</p> : <p>{x?.description}</p>}
               <p>{x?.first_published}</p>
             </div>
           ))}
