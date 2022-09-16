@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useState, useContext, useEffect } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
-import { Navigate, useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 import BookList from "../components/BookList";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -243,7 +243,6 @@ const BookClubPage = () => {
             )}
           </BookClubInfo>
           <BookList />
-          {/* {bookGroup[0]?.readingList.length > 1 && <BookList />} */}
         </Wrapper>
       ) : (
         <Loading>
@@ -355,7 +354,7 @@ const MemberList = styled.li`
 const ChatArea = styled.div`
   display: flex;
   flex-direction: row;
-  align-content: center;
+  /* align-content: center; */
   padding: 20px 0;
 `;
 
@@ -407,5 +406,6 @@ const SpaceAreas = styled.div`
 
 const BookClubInfo = styled.div`
   grid-area: BookClubDetails;
-  margin: 0 auto;
+  margin: 3% 0 0 40%;
+  /* margin: 0 auto; */
 `;
