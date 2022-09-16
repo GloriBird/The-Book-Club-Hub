@@ -68,11 +68,13 @@ export const BookList = () => {
 export default BookList;
 
 const Wrapper = styled.div`
-  /* border: 12px solid green; */
+  border: 12px solid green;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100%;
 `;
 
 const CarouselStyle = styled(Carousel)`

@@ -242,7 +242,8 @@ const BookClubPage = () => {
               </>
             )}
           </BookClubInfo>
-          {bookGroup[0]?.readingList.length > 1 && <BookList />}
+          <BookList />
+          {/* {bookGroup[0]?.readingList.length > 1 && <BookList />} */}
         </Wrapper>
       ) : (
         <Loading>

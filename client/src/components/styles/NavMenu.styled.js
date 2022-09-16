@@ -13,7 +13,6 @@ export const StyledNavLink = styled(NavLink)`
 `;
 
 export const Menu = styled.nav`
-  z-index: 10;
   width: 100%;
   background-color: #f9ebc8;
   padding: 7px 0;
@@ -48,7 +47,6 @@ export const DropdownOptions = styled.div`
   display: none;
   position: absolute;
   width: 130%;
-  /* top: calc(100% + 0.15rem); */
   background-color: #f9ebc8;
   padding: 1rem;
   border-bottom-left-radius: 10px;

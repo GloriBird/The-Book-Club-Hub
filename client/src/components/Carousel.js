@@ -63,64 +63,54 @@ const CarouselTrendingBooks = () => {
         return response.json();
       });
     }
-    // } else if (isAdded === false) {
-    //   fetch("/remove-books", {
-    //     method: "PATCH",
-    //     headers: { "Content-type": "application/json" },
-    //     body: JSON.stringify({ ...selectedBook, bookClubName: e.target.innerHTML }),
-    //   }).then((response) => {
-    //     setTimeout(() => {
-    //       setToggleModal(false);
-    //     }, 200);
-    //     return response.json();
-    //   });
-    // }
   };
 
   console.log(`hostingBookClubs:`, hostingBookClubs);
   return (
     <>
       {isLoading === false ? (
-        <Wrapper>
-          <Title>
-            <h1>This Week's Trending Books</h1>
-          </Title>
-          <CarouselStyle cols={5} rows={3} gap={10} loop showDots responsiveLayout={updateColumns}>
-            {weeklyTrendingBooks?.map(
-              (x, idx) =>
-                x?.cover !== undefined && (
-                  <Carousel.Item key={idx}>
-                    <Books>
-                      <BookImgs
-                        src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`}
-                        alt={"book Covers"}
-                        isClicked={isAdded}
-                      />
-                      <p>{x?.title}</p>
-                      <p>{x?.author}</p>
-                      <AddBookButton
-                        disabled={
-                          hostingBookClubs === undefined || hostingBookClubs === null || isAuthenticated === false
-                        }
-                        id={x?.title}
-                        onClick={handleAddBook}
-                        isClicked={isAdded}
-                      >
-                        Add Book
-                      </AddBookButton>
-                    </Books>
-                  </Carousel.Item>
-                )
-            )}
-          </CarouselStyle>
-          <PopUpModal trigger={toggleModal} setTrigger={setToggleModal}>
-            {hostingBookClubs?.map((x, idx) => (
-              <button disabled={isAuthenticated === false} key={idx} onClick={handleSelection}>
-                {x?.bookClubName}
-              </button>
-            ))}
-          </PopUpModal>
-        </Wrapper>
+        <>
+          <Wrapper>
+            <Title>
+              <h1>This Week's Trending Books</h1>
+            </Title>
+            <CarouselStyle cols={5} rows={3} gap={10} loop showDots responsiveLayout={updateColumns}>
+              {weeklyTrendingBooks?.map(
+                (x, idx) =>
+                  x?.cover !== undefined && (
+                    <Carousel.Item key={idx}>
+                      <Books>
+                        <BookImgs
+                          src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`}
+                          alt={"book Covers"}
+                          isClicked={isAdded}
+                        />
+                        <p>{x?.title}</p>
+                        <p>{x?.author}</p>
+                        <AddBookButton
+                          disabled={
+                            hostingBookClubs === undefined || hostingBookClubs === null || isAuthenticated === false
+                          }
+                          id={x?.title}
+                          onClick={handleAddBook}
+                          isClicked={isAdded}
+                        >
+                          Add Book
+                        </AddBookButton>
+                      </Books>
+                    </Carousel.Item>
+                  )
+              )}
+            </CarouselStyle>
+            <PopUpModal trigger={toggleModal} setTrigger={setToggleModal}>
+              {hostingBookClubs?.map((x, idx) => (
+                <button disabled={isAuthenticated === false} key={idx} onClick={handleSelection}>
+                  {x?.bookClubName}
+                </button>
+              ))}
+            </PopUpModal>
+          </Wrapper>
+        </>
       ) : (
         <Loading>
           <p>Loading...</p>
