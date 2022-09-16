@@ -28,7 +28,7 @@ const SearchBooks = () => {
     e.preventDefault();
     setToggleModal(true);
     const pickedBook = showSearch !== undefined && showSearch?.filter((x) => x?.title.includes(e.target.id));
-    setIsAdded(!isAdded);
+    setIsAdded(true);
     setReceiveBookName(e.target.id);
 
     setSelectedBook({
@@ -76,17 +76,6 @@ const SearchBooks = () => {
   const handleSelection = (e) => {
     if (isAdded === true) {
       fetch("/add-books", {
-        method: "PATCH",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify({ ...selectedBook, bookClubName: e.target.innerHTML }),
-      }).then((response) => {
-        setTimeout(() => {
-          setToggleModal(false);
-        }, 200);
-        return response.json();
-      });
-    } else if (isAdded === false) {
-      fetch("/remove-books", {
         method: "PATCH",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({ ...selectedBook, bookClubName: e.target.innerHTML }),
@@ -248,7 +237,6 @@ const BookImgs = styled.img`
   margin: auto;
   height: 250px;
   width: auto;
-
   border-radius: 10px;
   filter: drop-shadow(-5px 5px 3px #f1d591);
 

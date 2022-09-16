@@ -11,13 +11,14 @@ const BookListInChat = (props) => {
 
   const { allBookClub } = useContext(GlobalContext);
   const userData = useContext(CurrentUserContext);
+  const [removeImg, setRemoveImg] = useState(false);
+
   const location = useLocation();
   const getURL = location.pathname;
   const getIdFromURL = getURL.split("/BookClubConversation/")[1];
 
   const bookGroup = allBookClub !== null && allBookClub?.filter((x) => x?._id === getIdFromURL);
 
-  console.log(`bookGroup:`, bookGroup[0]?.bookClubName);
   const {
     state: { username },
   } = userData;
@@ -32,18 +33,6 @@ const BookListInChat = (props) => {
       cols: 3,
     },
   ];
-  const handleRemoveBook = (e) => {
-    if (bookGroup[0]?.host === username) {
-      fetch("/remove-books", {
-        method: "PATCH",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify({ added_by: username, bookClubName: bookGroup[0]?.bookClubName, title: e.target.id }),
-      }).then((response) => {
-        return response.json();
-      });
-    }
-    navigate(0);
-  };
 
   return (
     <Wrapper>
@@ -53,8 +42,8 @@ const BookListInChat = (props) => {
           {props?.readingList?.map((x, idx) => (
             <Carousel.Item key={idx}>
               <Books>
-                {bookGroup[0]?.host === username && <RemoveBook onClick={handleRemoveBook} id={x?.title} />}
                 <BookImgs src={`https://covers.openlibrary.org/b/olid/${x?.cover}-L.jpg`} alt="book Covers" />
+
                 <div>
                   <p>{x?.title}</p>
                   <p>{x?.author}</p>
@@ -120,14 +109,4 @@ const BookImgs = styled.img`
     filter: drop-shadow(-10px 10px 3px #e8c97d);
     cursor: pointer;
   }
-`;
-
-const RemoveBook = styled(IoClose)`
-  cursor: pointer;
-  width: 5%;
-  height: auto;
-  margin-right: 17%;
-  background-color: #ff7171;
-  color: white;
-  border-radius: 50px;
 `;
