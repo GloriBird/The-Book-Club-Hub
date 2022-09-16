@@ -3,9 +3,25 @@ import styled from "styled-components";
 import { GlobalContext } from "../context/GlobalContext";
 import Carousel from "react-grid-carousel";
 import { IoClose } from "react-icons/io5";
+import { useLocation, useNavigate } from "react-router-dom";
+import { CurrentUserContext } from "../context/CurrentUserContext";
 
 const BookListInChat = (props) => {
-  const [isAdded, setIsAdded] = useState(false);
+  const navigate = useNavigate();
+
+  const { allBookClub, setCurrentBookClubMembers, setBookClubChat } = useContext(GlobalContext);
+  const userData = useContext(CurrentUserContext);
+  const location = useLocation();
+  const getURL = location.pathname;
+  const getIdFromURL = getURL.split("/BookClubConversation/")[1];
+
+  const bookGroup = allBookClub !== null && allBookClub?.filter((x) => x?._id === getIdFromURL);
+
+  console.log(`bookGroup:`, bookGroup[0]?.bookClubName);
+  const {
+    state: { username },
+  } = userData;
+
   const updateColumns = [
     {
       breakpoint: 1200,
@@ -16,38 +32,42 @@ const BookListInChat = (props) => {
       cols: 3,
     },
   ];
+  const handleRemoveBook = (e) => {
+    if (bookGroup[0]?.host === username) {
+      fetch("/remove-books", {
+        method: "PATCH",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ added_by: username, bookClubName: bookGroup[0]?.bookClubName, title: e.target.id }),
+      }).then((response) => {
+        return response.json();
+      });
+    }
+    navigate(0);
+  };
 
-  // const handleRemoveBook = (e) => {
-  //   if (isAdded === false) {
-  //     fetch("/remove-books", {
-  //       method: "PATCH",
-  //       headers: { "Content-type": "application/json" },
-  //       body: JSON.stringify({ ...selectedBook, bookClubName: e.target.innerHTML }),
-  //     }).then((response) => {
-  //       return response.json();
-  //     });
-  //   }
-  // };
+  console.log(`bookGroup:`, bookGroup[0]?.readingList?.length < 1);
 
   return (
     <Wrapper>
       <Title>{props?.currentBookClub}</Title>
-      <CarouselStyle cols={1} rows={1} gap={1} loop showDots responsiveLayout={updateColumns}>
-        {props?.readingList?.map((x, idx) => (
-          <Carousel.Item key={idx}>
-            <Books>
-              <RemoveBook
-              // onClick={handleRemoveBook} id={}
-              />
-              <BookImgs src={`https://covers.openlibrary.org/b/olid/${x?.cover}-L.jpg`} alt="book Covers" />
-              <div>
-                <p>{x?.title}</p>
-                <p>{x?.author}</p>
-              </div>
-            </Books>
-          </Carousel.Item>
-        ))}
-      </CarouselStyle>
+      {bookGroup[0]?.readingList?.length > 0 && (
+        <CarouselStyle cols={1} rows={1} gap={1} loop showDots responsiveLayout={updateColumns}>
+          {props?.readingList?.map((x, idx) => (
+            <Carousel.Item key={idx}>
+              <Books>
+                {bookGroup[0]?.host === username && (
+                  <RemoveBook onClick={handleRemoveBook} id={x?.title} className={x?.bookClubName} />
+                )}
+                <BookImgs src={`https://covers.openlibrary.org/b/olid/${x?.cover}-L.jpg`} alt="book Covers" />
+                <div>
+                  <p>{x?.title}</p>
+                  <p>{x?.author}</p>
+                </div>
+              </Books>
+            </Carousel.Item>
+          ))}
+        </CarouselStyle>
+      )}
     </Wrapper>
   );
 };
