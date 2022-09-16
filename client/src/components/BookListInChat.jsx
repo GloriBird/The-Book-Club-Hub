@@ -45,8 +45,6 @@ const BookListInChat = (props) => {
     navigate(0);
   };
 
-  console.log(`bookGroup:`, bookGroup[0]?.readingList?.length < 1);
-
   return (
     <Wrapper>
       <Title>{props?.currentBookClub}</Title>
@@ -55,9 +53,7 @@ const BookListInChat = (props) => {
           {props?.readingList?.map((x, idx) => (
             <Carousel.Item key={idx}>
               <Books>
-                {bookGroup[0]?.host === username && (
-                  <RemoveBook onClick={handleRemoveBook} id={x?.title} className={x?.bookClubName} />
-                )}
+                {bookGroup[0]?.host === username && <RemoveBook onClick={handleRemoveBook} id={x?.title} />}
                 <BookImgs src={`https://covers.openlibrary.org/b/olid/${x?.cover}-L.jpg`} alt="book Covers" />
                 <div>
                   <p>{x?.title}</p>
