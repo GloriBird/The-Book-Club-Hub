@@ -126,6 +126,10 @@ export default BookDetails;
 
 const Wrapper = styled.div`
   padding-right: 2%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   img {
     border-radius: 10px;
     &:hover {
@@ -144,7 +148,9 @@ const DescriptionArea = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   align-items: flex-start;
+
   width: 45%;
 
   h2 {
