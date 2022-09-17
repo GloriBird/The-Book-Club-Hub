@@ -1,11 +1,8 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
-import BookList from "../components/BookList";
-import SignUpButton from "../components/SignUpButton";
 
 import { Loading } from "./pageStyles/BrowseBookClubs.styled";
 
@@ -69,12 +66,9 @@ const JoinBookClub = () => {
                     <SpaceAreas>
                       {isAuthenticated === false && (
                         <ButtonSignUp onClick={() => loginWithRedirect({ screen_hint: "signup" })}>
-                          Sign Up
+                          Sign Up to Join Us!
                         </ButtonSignUp>
                       )}
-                      {/* <JoinBookClubButton>
-                          <p>Join Book Club</p>
-                        </JoinBookClubButton> */}
                     </SpaceAreas>
                   </div>
                 </>

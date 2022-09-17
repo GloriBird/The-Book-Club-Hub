@@ -59,7 +59,7 @@ const App = () => {
                   exact
                   reloadDocument
                   path="/BookClubConversation/:bookClubID"
-                  element={isAuthenticated ? <BookClubConversation /> : <Navigate to="/" />}
+                  element={isAuthenticated ? <BookClubConversation /> : <JoinBookClub />}
                 ></Route>
                 <Route
                   exact
