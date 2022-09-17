@@ -1,14 +1,12 @@
 import { StyledNavLink } from "./styles/NavMenu.styled";
-import React, { useContext, useState } from "react";
 import { Menu, Dropdown, DropdownOptions } from "./styles/NavMenu.styled";
 import LoginButton from "./LoginButton";
 import SignOutButton from "./SignOutButton";
 import SignUpButton from "./SignUpButton";
 import { useAuth0 } from "@auth0/auth0-react";
-import { GlobalContext } from "../context/GlobalContext";
 
 const NavMenu = () => {
-  const { user, isAuthenticated, isLoading, error } = useAuth0();
+  const { isAuthenticated, isLoading, error } = useAuth0();
 
   return (
     <Menu>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { GlobalContext } from "../context/GlobalContext";
 import { CurrentUserContext } from "../context/CurrentUserContext";
@@ -44,6 +44,7 @@ const CarouselTrendingBooks = () => {
       first_published: weeksBooks[0]?.first_published,
       cover: weeksBooks[0]?.cover,
       date_added: moment().format("LL"),
+      works: weeksBooks[0]?.works,
     });
   };
 
@@ -76,7 +77,7 @@ const CarouselTrendingBooks = () => {
                   x?.cover !== undefined && (
                     <Carousel.Item key={idx}>
                       <Books>
-                        <Link reloadDocument to={`/BookDetails/${x?.title.replace(/\s+/g, "").trim()}`}>
+                        <Link reloadDocument to={`/BookDetails/${x?.author}/${x?.cover}/${x?.works}`}>
                           <BookImgs
                             src={`https://covers.openlibrary.org/b/olid/${x?.cover}-M.jpg`}
                             alt={"book Covers"}

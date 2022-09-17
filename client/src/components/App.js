@@ -1,6 +1,5 @@
 import GlobalStyles from "./styles/GlobalStyled";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import React, { useState, useContext } from "react";
 import NavMenu from "./NavMenu";
 import Homepage from "../pages/Homepage";
 import MyBookClubs from "../pages/MyBookClubs";
@@ -19,10 +18,8 @@ import styled from "styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const App = () => {
-  const { user, isLoading, isAuthenticated } = useAuth0();
-  console.log(`isLoading:`, isLoading);
+  const { isLoading, isAuthenticated } = useAuth0();
 
-  console.log(`isAuthenticated:`, isAuthenticated);
   return (
     <>
       {isLoading === false ? (
@@ -31,7 +28,6 @@ const App = () => {
           <BrowserRouter>
             <Wrapper>
               <NavMenu />
-
               <Routes>
                 <Route reloadDocument path="/" element={<Homepage />}></Route>
                 <Route exact reloadDocument path="/WeeklyTrendingBooks" element={<WeeklyTrendingBooks />}></Route>

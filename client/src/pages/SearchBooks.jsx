@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import { GlobalContext } from "../context/GlobalContext";
 import styled from "styled-components";
 import Carousel from "react-grid-carousel";
 import PopUpModal from "../components/PopUpModal";

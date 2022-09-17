@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export const GlobalContext = createContext();
@@ -20,14 +20,15 @@ export const GlobalProvider = ({ children }) => {
     const getWeeklyBooks = async () => {
       setHasLoaded(false);
       const thisWeeksBooks = await fetch("https://openlibrary.org/trending/weekly.json");
-      const listOfUser = await thisWeeksBooks.json();
-      const currentWeeksBooks = await listOfUser?.works?.map((x) => {
+      const listOfBooks = await thisWeeksBooks.json();
+      const currentWeeksBooks = await listOfBooks?.works?.map((x) => {
         const weeklyBooks = {
           title: x?.title,
           first_published: x?.first_publish_year,
           cover: x?.cover_edition_key,
           author: x?.author_name,
           author_key: x?.author_key,
+          works: x?.key?.split("/works/")[1],
         };
         return weeklyBooks;
       });
