@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { CurrentUserContext } from "../../context/CurrentUserContext";
+import { CurrentUserContext } from "../context/CurrentUserContext";
 
 const CurrentBookClubMembers = ({ bookGroup, username }) => {
   const navigate = useNavigate();

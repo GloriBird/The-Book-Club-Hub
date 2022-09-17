@@ -14,7 +14,7 @@ import BookDetails from "../pages/BookDetails";
 import SearchBooks from "../pages/SearchBooks";
 import styled from "styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
-
+import JoinBookClub from "../pages/JoinBookClub";
 const App = () => {
   const { isLoading, isAuthenticated } = useAuth0();
 
@@ -52,14 +52,14 @@ const App = () => {
                   exact
                   reloadDocument
                   path="/BookClub/:bookClubID"
-                  element={isAuthenticated ? <BookClub /> : <Navigate to="/" />}
+                  element={isAuthenticated ? <BookClub /> : <JoinBookClub />}
                 ></Route>
                 <Route exact reloadDocument path="/SearchBooks" element={<SearchBooks />}></Route>a
                 <Route
                   exact
                   reloadDocument
                   path="/BookClubConversation/:bookClubID"
-                  element={isAuthenticated ? <BookClubConversation /> : <Navigate to="/" />}
+                  element={isAuthenticated ? <BookClubConversation /> : <JoinBookClub />}
                 ></Route>
                 <Route
                   exact

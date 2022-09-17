@@ -40,7 +40,6 @@ const BookDetails = () => {
   const getAuthor = author?.replace("%20", " ");
 
   const handleAddBook = (e) => {
-    console.log(`e target id:`, e.target.id);
     e.preventDefault();
     setToggleModal(true);
     setIsAdded(true);
@@ -146,7 +145,7 @@ const DescriptionArea = styled.div`
   align-items: center;
   justify-content: center;
   align-items: flex-start;
-  width: 25%;
+  width: 45%;
 
   h2 {
     text-align: left;
@@ -158,6 +157,8 @@ const Contain = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
+  background-color: #fefbe7;
 `;
 
 const AddBookButton = styled.button`
