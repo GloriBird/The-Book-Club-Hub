@@ -19,6 +19,7 @@ const initialState = {
   numberOfRequests: null,
   hostingBookClubs: null,
   hostingBookClubsCount: null,
+  onChat: null,
 };
 
 const currentUserReducer = (state, action) => {
@@ -40,12 +41,19 @@ const currentUserReducer = (state, action) => {
         numberOfRequests: action.numberOfRequests,
         hostingBookClubs: action.hostingBookClubs,
         hostingBookClubsCount: action.hostingBookClubsCount,
+        onChat: null,
       };
     }
     case "receive-new-username": {
       return {
         ...state,
         username: action.username,
+      };
+    }
+    case "receive-user-online": {
+      return {
+        ...state,
+        onChat: action.onChat,
       };
     }
     case "catch-error": {
@@ -67,7 +75,6 @@ export const CurrentUserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(currentUserReducer, initialState);
 
   const receiveCurrentUser = (data) => {
-    console.log(`data from user Context:`, data);
     dispatch({
       type: "receive-current-user",
       ...data,
@@ -93,7 +100,6 @@ export const CurrentUserProvider = ({ children }) => {
         const getData = await fetch(`/signedInProfile/${user?.sub}`);
         const listOfUser = await getData.json();
         const signedInProfile = await listOfUser.account;
-        console.log(`signedInProfile:`, signedInProfile);
         return receiveCurrentUser(signedInProfile);
       } else {
         <></>;
@@ -109,15 +115,28 @@ export const CurrentUserProvider = ({ children }) => {
     });
   };
 
+  const receiveUserOnline = (status) => {
+    dispatch({
+      type: "receive-user-online",
+      onChat: status,
+    });
+  };
+
   const catchError = (error) => {
     dispatch({
       type: "catch-error",
       error: error,
     });
   };
+
   return (
     <CurrentUserContext.Provider
-      value={{ state, signedInUser, setSignedInUser, actions: { receiveCurrentUser, receiveNewUserName, catchError } }}
+      value={{
+        state,
+        signedInUser,
+        setSignedInUser,
+        actions: { receiveCurrentUser, receiveUserOnline, receiveNewUserName, catchError },
+      }}
     >
       {children}
     </CurrentUserContext.Provider>

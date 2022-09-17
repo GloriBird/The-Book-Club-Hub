@@ -46,6 +46,49 @@ const socketIO = require("socket.io")(http, {
   },
 });
 
+// const users = [];
+
+// socketIO.on("connection", (socket) => {
+//   // console.log(`User Connected: ${socket.id}`);
+
+//   socket.on("join_chat", (data) => {
+//     // console.log(`data.username:`, data?.user);
+//     const loggedInUser = { id: socket.id, user: data?.user, room: data.bookClubChat };
+//     users.push(loggedInUser);
+//     socket.join(data.bookClubChat);
+//     console.log("data", data);
+//     // users.push(data?.user);
+//     // console.log(`users:`, users);
+//     // const test = users?.map(({ user }) => user);
+//     // console.log(`user arr:`, users);
+//     socket.to(data.bookClubChat).emit("get_users", { hello: true, bye: false });
+//   });
+
+//   socket.on("send_message", (data) => {
+//     console.log(`data:`, data);
+
+//     socket.to(data.bookClubChat).emit("receive_message", data);
+//   });
+
+//   socket.on("disconnect", () => {
+//     // console.log(`user disconnected`, socket.id);
+
+//     console.log(`users before:`, users);
+
+//     for (let i = 0; i < users.length; i++) {
+//       if (users[i].id === socket.id) {
+//         users.splice(i, 1);
+//       }
+//     }
+//     console.log(`socketID`, socket.id);
+
+//     console.log(`users after:`, users);
+
+//     socket.to(users.bookClubChat).emit("User left", socket.id);
+//     socket.disconnect();
+//   });
+// });
+
 socketIO.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
@@ -55,6 +98,7 @@ socketIO.on("connection", (socket) => {
 
   socket.on("online_members", (members) => {
     console.log(`members online:`, members);
+    // socket.to(members.bookClubChat).emit("online_users", members);
   });
 
   socket.on("send_message", (data) => {

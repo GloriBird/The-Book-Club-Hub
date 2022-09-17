@@ -1,6 +1,5 @@
 import GlobalStyles from "./styles/GlobalStyled";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import React, { useState, useContext } from "react";
 import NavMenu from "./NavMenu";
 import Homepage from "../pages/Homepage";
 import MyBookClubs from "../pages/MyBookClubs";
@@ -13,38 +12,89 @@ import BookClub from "../pages/BookClub";
 import BookClubConversation from "../pages/BookClubConversation";
 import Footer from "../components/Footer";
 import SearchForMembers from "../pages/SearchForMembers";
+import BookDetails from "../pages/BookDetails";
 import SearchBooks from "../pages/SearchBooks";
 import styled from "styled-components";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const App = () => {
+  const { isLoading, isAuthenticated } = useAuth0();
+
   return (
     <>
-      <GlobalStyles />
-      <BrowserRouter>
-        <Wrapper>
-          <NavMenu />
-          <Routes>
-            <Route reloadDocument path="/" element={<Homepage />}></Route>
-            <Route exact reloadDocument path="/WeeklyTrendingBooks" element={<WeeklyTrendingBooks />}></Route>
-            <Route exact reloadDocument path="/BrowseBookClubs" element={<BrowseBookClubs />}></Route>
-            <Route exact reloadDocument path="/SearchForMembers" element={<SearchForMembers />}></Route>
-            <Route exact reloadDocument path="/MyBookClubs" element={<MyBookClubs />}></Route>
-            {/* <Route exact path="/Chat" element={hasLoaded ? <Chat /> : <Navigate to="/" />}></Route> */}
-            <Route exact reloadDocument path="/BookClub/:bookClubID" element={<BookClub />}></Route>R{" "}
-            <Route exact reloadDocument path="/SearchBooks" element={<SearchBooks />}></Route>
-            <Route
-              exact
-              reloadDocument
-              path="/BookClubConversation/:bookClubID"
-              element={<BookClubConversation />}
-            ></Route>
-            <Route exact reloadDocument path="/Login" element={<Login />}></Route>
-            <Route exact reloadDocument path="/SignUp" element={<SignUp />}></Route>
-            <Route exact reloadDocument path="/Profile" element={<Profile />}></Route>
-          </Routes>
-          <Footer />
-        </Wrapper>
-      </BrowserRouter>
+      {isLoading === false ? (
+        <>
+          <GlobalStyles />
+          <BrowserRouter>
+            <Wrapper>
+              <NavMenu />
+              <Routes>
+                <Route reloadDocument path="/" element={<Homepage />}></Route>
+                <Route exact reloadDocument path="/WeeklyTrendingBooks" element={<WeeklyTrendingBooks />}></Route>
+                <Route exact reloadDocument path="/BrowseBookClubs" element={<BrowseBookClubs />}></Route>
+                <Route
+                  exact
+                  reloadDocument
+                  path="/BookDetails/:author/:bookId/:details"
+                  element={<BookDetails />}
+                ></Route>
+                <Route
+                  exact
+                  reloadDocument
+                  path="/SearchForMembers"
+                  element={isAuthenticated ? <SearchForMembers /> : <Navigate to="/" />}
+                ></Route>
+                <Route
+                  exact
+                  reloadDocument
+                  path="/MyBookClubs"
+                  element={isAuthenticated ? <MyBookClubs /> : <Navigate to="/" />}
+                ></Route>
+                <Route
+                  exact
+                  reloadDocument
+                  path="/BookClub/:bookClubID"
+                  element={isAuthenticated ? <BookClub /> : <Navigate to="/" />}
+                ></Route>
+                <Route exact reloadDocument path="/SearchBooks" element={<SearchBooks />}></Route>a
+                <Route
+                  exact
+                  reloadDocument
+                  path="/BookClubConversation/:bookClubID"
+                  element={isAuthenticated ? <BookClubConversation /> : <Navigate to="/" />}
+                ></Route>
+                <Route
+                  exact
+                  reloadDocument
+                  path="/Login"
+                  element={isAuthenticated ? <Navigate to="/" /> : <Login />}
+                ></Route>
+                <Route
+                  exact
+                  reloadDocument
+                  path="/SignUp"
+                  element={isAuthenticated ? <Navigate to="/" /> : <SignUp />}
+                ></Route>
+                <Route
+                  exact
+                  reloadDocument
+                  path="/Profile"
+                  element={isAuthenticated ? <Profile /> : <Navigate to="/" />}
+                ></Route>
+              </Routes>
+              <Footer />
+            </Wrapper>
+          </BrowserRouter>
+        </>
+      ) : (
+        <Container>
+          <GlobalStyles />
+
+          <Loading>
+            <p>Loading...</p>
+          </Loading>
+        </Container>
+      )}
     </>
   );
 };
@@ -57,4 +107,23 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   background-color: var(--main-background-color);
+`;
+
+const Container = styled.div`
+  height: 100vh;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--main-background-color);
+`;
+
+const Loading = styled.div`
+  margin: auto;
+
+  p {
+    font-size: 2rem;
+    font-weight: bold;
+  }
 `;

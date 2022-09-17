@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export const GlobalContext = createContext();
@@ -11,25 +11,29 @@ export const GlobalProvider = ({ children }) => {
   const [bookClubChat, setBookClubChat] = useState();
   const [weeklyTrendingBooks, setWeeklyTrendingBooks] = useState();
   const [allBookClubNames, setAllBookClubNames] = useState();
-
+  const [onlineUsers, setOnlineUsers] = useState([]);
   const [isAllUsersLoading, setIsAllUsersLoading] = useState(true);
+  const [hasLoaded, setHasLoaded] = useState(false);
   const { user } = useAuth0();
 
   useEffect(() => {
     const getWeeklyBooks = async () => {
+      setHasLoaded(false);
       const thisWeeksBooks = await fetch("https://openlibrary.org/trending/weekly.json");
-      const listOfUser = await thisWeeksBooks.json();
-      const currentWeeksBooks = await listOfUser?.works?.map((x) => {
+      const listOfBooks = await thisWeeksBooks.json();
+      const currentWeeksBooks = await listOfBooks?.works?.map((x) => {
         const weeklyBooks = {
           title: x?.title,
           first_published: x?.first_publish_year,
           cover: x?.cover_edition_key,
           author: x?.author_name,
           author_key: x?.author_key,
+          works: x?.key?.split("/works/")[1],
         };
         return weeklyBooks;
       });
       setWeeklyTrendingBooks(currentWeeksBooks);
+      setHasLoaded(true);
     };
     getWeeklyBooks();
   }, []);
@@ -73,6 +77,9 @@ export const GlobalProvider = ({ children }) => {
         currentBookClubMembers,
         bookClubChat,
         setBookClubChat,
+        onlineUsers,
+        setOnlineUsers,
+        hasLoaded,
       }}
     >
       {children}

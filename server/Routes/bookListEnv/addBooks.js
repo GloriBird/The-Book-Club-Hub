@@ -12,7 +12,7 @@ const addBooks = async (req, res) => {
   await client.connect();
 
   const bookClubData = client.db("Book-Club");
-  const { added_by, date_added, bookClubName, author, title, book_img, first_published } = req.body;
+  const { added_by, date_added, bookClubName, author, title, cover, first_published } = req.body;
 
   const getBookClub = await bookClubData.collection("Book-Group").findOne({ bookClubName: bookClubName });
   const profile = await bookClubData.collection("Users").findOne({ username: added_by });
@@ -27,8 +27,9 @@ const addBooks = async (req, res) => {
       {
         $push: {
           readingList: {
+            bookClubName,
             title,
-            book_img,
+            cover,
             author,
             first_published,
             date_added,
@@ -46,8 +47,9 @@ const addBooks = async (req, res) => {
       {
         $push: {
           "hostingBookClubs.$.readingList": {
+            bookClubName,
             title,
-            book_img,
+            cover,
             author,
             first_published,
             date_added,

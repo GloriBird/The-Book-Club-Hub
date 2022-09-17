@@ -12,7 +12,7 @@ const removeBooks = async (req, res) => {
   await client.connect();
 
   const bookClubData = client.db("Book-Club");
-  const { added_by, date_added, bookClubName, author, title, book_img, first_published } = req.body;
+  const { added_by, bookClubName, title } = req.body;
 
   const getBookClub = await bookClubData.collection("Book-Group").findOne({ bookClubName: bookClubName });
   const bookIsInBookClub = getBookClub?.readingList?.some((match) => title.includes(match?.title));
@@ -61,7 +61,7 @@ const removeBooks = async (req, res) => {
         $pull: {
           "hostingBookClubs.$.readingList": profile?.hostingBookClubs[0]?.readingList[idxOfBookToRemoveFromHost],
         },
-        $inc: { bookCount: -1 },
+        $inc: { "hostingBookClubs.$.bookCount": -1 },
       }
     );
 
