@@ -1,20 +1,16 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import React, { useState, useEffect, useContext } from "react";
-import { GlobalContext } from "../context/GlobalContext";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 const moment = require("moment");
 
 const Profile = () => {
-  const { user, isAuthenticated } = useAuth0();
-  const { allUsers } = useContext(GlobalContext);
+  const { user } = useAuth0();
   const userData = useContext(CurrentUserContext);
 
   const {
-    state: { _id, username, email },
+    state: { username },
   } = userData;
-
-  console.log(`_id:`, _id, `username:`, username, `email:`, email);
 
   const joinedDate = moment().format("MMMM Do YYYY");
 

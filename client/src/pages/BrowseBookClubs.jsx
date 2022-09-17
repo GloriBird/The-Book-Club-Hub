@@ -2,32 +2,28 @@ import { Link } from "react-router-dom";
 import {
   Container,
   List,
-  Add,
-  Minus,
   Wrapper,
   BookClubInfo,
-  AddRemoveButtons,
   RemoveButton,
   AddButton,
   Loading,
 } from "./pageStyles/BrowseBookClubs.styled";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { GlobalContext } from "../context/GlobalContext";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const BrowseBookClubs = () => {
-  const { allUsers, allBookClub } = useContext(GlobalContext);
-  const [isAdded, setIsAdded] = useState(false);
+  const { allBookClub } = useContext(GlobalContext);
+  const [setIsAdded] = useState(false);
   const { isLoading, isAuthenticated } = useAuth0();
 
   const userData = useContext(CurrentUserContext);
 
   const {
-    state: { _id, username, email, bookClubName, joinedDate, sub, hostingBookClubs },
+    state: { _id, username, email, joinedDate, sub },
   } = userData;
 
-  console.log(`isAuthenticated:`, isAuthenticated);
   const handleAddRequest = (e) => {
     setIsAdded(true);
     fetch("/request-to-join-book-club", {

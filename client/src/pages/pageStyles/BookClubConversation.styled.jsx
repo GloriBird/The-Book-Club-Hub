@@ -111,7 +111,6 @@ export const ProfileTime = styled.div`
 export const MsgArea = styled.div`
   display: flex;
   flex-direction: column;
-  /* border: 5px solid #abd9ff; */
   height: fit-content;
   border-radius: 5px;
   padding: 10px 10px;
@@ -122,7 +121,6 @@ export const MsgArea = styled.div`
   margin: auto 0 auto 120px;
 
   p {
-    /* width: 420px; */
     text-align: left;
   }
 `;

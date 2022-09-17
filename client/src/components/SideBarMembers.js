@@ -4,27 +4,10 @@ import { CurrentUserContext } from "../context/CurrentUserContext";
 import { GlobalContext } from "../context/GlobalContext";
 import { useLocation } from "react-router-dom";
 
-export const SideBar = () => {
-  const userData = useContext(CurrentUserContext);
-  const {
-    trendingBooks,
-    allUsers,
-    allBookClub,
-    allUsernames,
-    userInData,
-    setCurrentBookClubMembers,
-    onlineUsers,
-    setBookClubChat,
-  } = useContext(GlobalContext);
+export const SideBarMembers = () => {
+  const { allBookClub, setCurrentBookClubMembers, setBookClubChat } = useContext(GlobalContext);
 
   const location = useLocation();
-
-  // const [onlineMembers, setOnlineMembers] = useState([]);
-  const [userOnline, setUserOnline] = useState([]);
-
-  const {
-    state: { _id, username, email, bookClubs, onChat },
-  } = userData;
 
   const getURL = location.pathname;
   const getIdFromURL = getURL.split("/BookClubConversation/")[1];
@@ -59,7 +42,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  /* border: 2px solid green; */
   background-color: #f9ebc8;
   border-radius: 10px;
 

@@ -1,17 +1,24 @@
-import { Container, List, Wrapper } from "./pageStyles/BrowseBookClubs.styled";
+import {
+  Container,
+  List,
+  Wrapper,
+  RemoveButton,
+  AddButton,
+  SearchedMembers,
+} from "./pageStyles/BrowseBookClubs.styled";
 import React, { useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { GlobalContext } from "../context/GlobalContext";
 import PopUpModal from "../components/PopUpModal";
 
 const SearchForMembers = () => {
-  const { allUsers, allBookClub } = useContext(GlobalContext);
+  const { allUsers } = useContext(GlobalContext);
   const userData = useContext(CurrentUserContext);
   const [selectedUser, setSelectedUser] = useState();
   const [toggleModal, setToggleModal] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const {
-    state: { _id, username, email, hostingBookClubs },
+    state: { hostingBookClubs },
   } = userData;
 
   const handleAddRequest = (e) => {
@@ -27,9 +34,6 @@ const SearchForMembers = () => {
       sub: bookGroup[0]?.sub,
     });
   };
-
-  console.log(`hostingBookClubs:`, hostingBookClubs);
-  console.log(`isAdded:`, isAdded);
 
   const handleRemoveRequest = (e) => {
     e.preventDefault();
@@ -75,15 +79,19 @@ const SearchForMembers = () => {
     <Container>
       {allUsers?.map((x, idx) => (
         <List key={idx}>
-          <img src={`https://avatars.dicebear.com/api/avataaars/${x?.username}.svg`} alt="" />
+          <img
+            style={{ paddingBottom: 20 }}
+            src={`https://avatars.dicebear.com/api/avataaars/${x?.username}.svg`}
+            alt=""
+          />
           <Wrapper>
-            <button disabled={hostingBookClubs === undefined} id={x?.username} onClick={handleRemoveRequest}>
+            <RemoveButton disabled={hostingBookClubs === undefined} id={x?.username} onClick={handleRemoveRequest}>
               -
-            </button>
-            <p>{x?.username}</p>
-            <button disabled={hostingBookClubs === undefined} id={x?.username} onClick={handleAddRequest}>
+            </RemoveButton>
+            <SearchedMembers>{x?.username}</SearchedMembers>
+            <AddButton disabled={hostingBookClubs === undefined} id={x?.username} onClick={handleAddRequest}>
               +
-            </button>
+            </AddButton>
           </Wrapper>
         </List>
       ))}

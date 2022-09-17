@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-
 import { Container, CreateClubButton, ChatButton } from "./pageStyles/MyBookClubs.styled";
 import { useAuth0 } from "@auth0/auth0-react";
 import PopUpModal from "../components/PopUpModal";
@@ -8,16 +7,18 @@ import { GlobalContext } from "../context/GlobalContext";
 import styled from "styled-components";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { UsersBookClubs } from "../components/UsersBookClubs";
+
 const MyBookClubs = () => {
   const userData = useContext(CurrentUserContext);
   const { allBookClubNames } = useContext(GlobalContext);
+
+  const { isLoading } = useAuth0();
   const [newBookClubLoading, setNewBookClubLoading] = useState(false);
   const [currentBookClubName, setCurrentBookClubName] = useState("");
   const [toggleModal, setToggleModal] = useState(false);
-  const { isLoading } = useAuth0();
 
   const {
-    state: { _id, joinedDate, username, email, sub, hostingBookClubs, bookClubsToJoinPending, bookClubInvites },
+    state: { _id, joinedDate, username, email, sub },
   } = userData;
 
   const members = [
@@ -42,16 +43,9 @@ const MyBookClubs = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ bookClubName: currentBookClubName, host: username, members }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw Error(`It's broken`);
-        }
-        return response.json();
-      })
-      .then(() => {
-        setNewBookClubLoading(false);
-      });
+    }).then(() => {
+      setNewBookClubLoading(false);
+    });
   };
 
   return (

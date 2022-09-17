@@ -71,7 +71,7 @@ const currentUserReducer = (state, action) => {
 export const CurrentUserProvider = ({ children }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   const [signedInUser, setSignedInUser] = usePersistedState("Signed In User", []);
-
+  console.log(`signedInUser:`, signedInUser);
   const [state, dispatch] = useReducer(currentUserReducer, initialState);
 
   const receiveCurrentUser = (data) => {

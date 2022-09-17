@@ -10,15 +10,13 @@ export const UsersBookClubs = () => {
   } = useContext(CurrentUserContext);
 
   const handleAccept = (e) => {
-    // e.preventDefault();
-    navigate(0);
     bookClubInvites.splice(e.target.id, 1);
     fetch("/accept-reject-invite", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ _id, username, bookClubName: e.target.id, accept: true, reject: false }),
     });
-    // window.location.reload();
+    navigate(0);
   };
 
   const handleDeny = (e) => {
@@ -28,6 +26,7 @@ export const UsersBookClubs = () => {
       body: JSON.stringify({ _id, username, bookClubName: e.target.id, accept: false, reject: true }),
     });
     bookClubInvites.splice(e.target.id, 1);
+    navigate(0);
   };
 
   return (
@@ -129,7 +128,6 @@ const Title = styled.h3`
 `;
 
 const Wrapper = styled.ol`
-  /* border: 2px dotted red; */
   width: 100vw;
   height: 20vh;
   display: flex;

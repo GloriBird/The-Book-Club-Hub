@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  /* border: 2px solid green; */
   height: auto;
   display: grid;
   align-items: center;
@@ -9,7 +8,6 @@ export const Container = styled.div`
   justify-content: center;
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: 1fr 1fr 1fr;
-  /* gap: 10px 10px; */
   background-color: #fefbe7;
   grid-template-areas:
     ". . . ."
@@ -26,17 +24,14 @@ export const Container = styled.div`
 
 export const List = styled.li`
   list-style: none;
-  /* border: 2px solid blue; */
   text-align: center;
   margin-top: 50px;
-  /* width: 250px; */
 `;
 
 export const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* padding: 15px 15px 0 15px; */
 `;
 
 export const BookClubInfo = styled.div`
@@ -98,4 +93,8 @@ export const Loading = styled.div`
     font-size: 2rem;
     font-weight: bold;
   }
+`;
+
+export const SearchedMembers = styled.p`
+  padding: 0 2%;
 `;
