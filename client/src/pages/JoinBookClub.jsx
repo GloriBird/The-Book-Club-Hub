@@ -75,7 +75,7 @@ const JoinBookClub = () => {
               )}
             </BookClubInfo>
             <CurrentBookList>
-              <h1>To TBD</h1>
+              <h1>Sign up and join our group to see what we're reading!</h1>
             </CurrentBookList>
             {/* <BookList /> */}
           </Wrapper>
@@ -100,7 +100,6 @@ const Wrapper = styled.div`
   gap: 30px;
   height: 100vh;
   background-color: #fefbe7;
-  border: 10px solid red;
 `;
 
 const List = styled.li`
@@ -119,29 +118,6 @@ const MemberList = styled.li`
   flex-direction: column;
 `;
 
-const JoinBookClubButton = styled.button`
-  box-shadow: ${(props) => (props.disabled ? "#dcdcdc" : "0px -4px 7px #001d6e inset")};
-
-  border-radius: 5px;
-  background-color: #1e3880;
-  background-color: ${(props) => (props.disabled ? "#dcdcdc" : "#1e3880")};
-
-  height: 30px;
-
-  width: fit-content;
-  /* padding: 0 20px; */
-  font-size: 1rem;
-  border: none;
-  font-weight: bolder;
-
-  p {
-    color: white;
-  }
-  &:hover {
-    cursor: ${(props) => (props.disabled ? "default" : "pointer")};
-  }
-`;
-
 const SpaceAreas = styled.div`
   text-align: center;
   margin: 10px 0;
@@ -149,7 +125,6 @@ const SpaceAreas = styled.div`
   h1 {
     padding-bottom: 10%;
   }
-  /* border: 10px solid green; */
 `;
 
 const BookClubInfo = styled.div`
@@ -159,7 +134,6 @@ const BookClubInfo = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 10px solid blue;
 `;
 
 const CurrentBookList = styled.div`
@@ -167,7 +141,6 @@ const CurrentBookList = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 10px solid yellow;
 `;
 
 const ButtonSignUp = styled.button`
