@@ -40,7 +40,6 @@ const BookDetails = () => {
   const getAuthor = author?.replace("%20", " ");
 
   const handleAddBook = (e) => {
-    console.log(`e target id:`, e.target.id);
     e.preventDefault();
     setToggleModal(true);
     setIsAdded(true);
