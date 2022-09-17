@@ -5,11 +5,11 @@ import { CurrentUserContext } from "../context/CurrentUserContext";
 import PopUpModal from "../components/PopUpModal";
 import { Wrapper, NewUserForm, ConfirmButton, BookImg, LandingPage } from "./pageStyles/Homepage.styled";
 import bookAndTea from "../assets/bookAndTea.png";
-import { Container, CreateClubButton, ChatButton } from "./pageStyles/MyBookClubs.styled";
+import { Container } from "./pageStyles/MyBookClubs.styled";
 
 const Homepage = () => {
   const { allUsernames } = useContext(GlobalContext);
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { user } = useAuth0();
   const [hasLoaded, setHasLoaded] = useState(false);
   const userData = useContext(CurrentUserContext);
 
@@ -22,7 +22,6 @@ const Homepage = () => {
     actions: { receiveCurrentUser, receiveNewUserName },
   } = userData;
 
-  //Assign random username is input isn't submitted
   if (user !== undefined && username === user.nickname) {
     const randomUsername = Math.random().toString(36).substring(2, 13);
     fetch("/update-profile", {
@@ -35,7 +34,6 @@ const Homepage = () => {
     });
   }
 
-  // Add to data if use is new user
   useEffect(() => {
     if (user !== undefined) {
       const { email, nickname, sub } = user;

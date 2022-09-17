@@ -4,9 +4,7 @@ import NavMenu from "./NavMenu";
 import Homepage from "../pages/Homepage";
 import MyBookClubs from "../pages/MyBookClubs";
 import WeeklyTrendingBooks from "../pages/WeeklyTrendingBooks";
-import Login from "../pages/Login";
 import BrowseBookClubs from "../pages/BrowseBookClubs";
-import SignUp from "../pages/SignUp";
 import Profile from "../pages/Profile";
 import BookClub from "../pages/BookClub";
 import BookClubConversation from "../pages/BookClubConversation";
@@ -62,18 +60,6 @@ const App = () => {
                   reloadDocument
                   path="/BookClubConversation/:bookClubID"
                   element={isAuthenticated ? <BookClubConversation /> : <Navigate to="/" />}
-                ></Route>
-                <Route
-                  exact
-                  reloadDocument
-                  path="/Login"
-                  element={isAuthenticated ? <Navigate to="/" /> : <Login />}
-                ></Route>
-                <Route
-                  exact
-                  reloadDocument
-                  path="/SignUp"
-                  element={isAuthenticated ? <Navigate to="/" /> : <SignUp />}
                 ></Route>
                 <Route
                   exact

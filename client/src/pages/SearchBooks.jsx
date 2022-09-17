@@ -23,7 +23,7 @@ const SearchBooks = () => {
     state: { username, hostingBookClubs },
   } = userData;
 
-  const dbResult = useBookResults(searchResult, 800);
+  const dbResult = useBookResults(searchResult, 500);
 
   const handleAddBook = (e) => {
     e.preventDefault();

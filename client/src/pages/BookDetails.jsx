@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import PopUpModal from "../components/PopUpModal";
+
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { useAuth0 } from "@auth0/auth0-react";
 const moment = require("moment");
@@ -18,10 +19,6 @@ const BookDetails = () => {
   } = useContext(CurrentUserContext);
 
   const { bookId, author, details } = useParams();
-
-  console.log(`bookId:`, bookId);
-  console.log(`author:`, author);
-  console.log(`works:`, details);
 
   useEffect(() => {
     const getCurrentBook = async () => {
@@ -71,8 +68,6 @@ const BookDetails = () => {
       });
     }
   };
-
-  console.log(`selectedBook:`, selectedBook);
 
   return (
     <>

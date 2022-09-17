@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { useParams } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
-import { SideBar } from "../components/SideBar";
+import { SideBarMembers } from "../components/SideBarMembers";
 import io from "socket.io-client";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Loading } from "../components/styles/Loading.styled";
@@ -46,12 +46,12 @@ const BookClubConversation = () => {
   } = userData;
 
   const bookGroup = hostingBookClubs !== null && allBookClub?.filter((x) => x?._id === bookClubID);
-  const joinBookClubChat = (e) => {
+
+  const joinBookClubChat = () => {
     setIsOnline(true);
     receiveUserOnline(true);
     if (bookClubChat !== "") {
       socket.emit("join_chat", bookClubChat);
-      socket.emit("online_members", username);
     }
   };
 
@@ -146,7 +146,7 @@ const BookClubConversation = () => {
                     Click to Join
                   </JoinButton>
                 )}
-                <SideBar />
+                <SideBarMembers />
               </>
             </CardGrid>
           )}

@@ -7,21 +7,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 
 const BookListInChat = (props) => {
-  const navigate = useNavigate();
-
   const { allBookClub } = useContext(GlobalContext);
-  const userData = useContext(CurrentUserContext);
-  const [removeImg, setRemoveImg] = useState(false);
 
   const location = useLocation();
   const getURL = location.pathname;
   const getIdFromURL = getURL.split("/BookClubConversation/")[1];
 
   const bookGroup = allBookClub !== null && allBookClub?.filter((x) => x?._id === getIdFromURL);
-
-  const {
-    state: { username },
-  } = userData;
 
   const updateColumns = [
     {

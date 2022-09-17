@@ -14,7 +14,7 @@ const BookClubPage = () => {
   const [pending, setPending] = useState(false);
 
   const { allBookClub, sub } = useContext(GlobalContext);
-  const { isLoading, isAuthenticated } = useAuth0();
+  const { isLoading } = useAuth0();
 
   const {
     state: { _id, username, email, bookClubs, hostingBookClubs, bookClubsToJoinPending, bookClubInvites, joinedDate },
@@ -67,6 +67,7 @@ const BookClubPage = () => {
     }).then((response) => {
       return response.json();
     });
+    navigate(0);
   };
 
   const isAMember =
@@ -127,7 +128,6 @@ const BookClubPage = () => {
     navigate(0);
   };
 
-  console.log(`username:`, username, `isLoading:`, isLoading);
   return (
     <>
       {username !== null && isLoading === false ? (
@@ -147,7 +147,7 @@ const BookClubPage = () => {
                         return (
                           <List key={idx}>
                             <MembersArea>
-                              <p> {x?.username}</p>
+                              <p>• {x?.username}</p>
                               {bookGroup[0]?.host === username && bookGroup[0]?.host !== x?.username && (
                                 <RemoveMemberButton id={x?.username} className={x?._id} onClick={handleRemoveMember}>
                                   Remove Member
@@ -171,7 +171,7 @@ const BookClubPage = () => {
                             {bookGroup[0]?.pendingMembers.map((x, idx) => {
                               return (
                                 <List key={idx}>
-                                  <p>Pending Members: {x?.username}</p>
+                                  <p>• {x?.username}</p>
                                 </List>
                               );
                             })}
@@ -267,7 +267,7 @@ export default BookClubPage;
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: 0.6fr 1fr;
+  grid-template-columns: 0.5fr 1fr;
   grid-template-rows: 1fr;
   gap: 0px 0px;
   grid-template-areas: "BookClubDetails Books";
@@ -416,6 +416,10 @@ const SpaceAreas = styled.div`
 
 const BookClubInfo = styled.div`
   grid-area: BookClubDetails;
-  margin: 3% 0 0 40%;
+  margin: 10% 0 0 50%;
+  /* border: 10px solid green;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; */
   /* margin: 0 auto; */
 `;
