@@ -24,7 +24,7 @@ const SearchBooks = () => {
     state: { username, hostingBookClubs },
   } = userData;
 
-  const dbResult = useBookResults(searchResult, 1000);
+  const dbResult = useBookResults(searchResult, 800);
 
   const handleAddBook = (e) => {
     e.preventDefault();
@@ -42,6 +42,8 @@ const SearchBooks = () => {
     });
   };
 
+  console.log(`dbResult:`, dbResult);
+  console.log(`showSearch:`, showSearch);
   useEffect(() => {
     const getResults = async () => {
       setLoading(true);
@@ -59,7 +61,7 @@ const SearchBooks = () => {
         };
         return allResults;
       });
-      setShowSearch(loadResults);
+      setShowSearch(loadResults.splice(0, 50));
       setLoading(false);
     };
     if (dbResult) getResults();
