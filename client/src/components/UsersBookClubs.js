@@ -90,10 +90,12 @@ export const UsersBookClubs = () => {
                   <>
                     {bookClubInvites?.map((group, idx) => (
                       <List key={idx} id={idx}>
-                        <BookClubImg
-                          src={`https://avatars.dicebear.com/api/initials/${group?.bookClubName}.svg`}
-                          alt=""
-                        />
+                        <Link style={{ textDecoration: "none" }} reloadDocument to={`/BookClub/${group?._id}`}>
+                          <BookClubImg
+                            src={`https://avatars.dicebear.com/api/initials/${group?.bookClubName}.svg`}
+                            alt=""
+                          />
+                        </Link>
                         <WrapInvite>
                           <p> {group?.bookClubName}</p>
                           <AcceptButton id={group?.bookClubName} onClick={handleAccept}>
