@@ -40,7 +40,7 @@ const NavMenu = () => {
           <>
             <li>
               <StyledNavLink reloadDocument to="/SearchForMembers">
-                <h2>Search New Members</h2>
+                <h2>Discover Users</h2>
               </StyledNavLink>
             </li>
             <li>
