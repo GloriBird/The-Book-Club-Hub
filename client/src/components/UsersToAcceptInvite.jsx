@@ -6,26 +6,9 @@ const UsersToAcceptInvite = ({ isAMember, isAHost, bookGroup, username }) => {
   const navigate = useNavigate();
 
   const handleAcceptUser = (e) => {
-    const idxToRemove = e.target.className.lastIndexOf(" ");
-    const finalUserId = e.target.className.substring(idxToRemove + 1);
-    fetch("/accept-reject-user-request", {
-      method: "PATCH",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({
-        _id: finalUserId,
-        username: e.target.id,
-        bookClubName: bookGroup[0]?.bookClubName,
-        accept: true,
-        reject: false,
-      }),
-    });
-    navigate(0);
-  };
-
-  const handleDenyUser = (e) => {
-    const idxToRemove = e.target.className.lastIndexOf(" ");
-    const finalUserId = e.target.className.substring(idxToRemove + 1);
-    if (bookGroup[0]?.host === username) {
+    if (e?.target?.id?.length > 0) {
+      const idxToRemove = e.target.className.lastIndexOf(" ");
+      const finalUserId = e.target.className.substring(idxToRemove + 1);
       fetch("/accept-reject-user-request", {
         method: "PATCH",
         headers: { "Content-type": "application/json" },
@@ -33,13 +16,35 @@ const UsersToAcceptInvite = ({ isAMember, isAHost, bookGroup, username }) => {
           _id: finalUserId,
           username: e.target.id,
           bookClubName: bookGroup[0]?.bookClubName,
-          accept: false,
-          reject: true,
+          accept: true,
+          reject: false,
         }),
       });
+      navigate(0);
     }
-    navigate(0);
   };
+
+  const handleDenyUser = (e) => {
+    if (e?.target?.id?.length > 0) {
+      const idxToRemove = e.target.className.lastIndexOf(" ");
+      const finalUserId = e.target.className.substring(idxToRemove + 1);
+      if (bookGroup[0]?.host === username) {
+        fetch("/accept-reject-user-request", {
+          method: "PATCH",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify({
+            _id: finalUserId,
+            username: e.target.id,
+            bookClubName: bookGroup[0]?.bookClubName,
+            accept: false,
+            reject: true,
+          }),
+        });
+        navigate(0);
+      }
+    }
+  };
+
   return (
     <div>
       {(isAMember === true || isAHost === true) && (

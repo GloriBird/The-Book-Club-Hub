@@ -6,11 +6,11 @@ import { GlobalContext } from "../context/GlobalContext";
 import BookList from "../components/BookList";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Loading } from "../components/styles/Loading.styled";
-import CurrentBookClubMembers from "../components/BookClubPageEnv/CurrentBookClubMembers";
-import UsersToAcceptInvite from "../components/BookClubPageEnv/UsersToAcceptInvite";
-import UserPendingRequest from "../components/BookClubPageEnv/UserPendingRequest";
+import CurrentBookClubMembers from "../components/CurrentBookClubMembers";
+import UsersToAcceptInvite from "../components/UsersToAcceptInvite";
+import UserPendingRequest from "../components/UserPendingRequest";
 
-const BookClubPage = () => {
+const BookClub = () => {
   const { bookClubID } = useParams();
 
   const { allBookClub, sub } = useContext(GlobalContext);
@@ -92,7 +92,7 @@ const BookClubPage = () => {
   );
 };
 
-export default BookClubPage;
+export default BookClub;
 
 const Wrapper = styled.div`
   display: grid;

@@ -1,45 +1,61 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import styled from "styled-components";
-import { useNavigate, Link } from "react-router-dom";
+import { Navigate, useNavigate, useParams, Link } from "react-router-dom";
+import BookClub from "../pages/BookClub";
+import { GlobalContext } from "../context/GlobalContext";
 
 export const UsersBookClubs = () => {
+  const userData = useContext(CurrentUserContext);
+  const { allUsers, allBookClub } = useContext(GlobalContext);
+  const [isAccepted, setIsAccepted] = useState();
+
   const navigate = useNavigate();
   const {
-    state: { _id, username, bookClubs, bookClubInvites, hostingBookClubs, bookClubsToJoinPending },
-  } = useContext(CurrentUserContext);
+    state: { _id, username, email, bookClubs, bookClubName, bookClubInvites, hostingBookClubs, bookClubsToJoinPending },
+    actions: { receiveCurrentUser, receiveNewUserName },
+  } = userData;
+
+  console.log(`bookClubs:`, bookClubs);
 
   const handleAccept = (e) => {
+    // e.preventDefault();
+    setIsAccepted(true);
+    navigate(0);
+
     bookClubInvites.splice(e.target.id, 1);
+    console.log(`e.target.id:`, e.target.id);
     fetch("/accept-reject-invite", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ _id, username, bookClubName: e.target.id, accept: true, reject: false }),
     });
-    navigate(0);
+    // window.location.reload();
   };
 
   const handleDeny = (e) => {
+    // e.preventDefault();
+    setIsAccepted(false);
     fetch("/accept-reject-invite", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ _id, username, bookClubName: e.target.id, accept: false, reject: true }),
     });
     bookClubInvites.splice(e.target.id, 1);
-    navigate(0);
   };
 
+  console.log(`bookClubs:`, bookClubs);
   return (
     <>
       {username !== null ? (
-        <WholeWrap>
+        <>
           {hostingBookClubs !== undefined && (
             <>
               <Title>Hosting</Title>
               <Wrapper>
                 {hostingBookClubs !== undefined &&
                   hostingBookClubs?.map((group, idx) => (
-                    <Container key={idx} id={group?._id}>
+                    <List key={idx} id={group?._id}>
                       <Link style={{ textDecoration: "none" }} reloadDocument to={`/BookClub/${group?._id}`}>
                         <BookClubImg
                           src={`https://avatars.dicebear.com/api/initials/${group?.bookClubName}.svg`}
@@ -47,7 +63,7 @@ export const UsersBookClubs = () => {
                         />
                         <p> {group?.bookClubName}</p>
                       </Link>
-                    </Container>
+                    </List>
                   ))}
               </Wrapper>
             </>
@@ -57,7 +73,7 @@ export const UsersBookClubs = () => {
               <Title>My Book Clubs</Title>
               <Wrapper>
                 {bookClubs?.map((group, idx) => (
-                  <Container key={idx} id={group?._id}>
+                  <List key={idx} id={group?._id}>
                     <Link style={{ textDecoration: "none" }} reloadDocument to={`/BookClub/${group?._id}`}>
                       <BookClubImg
                         src={`https://avatars.dicebear.com/api/initials/${group?.bookClubName}.svg`}
@@ -65,7 +81,7 @@ export const UsersBookClubs = () => {
                       />
                       <p>{group?.bookClubName}</p>
                     </Link>
-                  </Container>
+                  </List>
                 ))}
               </Wrapper>
             </>
@@ -74,28 +90,27 @@ export const UsersBookClubs = () => {
             <>
               <Title>Book Club Invites</Title>
               <Wrapper>
-                {bookClubInvites?.map((group, idx) => (
-                  <Container key={idx} id={idx}>
-                    <div style={{ margin: 0, padding: 0 }}>
-                      <p> {group?.bookClubName}</p>
-
-                      <Link style={{ textDecoration: "none" }} reloadDocument to={`/BookClub/${group?._id}`}>
+                {bookClubInvites?.map(
+                  (group, idx) => (
+                    // isAccepted !== null && (
+                    <List key={idx} id={idx}>
+                      <div>
                         <BookClubImg
                           src={`https://avatars.dicebear.com/api/initials/${group?.bookClubName}.svg`}
                           alt=""
                         />
-                      </Link>
-                    </div>
-                    <ButtonArea>
-                      <AcceptButton id={group?.bookClubName} onClick={handleAccept}>
-                        Accept
-                      </AcceptButton>
-                      <DenyButton id={group?.bookClubName} onClick={handleDeny}>
-                        Deny
-                      </DenyButton>
-                    </ButtonArea>
-                  </Container>
-                ))}
+                        <p> {group?.bookClubName}</p>
+                        <AcceptButton id={group?.bookClubName} onClick={handleAccept}>
+                          Accept
+                        </AcceptButton>
+                        <DenyButton id={group?.bookClubName} onClick={handleDeny}>
+                          Deny
+                        </DenyButton>
+                      </div>
+                    </List>
+                  )
+                  // )
+                )}
               </Wrapper>
             </>
           )}
@@ -105,7 +120,7 @@ export const UsersBookClubs = () => {
               <MyBookClubRequest>My Book Club Requests</MyBookClubRequest>
               <Wrapper style={{ marginBottom: 50 }}>
                 {bookClubsToJoinPending?.map((group, idx) => (
-                  <Container key={idx} id={group?._id}>
+                  <List key={idx} id={group?._id}>
                     <Link style={{ textDecoration: "none" }} reloadDocument to={`/BookClub/${group?._id}`}>
                       <BookClubImg
                         src={`https://avatars.dicebear.com/api/initials/${group?.bookClubName}.svg`}
@@ -113,12 +128,12 @@ export const UsersBookClubs = () => {
                       />
                       <p>{group?.bookClubName}</p>
                     </Link>
-                  </Container>
+                  </List>
                 ))}
               </Wrapper>
             </>
           )}
-        </WholeWrap>
+        </>
       ) : (
         <p>Loading...</p>
       )}
@@ -126,37 +141,40 @@ export const UsersBookClubs = () => {
   );
 };
 
-const WholeWrap = styled.div`
-  display: flex;
-  width: 100vw;
-  height: auto;
-  flex-direction: column;
-  border: 10px solid green;
-`;
-
 const Title = styled.h3`
-  padding-top: 2%;
-  margin: auto;
+  padding-top: 3%;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled.ol`
+  /* border: 2px dotted red; */
+  width: 100vw;
+  height: 20vh;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-
-  border: 1px solid blue;
+  align-content: center;
+  margin-top: 0 10px;
+  padding: 0;
+  p {
+    margin-top: 10px;
+    text-align: center;
+    text-decoration: none;
+  }
 `;
 
-const Container = styled.div`
+const List = styled.li`
   list-style: none;
   padding: 0.5% 1%;
   height: 100%;
-  border: 10px solid red;
   display: flex;
-  flex-direction: column;
-
+  span {
+    display: inline;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding-right: 20px;
+  }
   div {
     text-align: center;
   }
@@ -164,7 +182,7 @@ const Container = styled.div`
 
 const BookClubImg = styled.img`
   border-radius: 5px;
-  height: 60%;
+  height: 100%;
   margin: auto;
 `;
 
@@ -180,7 +198,6 @@ const DenyButton = styled.button`
   border: none;
   color: white;
   font-weight: bolder;
-
   &:hover {
     cursor: pointer;
   }
@@ -197,17 +214,11 @@ const AcceptButton = styled.button`
   margin: 0 5px;
   border: none;
   font-weight: bolder;
-
   &:hover {
     cursor: pointer;
   }
 `;
 
 const MyBookClubRequest = styled.h3`
-  padding-top: 1%;
-  text-align: center;
-`;
-
-const ButtonArea = styled.div`
-  display: flex;
+  padding-top: 6%;
 `;
