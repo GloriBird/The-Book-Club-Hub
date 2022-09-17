@@ -103,6 +103,7 @@ const BookClubConversation = () => {
                                     src={`https://avatars.dicebear.com/api/avataaars/${msg?.sender}.svg`}
                                     alt=""
                                   />
+                                  <p>{msg.sender}</p>
                                   <p>{msg.time}</p>
                                 </ProfileTime>
                               </CurrentUser>
@@ -113,6 +114,7 @@ const BookClubConversation = () => {
                                     src={`https://avatars.dicebear.com/api/avataaars/${msg?.sender}.svg`}
                                     alt=""
                                   />
+                                  <p>{msg.sender}</p>
                                   <p>{msg.time}</p>
                                 </OtherProfileTime>
                                 <OtherMemberMsgArea>
