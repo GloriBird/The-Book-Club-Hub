@@ -74,7 +74,7 @@ const MyBookClubs = () => {
                   required
                 />
                 {allBookClubNamesLowerCased?.includes(typedBookClubNamesLowerCased) && (
-                  <p>This username has already been taken.</p>
+                  <p>This name has already been taken.</p>
                 )}
               </label>
               <p>Characters left: {maxCharacters - currentBookClubName.length}</p>

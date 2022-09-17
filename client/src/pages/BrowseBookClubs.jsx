@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 import {
   Container,
   List,
@@ -15,9 +16,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const BrowseBookClubs = () => {
   const { allBookClub } = useContext(GlobalContext);
-  const [setIsAdded] = useState(false);
+  const [isAdded, setIsAdded] = useState(false);
   const { isLoading, isAuthenticated } = useAuth0();
-
+  const navigate = useNavigate();
   const userData = useContext(CurrentUserContext);
 
   const {
@@ -26,6 +27,14 @@ const BrowseBookClubs = () => {
 
   const handleAddRequest = (e) => {
     setIsAdded(true);
+    console.log(`isAdded:`, isAdded);
+    console.log(`_id:`, _id);
+    console.log(`username:`, username);
+    console.log(`email:`, email);
+    console.log(`joinedDate:`, joinedDate);
+    console.log(`sub:`, sub);
+    console.log(`bookClubName:`, e.target.id);
+
     fetch("/request-to-join-book-club", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
@@ -33,6 +42,7 @@ const BrowseBookClubs = () => {
     }).then((response) => {
       return response.json();
     });
+    // navigate(0);
   };
 
   const handleRemoveRequest = (e) => {
@@ -44,6 +54,7 @@ const BrowseBookClubs = () => {
     }).then((response) => {
       return response.json();
     });
+    // navigate(0);
   };
 
   return (

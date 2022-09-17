@@ -6,6 +6,7 @@ import {
   AddButton,
   SearchedMembers,
 } from "./pageStyles/BrowseBookClubs.styled";
+
 import React, { useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { GlobalContext } from "../context/GlobalContext";
@@ -85,13 +86,19 @@ const SearchForMembers = () => {
             alt=""
           />
           <Wrapper>
-            <RemoveButton disabled={hostingBookClubs === undefined} id={x?.username} onClick={handleRemoveRequest}>
-              -
-            </RemoveButton>
-            <SearchedMembers>{x?.username}</SearchedMembers>
-            <AddButton disabled={hostingBookClubs === undefined} id={x?.username} onClick={handleAddRequest}>
-              +
-            </AddButton>
+            {hostingBookClubs === undefined ? (
+              <SearchedMembers>{x?.username}</SearchedMembers>
+            ) : (
+              <>
+                <RemoveButton disabled={hostingBookClubs === undefined} id={x?.username} onClick={handleRemoveRequest}>
+                  -
+                </RemoveButton>
+                <SearchedMembers>{x?.username}</SearchedMembers>
+                <AddButton disabled={hostingBookClubs === undefined} id={x?.username} onClick={handleAddRequest}>
+                  +
+                </AddButton>
+              </>
+            )}
           </Wrapper>
         </List>
       ))}
