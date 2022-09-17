@@ -64,7 +64,7 @@ const UserPendingRequest = ({
               onClick={handleJoinRequest}
             >
               {pending || bookClubAlreadyPending || userAlreadyInvited ? (
-                <p>Awaiting response...</p>
+                <p>Awaiting Your Response...</p>
               ) : (
                 <p>Join Book Club</p>
               )}

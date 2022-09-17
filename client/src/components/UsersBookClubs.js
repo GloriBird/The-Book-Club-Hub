@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import styled from "styled-components";
-import { Navigate, useNavigate, useParams, Link } from "react-router-dom";
-import BookClub from "../pages/BookClub";
+import { useNavigate, Link } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
+import { Loading } from "./styles/Loading.styled";
 
 export const UsersBookClubs = () => {
   const userData = useContext(CurrentUserContext);
@@ -19,10 +19,7 @@ export const UsersBookClubs = () => {
   console.log(`bookClubs:`, bookClubs);
 
   const handleAccept = (e) => {
-    // e.preventDefault();
     setIsAccepted(true);
-    navigate(0);
-
     bookClubInvites.splice(e.target.id, 1);
     console.log(`e.target.id:`, e.target.id);
     fetch("/accept-reject-invite", {
@@ -30,11 +27,10 @@ export const UsersBookClubs = () => {
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ _id, username, bookClubName: e.target.id, accept: true, reject: false }),
     });
-    // window.location.reload();
+    navigate(0);
   };
 
   const handleDeny = (e) => {
-    // e.preventDefault();
     setIsAccepted(false);
     fetch("/accept-reject-invite", {
       method: "PATCH",
@@ -42,9 +38,9 @@ export const UsersBookClubs = () => {
       body: JSON.stringify({ _id, username, bookClubName: e.target.id, accept: false, reject: true }),
     });
     bookClubInvites.splice(e.target.id, 1);
+    navigate(0);
   };
 
-  console.log(`bookClubs:`, bookClubs);
   return (
     <WrapAll>
       {username !== null ? (
@@ -70,7 +66,7 @@ export const UsersBookClubs = () => {
           )}
           {bookClubs?.length > 0 && (
             <>
-              <Title>My Book Clubs</Title>
+              <MyBookClubs>My Book Clubs</MyBookClubs>
               <Wrapper>
                 {bookClubs?.map((group, idx) => (
                   <List key={idx} id={group?._id}>
@@ -86,27 +82,34 @@ export const UsersBookClubs = () => {
               </Wrapper>
             </>
           )}
-          {bookClubInvites?.length > 0 && (
-            <>
-              <Title>Book Club Invites</Title>
-              {bookClubInvites?.map((group, idx) => (
+          <>
+            {bookClubInvites?.length > 0 && (
+              <>
+                <BookClubInvites>Book Club Invites</BookClubInvites>
                 <Wrapper>
-                  <List key={idx} id={idx}>
-                    <BookClubImg src={`https://avatars.dicebear.com/api/initials/${group?.bookClubName}.svg`} alt="" />
-                    <WrapInvite>
-                      <p> {group?.bookClubName}</p>
-                      <AcceptButton id={group?.bookClubName} onClick={handleAccept}>
-                        Accept
-                      </AcceptButton>
-                      <DenyButton id={group?.bookClubName} onClick={handleDeny}>
-                        Deny
-                      </DenyButton>
-                    </WrapInvite>
-                  </List>
+                  <>
+                    {bookClubInvites?.map((group, idx) => (
+                      <List key={idx} id={idx}>
+                        <BookClubImg
+                          src={`https://avatars.dicebear.com/api/initials/${group?.bookClubName}.svg`}
+                          alt=""
+                        />
+                        <WrapInvite>
+                          <p> {group?.bookClubName}</p>
+                          <AcceptButton id={group?.bookClubName} onClick={handleAccept}>
+                            Accept
+                          </AcceptButton>
+                          <DenyButton id={group?.bookClubName} onClick={handleDeny}>
+                            Deny
+                          </DenyButton>
+                        </WrapInvite>
+                      </List>
+                    ))}
+                  </>
                 </Wrapper>
-              ))}
-            </>
-          )}
+              </>
+            )}
+          </>
 
           {bookClubsToJoinPending.length > 0 && (
             <>
@@ -128,7 +131,9 @@ export const UsersBookClubs = () => {
           )}
         </>
       ) : (
-        <p>Loading...</p>
+        <Loading>
+          <p>Loading...</p>
+        </Loading>
       )}
     </WrapAll>
   );
@@ -136,31 +141,42 @@ export const UsersBookClubs = () => {
 
 const WrapAll = styled.div`
   width: 100vw;
-  height: 100vh;
 `;
 
 const Title = styled.h3`
+  padding-top: 1%;
+  text-align: center;
+  text-decoration: underline;
+`;
+
+const BookClubInvites = styled.h3`
   padding-top: 3%;
   text-align: center;
+  text-decoration: underline;
+`;
+
+const MyBookClubs = styled.h3`
+  padding-top: 3%;
+  text-align: center;
+  text-decoration: underline;
 `;
 
 const WrapInvite = styled.div`
   display: flex;
   flex-direction: column;
+  padding-left: 20px;
   justify-content: space-evenly;
 `;
 
 const Wrapper = styled.ol`
-  border: 2px red;
   width: 100vw;
   height: 20vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  margin-top: 0 10px;
-  padding: 0;
+
   p {
     margin-top: 10px;
     text-align: center;
@@ -173,11 +189,15 @@ const List = styled.li`
   padding: 0.5% 1%;
   height: 100%;
   display: flex;
+  flex-direction: row;
+  justify-content: center;
+  text-align: center;
+  margin-right: 2%;
 
   span {
     display: inline;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: center;
     padding-right: 20px;
   }
   div {
@@ -188,7 +208,6 @@ const List = styled.li`
 const BookClubImg = styled.img`
   border-radius: 5px;
   height: 100%;
-  margin: 0 20px auto auto;
 `;
 
 const DenyButton = styled.button`
@@ -227,4 +246,5 @@ const AcceptButton = styled.button`
 const MyBookClubRequest = styled.h3`
   padding-top: 3%;
   text-align: center;
+  text-decoration: underline;
 `;

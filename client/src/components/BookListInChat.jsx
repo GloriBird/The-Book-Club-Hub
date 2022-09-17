@@ -99,6 +99,5 @@ const BookImgs = styled.img`
 
   &:hover {
     filter: drop-shadow(-10px 10px 3px #e8c97d);
-    cursor: pointer;
   }
 `;
