@@ -1,31 +1,39 @@
 import React, { useEffect, useState, useContext } from "react";
 import { GlobalContext } from "../context/GlobalContext";
+import styled from "styled-components";
 import { useNavigate, useParams, Link } from "react-router-dom";
+import PopUpModal from "../components/PopUpModal";
 import { CurrentUserContext } from "../context/CurrentUserContext";
+import { useAuth0 } from "@auth0/auth0-react";
+const moment = require("moment");
 
 const BookDetails = () => {
+  const { isLoading, isAuthenticated } = useAuth0();
+  const [isAdded, setIsAdded] = useState(false);
   const [bookDetails, setBookDetails] = useState(null);
-  const [currentBook, setDescription] = useState("");
   const [issBookLoaded, setIsBookLoaded] = useState("");
+  const [toggleModal, setToggleModal] = useState(false);
+  const [selectedBook, setSelectedBook] = useState("");
 
-  // const { weeklyTrendingBooks, allBookClub, pickedBook } = useContext(GlobalContext);
-  // const userData = useContext(CurrentUserContext);
+  const {
+    state: { username, hostingBookClubs },
+  } = useContext(CurrentUserContext);
 
   const { bookId, author, details } = useParams();
 
-  // console.log(`bookId:`, bookId);
-  // console.log(`author:`, author);
-  // console.log(`works:`, details);
+  console.log(`bookId:`, bookId);
+  console.log(`author:`, author);
+  console.log(`works:`, details);
 
   useEffect(() => {
     const getCurrentBook = async () => {
       setIsBookLoaded(false);
       const book = await fetch(`https://openlibrary.org/works/${details}.json`);
       const selectedBook = await book.json();
-      console.log(`book description:`, selectedBook?.description?.value);
+      console.log(`selectedBook published:`, selectedBook?.first_publish_date);
       const getDetails = {
         title: selectedBook?.title,
-        first_published: selectedBook?.first_publish_date,
+        first_published: selectedBook?.first_publish_date === undefined ? "N/A" : selectedBook?.first_publish_date,
         cover: bookId,
         author: author,
         description: selectedBook?.description,
@@ -35,25 +43,173 @@ const BookDetails = () => {
     getCurrentBook();
   }, [bookId, author, details]);
 
-  console.log(`bookDetails :`, bookDetails);
+  const getAuthor = author?.replace("%20", " ");
+
+  const handleAddBook = (e) => {
+    console.log(`e target id:`, e.target.id);
+    e.preventDefault();
+    setToggleModal(true);
+    setIsAdded(true);
+    setSelectedBook({
+      added_by: username,
+      title: e.target.id,
+      author: getAuthor,
+      first_published: bookDetails?.first_published === undefined && "N/A",
+      cover: bookId,
+      date_added: moment().format("LL"),
+    });
+  };
+
+  const handleSelection = (e) => {
+    if (isAdded === true) {
+      fetch("/add-books", {
+        method: "PATCH",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ ...selectedBook, bookClubName: e.target.innerHTML }),
+      }).then((response) => {
+        setTimeout(() => {
+          setToggleModal(false);
+        }, 200);
+        return response.json();
+      });
+    }
+  };
+
+  console.log(`selectedBook:`, selectedBook);
 
   return (
-    <div>
+    <>
       {bookDetails !== null && (
         <>
-          {bookDetails?.map((x, idx) => (
-            <div key={idx}>
-              <img src={`https://covers.openlibrary.org/b/olid/${x?.cover}-L.jpg`} alt={"book Covers"} />
-              <h3>{x?.title}</h3>
-              <h3>{x?.author}</h3>
-              {typeof x?.description === "object" ? <p>{x?.description?.value}</p> : <p>{x?.description}</p>}
-              <p>{x?.first_published}</p>
-            </div>
-          ))}
+          <Container>
+            {bookDetails?.map((x, idx) => (
+              <div key={idx}>
+                <Contain>
+                  <Wrapper>
+                    <img src={`https://covers.openlibrary.org/b/olid/${x?.cover}-L.jpg`} alt={"book Covers"} />
+                    <TextArea>
+                      <h3>{x?.title}</h3>
+                      <h3>Author: {x?.author}</h3>
+                    </TextArea>
+                  </Wrapper>
+                  <DescriptionArea>
+                    <h2>Summary:</h2>
+                    {x?.description === undefined ? (
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                      </p>
+                    ) : (
+                      <>
+                        {typeof x?.description === "object" ? <p>{x?.description?.value}</p> : <p>{x?.description}</p>}
+                      </>
+                    )}
+                    <PublishedData>
+                      <span>First Published:</span> {x?.first_published}
+                    </PublishedData>
+                    <AddBookButton
+                      disabled={
+                        hostingBookClubs === undefined || hostingBookClubs === null || isAuthenticated === false
+                      }
+                      id={x?.title}
+                      onClick={handleAddBook}
+                      // isClicked={isAdded}
+                    >
+                      Add Book
+                    </AddBookButton>
+                  </DescriptionArea>
+                </Contain>
+              </div>
+            ))}
+            <PopUpModal trigger={toggleModal} setTrigger={setToggleModal}>
+              {hostingBookClubs?.map((x, idx) => (
+                <button disabled={isAuthenticated === false} key={idx} onClick={handleSelection}>
+                  {x?.bookClubName}
+                </button>
+              ))}
+            </PopUpModal>
+          </Container>
         </>
       )}
-    </div>
+    </>
   );
 };
 
 export default BookDetails;
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-right: 2%;
+  width: 50%;
+
+  img {
+    border-radius: 10px;
+    &:hover {
+      filter: drop-shadow(-10px 10px 3px #e8c97d);
+    }
+  }
+`;
+
+const TextArea = styled.div`
+  padding: 2% 5% 0 0;
+  text-align: center;
+`;
+
+const DescriptionArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-items: flex-start;
+  width: 25%;
+
+  h2 {
+    text-align: left;
+    margin-bottom: 3%;
+  }
+`;
+
+const Contain = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const AddBookButton = styled.button`
+  border-radius: 5px;
+  width: 30%;
+  padding: 10px 5px;
+  border: none;
+  margin-top: 3%;
+  font-weight: bolder;
+  font-size: 1rem;
+  box-shadow: ${(props) => (props.disabled ? "#dcdcdc" : "0px -4px 7px #afc39e inset")};
+  background-color: ${(props) => (props.disabled ? "#dcdcdc" : "#dae5d0")};
+  color: ${(props) => (props.disabled ? "white" : "#3b3b3b")};
+
+  &:hover {
+    cursor: ${(props) => (props.disabled ? "default" : "pointer")};
+  }
+`;
+
+const PublishedData = styled.p`
+  padding: 20px 0;
+
+  span {
+    font-weight: bolder;
+  }
+`;

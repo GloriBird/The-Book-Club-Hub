@@ -9,6 +9,8 @@ import BookDetails from "./BookDetails";
 const WeeklyTrendingBooks = () => {
   const userData = useContext(CurrentUserContext);
   const { trendingBooks, allUsers, isAllUsersLoading, allUsernames } = useContext(GlobalContext);
+  const [isAdded, setIsAdded] = useState(false);
+
   const { user, isLoading, isAuthenticated } = useAuth0();
 
   return (
