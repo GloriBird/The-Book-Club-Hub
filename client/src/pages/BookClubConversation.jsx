@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 import { SideBar } from "../components/SideBar";
 import io from "socket.io-client";
@@ -32,12 +32,11 @@ const socket = io.connect("http://localhost:8000");
 
 const BookClubConversation = () => {
   const userData = useContext(CurrentUserContext);
-  const { trendingBooks, allUsers, allBookClub, allUsernames, userInData, bookClubChat } = useContext(GlobalContext);
+  const { allBookClub, bookClubChat } = useContext(GlobalContext);
   const [userMessage, setUserMessage] = useState("");
   const [isOnline, setIsOnline] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
-  const [onlineMembers, setOnlineMembers] = useState([]);
-  const { isLoading, isAuthenticated } = useAuth0();
+  const { isLoading } = useAuth0();
 
   const { bookClubID } = useParams();
 
@@ -53,7 +52,6 @@ const BookClubConversation = () => {
     if (bookClubChat !== "") {
       socket.emit("join_chat", bookClubChat);
       socket.emit("online_members", username);
-      setOnlineMembers(username);
     }
   };
 

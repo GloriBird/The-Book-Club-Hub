@@ -1,17 +1,15 @@
 import React, { useEffect, useState, useContext } from "react";
-import { GlobalContext } from "../context/GlobalContext";
 import styled from "styled-components";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import PopUpModal from "../components/PopUpModal";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { useAuth0 } from "@auth0/auth0-react";
 const moment = require("moment");
 
 const BookDetails = () => {
-  const { isLoading, isAuthenticated } = useAuth0();
+  const { isAuthenticated } = useAuth0();
   const [isAdded, setIsAdded] = useState(false);
   const [bookDetails, setBookDetails] = useState(null);
-  const [issBookLoaded, setIsBookLoaded] = useState("");
   const [toggleModal, setToggleModal] = useState(false);
   const [selectedBook, setSelectedBook] = useState("");
 
@@ -27,7 +25,6 @@ const BookDetails = () => {
 
   useEffect(() => {
     const getCurrentBook = async () => {
-      setIsBookLoaded(false);
       const book = await fetch(`https://openlibrary.org/works/${details}.json`);
       const selectedBook = await book.json();
       console.log(`selectedBook published:`, selectedBook?.first_publish_date);
@@ -80,83 +77,61 @@ const BookDetails = () => {
   return (
     <>
       {bookDetails !== null && (
-        <>
-          <Container>
-            {bookDetails?.map((x, idx) => (
-              <div key={idx}>
-                <Contain>
-                  <Wrapper>
-                    <img src={`https://covers.openlibrary.org/b/olid/${x?.cover}-L.jpg`} alt={"book Covers"} />
-                    <TextArea>
-                      <h3>{x?.title}</h3>
-                      <h3>Author: {x?.author}</h3>
-                    </TextArea>
-                  </Wrapper>
-                  <DescriptionArea>
-                    <h2>Summary:</h2>
-                    {x?.description === undefined ? (
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                      </p>
-                    ) : (
-                      <>
-                        {typeof x?.description === "object" ? <p>{x?.description?.value}</p> : <p>{x?.description}</p>}
-                      </>
-                    )}
-                    <PublishedData>
-                      <span>First Published:</span> {x?.first_published}
-                    </PublishedData>
-                    <AddBookButton
-                      disabled={
-                        hostingBookClubs === undefined || hostingBookClubs === null || isAuthenticated === false
-                      }
-                      id={x?.title}
-                      onClick={handleAddBook}
-                      // isClicked={isAdded}
-                    >
-                      Add Book
-                    </AddBookButton>
-                  </DescriptionArea>
-                </Contain>
-              </div>
-            ))}
-            <PopUpModal trigger={toggleModal} setTrigger={setToggleModal}>
-              {hostingBookClubs?.map((x, idx) => (
-                <button disabled={isAuthenticated === false} key={idx} onClick={handleSelection}>
-                  {x?.bookClubName}
-                </button>
-              ))}
-            </PopUpModal>
-          </Container>
-        </>
+        <div>
+          {bookDetails?.map((x, idx) => (
+            <div key={idx}>
+              <Contain>
+                <Wrapper>
+                  <img src={`https://covers.openlibrary.org/b/olid/${x?.cover}-L.jpg`} alt={"book Covers"} />
+                  <TextArea>
+                    <h3>{x?.title}</h3>
+                    <h3>{x?.author}</h3>
+                  </TextArea>
+                </Wrapper>
+                <DescriptionArea>
+                  <h2>Summary:</h2>
+                  {x?.description === undefined ? (
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                      labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                      nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+                      esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+                      in culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+                  ) : (
+                    <>{typeof x?.description === "object" ? <p>{x?.description?.value}</p> : <p>{x?.description}</p>}</>
+                  )}
+                  <PublishedData>
+                    <h3>First Published:</h3> {x?.first_published}
+                  </PublishedData>
+                  <AddBookButton
+                    disabled={hostingBookClubs === undefined || hostingBookClubs === null || isAuthenticated === false}
+                    id={x?.title}
+                    onClick={handleAddBook}
+                  >
+                    Add Book
+                  </AddBookButton>
+                </DescriptionArea>
+                <PopUpModal trigger={toggleModal} setTrigger={setToggleModal}>
+                  {hostingBookClubs?.map((x, idx) => (
+                    <button disabled={isAuthenticated === false} key={idx} onClick={handleSelection}>
+                      {x?.bookClubName}
+                    </button>
+                  ))}
+                </PopUpModal>
+              </Contain>
+            </div>
+          ))}
+        </div>
       )}
     </>
   );
 };
 
 export default BookDetails;
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
-`;
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-end;
   padding-right: 2%;
-  width: 50%;
-
   img {
     border-radius: 10px;
     &:hover {
@@ -166,7 +141,7 @@ const Wrapper = styled.div`
 `;
 
 const TextArea = styled.div`
-  padding: 2% 5% 0 0;
+  padding: 7% 5% 0 0;
   text-align: center;
 `;
 
@@ -187,6 +162,7 @@ const DescriptionArea = styled.div`
 const Contain = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: center;
 `;
 
 const AddBookButton = styled.button`

@@ -1,30 +1,18 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import styled from "styled-components";
-import { Navigate, useNavigate, useParams, Link } from "react-router-dom";
-import BookClub from "../pages/BookClub";
-import { GlobalContext } from "../context/GlobalContext";
+import { useNavigate, Link } from "react-router-dom";
 
 export const UsersBookClubs = () => {
-  const userData = useContext(CurrentUserContext);
-  const { allUsers, allBookClub } = useContext(GlobalContext);
-  const [isAccepted, setIsAccepted] = useState();
-
   const navigate = useNavigate();
   const {
-    state: { _id, username, email, bookClubs, bookClubName, bookClubInvites, hostingBookClubs, bookClubsToJoinPending },
-    actions: { receiveCurrentUser, receiveNewUserName },
-  } = userData;
-
-  console.log(`bookClubs:`, bookClubs);
+    state: { _id, username, bookClubs, bookClubInvites, hostingBookClubs, bookClubsToJoinPending },
+  } = useContext(CurrentUserContext);
 
   const handleAccept = (e) => {
     // e.preventDefault();
-    setIsAccepted(true);
     navigate(0);
-    console.log(`hello`);
     bookClubInvites.splice(e.target.id, 1);
-    // console.log(`e.target.id:`, e.target.id);
     fetch("/accept-reject-invite", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
@@ -34,7 +22,6 @@ export const UsersBookClubs = () => {
   };
 
   const handleDeny = (e) => {
-    setIsAccepted(false);
     fetch("/accept-reject-invite", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
@@ -43,7 +30,6 @@ export const UsersBookClubs = () => {
     bookClubInvites.splice(e.target.id, 1);
   };
 
-  console.log(`bookClubInvites:`, bookClubInvites);
   return (
     <>
       {username !== null ? (

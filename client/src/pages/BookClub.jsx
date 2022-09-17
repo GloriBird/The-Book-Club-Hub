@@ -1,18 +1,20 @@
 import styled from "styled-components";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 import BookList from "../components/BookList";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Loading } from "../components/styles/Loading.styled";
+
 const BookClubPage = () => {
   const userData = useContext(CurrentUserContext);
   const navigate = useNavigate();
   const { bookClubID } = useParams();
   const [pending, setPending] = useState(false);
+
   const { allBookClub, sub } = useContext(GlobalContext);
-  const { isLoading } = useAuth0();
+  const { isLoading, isAuthenticated } = useAuth0();
 
   const {
     state: { _id, username, email, bookClubs, hostingBookClubs, bookClubsToJoinPending, bookClubInvites, joinedDate },
@@ -28,8 +30,6 @@ const BookClubPage = () => {
 
   const userAlreadyInvited =
     bookClubInvites !== null && bookClubInvites?.some((x) => x?.bookClubName === bookGroup[0]?.bookClubName);
-
-  console.log(`userAlreadyInvited:`, userAlreadyInvited);
 
   const bookClubAlreadyPending =
     bookClubsToJoinPending !== undefined &&
@@ -68,6 +68,7 @@ const BookClubPage = () => {
       return response.json();
     });
   };
+
   const isAMember =
     bookClubs !== null &&
     bookGroup !== undefined &&
@@ -92,7 +93,7 @@ const BookClubPage = () => {
         reject: false,
       }),
     });
-    // window.location.reload();
+    navigate(0);
   };
 
   const handleDenyUser = (e) => {
@@ -109,13 +110,12 @@ const BookClubPage = () => {
         reject: true,
       }),
     });
-    // window.location.reload();
+    navigate(0);
   };
 
   const handleRemoveMember = (e) => {
     const idxToRemove = e.target.className.lastIndexOf(" ");
     const finalUserId = e.target.className.substring(idxToRemove + 1);
-
     fetch("/remove-member", {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
@@ -124,15 +124,16 @@ const BookClubPage = () => {
         member: [{ username: e.target.id, _id: finalUserId }],
       }),
     });
-    // navigate(0);
+    navigate(0);
   };
 
+  console.log(`username:`, username, `isLoading:`, isLoading);
   return (
     <>
       {username !== null && isLoading === false ? (
         <Wrapper>
           <BookClubInfo>
-            {bookGroup !== undefined && hostingBookClubs !== null && (
+            {bookGroup !== null && hostingBookClubs !== null && (
               <>
                 <SpaceAreas>
                   <h1>{bookGroup[0]?.bookClubName}</h1>
@@ -266,7 +267,6 @@ export default BookClubPage;
 
 const Wrapper = styled.div`
   display: grid;
-  /* border: 10px solid red; */
   grid-template-columns: 0.6fr 1fr;
   grid-template-rows: 1fr;
   gap: 0px 0px;

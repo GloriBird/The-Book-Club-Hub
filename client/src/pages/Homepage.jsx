@@ -54,13 +54,11 @@ const Homepage = () => {
             return res.json();
           })
           .then((data) => {
-            setTimeout(() => {
-              if (data.account.username === nickname) {
-                setTimedModalPopUp(true);
-              } else {
-                setTimedModalPopUp(false);
-              }
-            }, 100);
+            if (data.account.username === nickname) {
+              setTimedModalPopUp(true);
+            } else {
+              setTimedModalPopUp(false);
+            }
             receiveCurrentUser(data.account);
           });
       });

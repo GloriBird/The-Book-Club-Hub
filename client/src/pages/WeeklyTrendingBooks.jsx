@@ -1,17 +1,11 @@
 // import { Container } from "./pageStyles/BrowseBooks.styled";
-import React, { useEffect, useState, useContext } from "react";
-import { CurrentUserContext } from "../context/CurrentUserContext";
-import { GlobalContext } from "../context/GlobalContext";
+import React from "react";
+
 import CarouselTrendingBooks from "../components/Carousel";
 import styled from "styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
-import BookDetails from "./BookDetails";
 const WeeklyTrendingBooks = () => {
-  const userData = useContext(CurrentUserContext);
-  const { trendingBooks, allUsers, isAllUsersLoading, allUsernames } = useContext(GlobalContext);
-  const [isAdded, setIsAdded] = useState(false);
-
-  const { user, isLoading, isAuthenticated } = useAuth0();
+  const { isLoading } = useAuth0();
 
   return (
     <>
