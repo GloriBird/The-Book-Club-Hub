@@ -17,7 +17,7 @@ const MyBookClubs = () => {
   const { isLoading } = useAuth0();
 
   const {
-    state: { _id, joinedDate, username, email, sub, hostingBookClubs, bookClubsToJoinPending, bookClubInvites },
+    state: { _id, joinedDate, username, email, sub },
   } = userData;
 
   const members = [
