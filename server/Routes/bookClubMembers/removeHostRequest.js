@@ -11,7 +11,6 @@ const removeHostRequest = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   await client.connect();
 
-  //------------------------------------------------------------------------------------------
 
   const bookClubData = client.db("Book-Club");
 
@@ -29,7 +28,6 @@ const removeHostRequest = async (req, res) => {
   console.log(`userAlreadyPending:`, userAlreadyPending);
   console.log(`requestStillPendingForUser:`, requestStillPendingForUser);
 
-  //For Book Club
   const idxOfPendingMembers = getBookClub?.pendingMembers?.findIndex((object) => object._id === _id);
   //For user
   const idxOfBookClubInvites = profile?.bookClubInvites?.findIndex((object) => object?.bookClubName === bookClubName);
