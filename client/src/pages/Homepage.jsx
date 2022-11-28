@@ -93,7 +93,7 @@ const Homepage = () => {
       <Wrapper>
         <LandingPage>
           <div>
-            <h1>Hi there, this is another test!!!! Not sure where to start?</h1>
+            <h1>Hi there, 12345!! Not sure where to start?</h1>
             <p>
               <strong>1.</strong> Check out some books and book clubs that might interest you.
             </p>
