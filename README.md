@@ -1,6 +1,6 @@
 <h1>The Book Club Hub</h1>
 
-To keep myself and my friends accountable in our readings, I decided to create a web application to track and see the list of books in our book club. Below are some features users can perform, currently working on a revamped version of this, stay tuned:
+To keep myself and my friends accountable in our readings, I decided to create a web application to track and see the list of books in our book club. Currently working on a revamped version of this, below are some of the current features a user can perform:
 <ul>
   <li>Create an account</li>
   <li>Create multiple book clubs</li>
