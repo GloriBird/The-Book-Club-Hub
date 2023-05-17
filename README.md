@@ -14,12 +14,10 @@ To keep myself and my friends accountable in our readings, I decided to create a
 <strong>Tools used:</strong> MongoDB, Express, React, Node.js, socket.IO, auth0, Postman, and React.
 
 
-<h3>Installation:</h3>
+<h3>Set UP:</h3>
  <ol>
    <li>
-    <p>Open git bash on VSC terminal</p></li>
-   <li>
-    <p>Clone the repo: <code>git clone https://github.com/GloriBird/The-Book-Club-Hub.git</code></p>
+    <p>Clone repo</p>
   </li>
   <li>
     <p><code>cd server</code></p>
@@ -32,10 +30,7 @@ To keep myself and my friends accountable in our readings, I decided to create a
     <strong>Example:</strong> mongodb+srv://"YourName":<password>@cluster-"YourClusterName".f4exa1z.mongodb.net/?retryWrites=true&w=majority</p>
   </li>
     <li>
-    <p><code>yarn</code></p>
-  </li>
-  <li>
-      <p><code>yarn run dev</code></p>
+    <p><code>yarn</code> & <code>yarn run dev</code></p>
   </li>
   <li>
       <p>Open a 2nd git bash terminal in VSC</p>
@@ -44,10 +39,7 @@ To keep myself and my friends accountable in our readings, I decided to create a
       <p><code>cd client</code></p>
   </li>
   <li>
-      <p><code>yarn</code></p>
-  </li>
-  <li>
-      <p><code>yarn run start</code></p>
+      <p><code>yarn</code> & <code>yarn run start</code></p>
   </li>
 </ol> 
 
